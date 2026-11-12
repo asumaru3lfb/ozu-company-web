@@ -40,7 +40,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .photo{position:absolute;inset:0}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pp{position:absolute;width:auto;max-width:none;translate:-50% -50%;filter:drop-shadow(0 8px 8px rgba(15,29,61,.22));animation:pyoko var(--pd,2.6s) var(--pdl,0s) infinite}
-@keyframes pyoko{0%,100%{transform:none;animation-timing-function:ease-out}12%{transform:translate(6px,-14px);animation-timing-function:ease-in}25%{transform:translate(12px,0);animation-timing-function:ease-out}37%{transform:translate(18px,-14px);animation-timing-function:ease-in}50%{transform:translate(24px,0);animation-timing-function:ease-out}62%{transform:translate(18px,-14px);animation-timing-function:ease-in}75%{transform:translate(12px,0);animation-timing-function:ease-out}87%{transform:translate(6px,-14px);animation-timing-function:ease-in}}
+@keyframes pyoko{0%,100%{transform:none;animation-timing-function:ease-out}25%{transform:translate(3px,-6px);animation-timing-function:ease-in}50%{transform:translate(6px,0);animation-timing-function:ease-out}75%{transform:translate(3px,-6px);animation-timing-function:ease-in}}
 .htag{position:absolute;z-index:6;translate:-50% -50%;white-space:nowrap;line-height:1.2;color:var(--navy);font-weight:900;background:var(--yellow);padding:.2em .6em;border-radius:999px;box-shadow:0 3px 8px rgba(15,29,61,.25)}
 
 
@@ -122,7 +122,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @keyframes flood{to{clip-path:inset(0 0 0 0)}}
 @keyframes fade{to{opacity:0;visibility:hidden}}
 .intro.done{display:none}
-body.enter .copy{animation:up .8s both}
+.copy .ch{display:inline-block}
+body.enter .copy span{animation:boxin .4s both}
+body.enter .copy .ch{animation:drop .75s both;animation-delay:calc(var(--i) * .16s + .3s)}
+@keyframes boxin{from{opacity:0}to{opacity:1}}
+@keyframes drop{0%{transform:translateY(-110vh);opacity:1;animation-timing-function:cubic-bezier(.55,0,1,.45)}72%{transform:translateY(0);animation-timing-function:ease-out}84%{transform:translateY(-.18em);animation-timing-function:ease-in}100%{transform:translateY(0)}}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 @media (min-width:760px){
@@ -275,6 +279,8 @@ const PEOPLE={"IMG_4584": "data:image/webp;base64,UklGRlxZAABXRUJQVlA4WAoAAAAQAA
   ready.then(place); addEventListener('resize',place);
   if(document.fonts) document.fonts.ready.then(place);
 
+  let ci=0; document.querySelectorAll('.copy span').forEach(sp=>{const t=sp.textContent; sp.setAttribute('aria-label',t);
+    sp.innerHTML=[...t].map(c=>`<i class="ch" aria-hidden="true" style="--i:${ci++};font-style:normal">${c}</i>`).join('');});
   const intro=document.getElementById('intro');
   function play(){
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){intro.classList.add('done');ready.then(place);return;}
