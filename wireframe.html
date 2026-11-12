@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>大洲カンパニー ワイヤーフレーム</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: 横スクロールのキャンバスにスマホ画面を1列に並べ、画面の上の空き（レーン）を通る矢印でリンク元→遷移先をつなぐ */
+:root{
+  --bg:#eef1f0; --paper:#ffffff; --ink:#1d2628; --muted:#6b7a7d; --wire:#b9c4c6; --fill:#e3e8e8; --fill2:#d2dadb;
+  --note:#1f5f73; --note-soft:#e1eef1; --link2:#b23a5b; --ext:#9a6d1f; --ext-soft:#f4ecdc;
+  --display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#121819; --paper:#1a2224; --ink:#e3eaea; --muted:#98a7aa; --wire:#3f4f52; --fill:#243032; --fill2:#2e3c3f;
+  --note:#7cc3d6; --note-soft:#1a3238; --link2:#f08aa6; --ext:#d9b26a; --ext-soft:#2f2718;}}
+:root[data-theme="dark"]{
+  color-scheme:dark; --bg:#121819; --paper:#1a2224; --ink:#e3eaea; --muted:#98a7aa; --wire:#3f4f52; --fill:#243032; --fill2:#2e3c3f;
+  --note:#7cc3d6; --note-soft:#1a3238; --link2:#f08aa6; --ext:#d9b26a; --ext-soft:#2f2718;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 48px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:clamp(24px,3.5vw,32px);font-weight:900}
+h2{font-size:17px}
+.meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0}
+.lead{color:var(--muted);margin:0;max-width:72ch}
+.top{max-width:1100px;display:grid;gap:10px;margin-bottom:20px}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:13px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:28px;height:0;border-top:2px solid var(--note);vertical-align:middle;margin-right:6px}
+.sw.ext{border-top:2px solid var(--ext)}
+.tools{display:flex;gap:6px;align-items:center;font-size:13px}
+.tools button{font:inherit;border:1px solid var(--wire);background:var(--paper);color:var(--ink);padding:3px 10px;border-radius:4px;cursor:pointer}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tools button:focus-visible{outline:2px solid var(--note);outline-offset:2px}
+
+.viewport{overflow:auto;border:1px solid var(--wire);border-radius:6px;background:var(--bg)}
+.scaler{transform-origin:0 0}
+.canvas{position:relative;display:flex;gap:260px;align-items:flex-start;padding:130px 260px 40px 170px;width:max-content}
+svg.links{position:absolute;inset:0;pointer-events:none;overflow:visible}
+
+.screen{width:320px;display:grid;gap:8px;flex:none}
+.screen-head{display:grid;gap:0}
+.screen-head .url{font-family:var(--mono);font-size:11.5px;color:var(--note)}
+.screen-head .sub{font-size:11.5px;color:var(--muted)}
+.phone{background:var(--paper);border:2px solid var(--wire);border-radius:20px;padding:12px 0 16px;overflow:hidden}
+.screen.hub .phone{border-color:var(--note)}
+.blk{position:relative;padding:12px 14px;border-top:1px dashed var(--wire);display:grid;gap:7px;font-size:12px}
+.blk:first-child{border-top:none}
+.lbl{display:none}
+.xbox{position:absolute;font-size:11px;font-weight:700;color:var(--ext);background:var(--ext-soft);border:1px solid var(--ext);border-radius:3px;padding:2px 8px;white-space:nowrap;pointer-events:none}
+.anno{position:absolute;width:120px;text-align:right;font-family:var(--mono);font-size:10.5px;line-height:1.35;color:var(--muted);pointer-events:none}
+.anno::after{content:"";position:absolute;right:-12px;top:.6em;width:8px;border-top:1px solid var(--wire)}
+.img{background:var(--fill);border:1px solid var(--wire);display:grid;place-items:center;color:var(--muted);font-size:10.5px;aspect-ratio:16/9}
+.img.tall{aspect-ratio:4/3}
+.t-xl{font-family:var(--display);font-weight:900;font-size:18px;line-height:1.35}
+.t-l{font-family:var(--display);font-weight:700;font-size:14px}
+.t-s{color:var(--muted);font-size:11px}
+.bar{height:6px;background:var(--fill2);border-radius:2px;width:90%}
+.bar.s{width:65%}
+.row{display:flex;gap:8px;align-items:center}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tile{border:1px solid var(--wire);padding:7px;display:grid;gap:2px;background:var(--paper)}
+.tile b{font-size:11.5px}
+.tile span{font-size:10px;color:var(--muted)}
+.btn{border:1.5px solid var(--ink);border-radius:999px;padding:6px 10px;text-align:center;font-weight:700;font-size:11.5px}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.hdr{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:12.5px}
+.burger{width:20px;display:grid;gap:4px}.burger i{display:block;height:2px;background:var(--ink)}
+.qr{width:52px;aspect-ratio:1;background:var(--fill2);border:1px solid var(--wire);display:grid;place-items:center;font-size:9.5px;color:var(--muted);flex:none}
+.chip{display:inline-block;border:1px solid var(--wire);border-radius:999px;padding:0 7px;font-size:10px;margin:0 3px 3px 0}
+.num{font-family:var(--display);font-weight:900;font-size:19px;font-variant-numeric:tabular-nums}
+.ft{background:var(--fill)}
+.item{display:flex;gap:8px;align-items:center}
+.item .img{width:58px;aspect-ratio:1;flex:none}
+.item div{display:grid;gap:2px}
+.item b{font-size:11.5px}
+/* link source highlight */
+[data-to]{outline:1.5px solid var(--note);outline-offset:1px}
+[data-to^="x-"]{outline:1.5px dashed var(--ext)}
+
+.btn[data-to]::after,.tile[data-to]::after{position:absolute}
+.tile[data-to]{position:relative}
+.tile[data-to]::after{right:4px;top:3px}
+
+/* external column */
+.ext-col .phone{border-style:dashed;border-color:var(--ext);background:var(--ext-soft)}
+.line-phone .lh{background:#06c755;color:#fff}
+.line-phone .lh .hdr{color:#fff}
+.talk{background:#8cabd9;gap:8px}
+.bub{background:#fff;color:#1d2628;border-radius:12px;padding:7px 10px;font-size:11px;max-width:82%}
+.bub.me{background:#86e27a;margin-left:auto}
+.rm{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--wire);border:1px solid var(--wire)}
+.rm div{background:var(--paper);padding:12px 4px;text-align:center;display:grid;gap:2px}
+.rm b{font-size:10.5px}
+.rm span{font-size:9px;color:var(--muted)}
+.ext-card{padding:12px 14px;border-top:1px dashed var(--ext);display:grid;gap:2px;font-size:12px}
+.ext-card:first-child{border-top:none}
+.ext-card b{color:var(--ext)}
+.rich-col .phone{border-style:dashed;background:var(--note-soft)}
+.rich-col .ext-card{border-top-color:var(--wire)}
+.rich-col .ext-card b{color:var(--note)}
+
+.notes{max-width:1100px;display:grid;gap:10px;margin-top:28px;font-size:13.5px}
+.notes ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+</style>
+
+<div class="top">
+  <p class="meta">OZU 555 PROJECT ／ 新・大洲カンパニーWEBサイト ／ 2026.11.12 ワイヤー v0.4（LINE・TOP・OZU555）</p>
+  <h1>大洲カンパニー ワイヤーフレーム</h1>
+  <p class="lead">LINEのトーク画面、TOP、OZU 555 PROJECT特設ページをスマホ幅で並べ、リンクから遷移先の画面へ矢印でつないでいます。枠で囲んだ部分がリンクです。横にスクロールして見てください。文言は仮です。</p>
+  <div class="legend">
+    <span><span class="sw"></span>かかわり方6ページへ</span>
+    <span><span class="sw" style="border-top-color:var(--link2)"></span>OZU 555 PROJECT特設へ</span>
+    <span><span class="sw ext"></span>外部サイトへ（右の箱が遷移先）</span>
+    <span>全ページ共通：ロゴ・パンくずでTOPへ戻る（矢印は省略）</span>
+    <span class="tools">表示倍率
+      <button type="button" id="z60" data-z="0.6">60%</button>
+      <button type="button" id="z80" data-z="0.8">80%</button>
+      <button type="button" id="z100" data-z="1" aria-pressed="true">100%</button>
+    </span>
+  </div>
+</div>
+
+<div class="viewport" id="vp"><div class="scaler" id="scaler"><div class="canvas" id="canvas">
+<svg class="links" id="links"></svg>
+
+<!-- ===== LINE ===== -->
+<div class="screen" id="s-line">
+  <div class="screen-head"><h2>LINE公式アカウント</h2><span class="url">大洲カンパニー（LINE）</span><span class="sub">トーク画面＋リッチメニュー</span></div>
+  <div class="phone line-phone">
+    <div class="blk lh"><span class="lbl">ヘッダー</span><div class="hdr"><span>‹　大洲カンパニー</span><span>≡</span></div></div>
+    <div class="blk talk"><span class="lbl">トーク</span>
+      <div class="bub">友だち追加ありがとうございます。大洲カンパニーです。まずはニックネームを教えてください。</div>
+      <div class="bub">今週末のイベントのお知らせです。臥龍醸造クラフトビール造り体験…</div>
+      <div class="img" style="width:70%">イベント画像</div>
+      <div class="bub me">参加したいです</div>
+    </div>
+    <div class="blk"><span class="lbl">リッチメニュー</span>
+      <div class="rm" data-to="s-rich">
+        <div><b>ディスカバー大洲</b><span>何を体験できる？</span></div>
+        <div><b>まちびとファイル</b><span>どんな人に会える？</span></div>
+        <div><b>関わり方ガイド</b><span>自分にできることは？</span></div>
+        <div><b>ワーク＆スタディ</b><span>仕事や学びで関われる？</span></div>
+        <div><b>まちづくりデータ</b><span>まちはどこへ向かう？</span></div>
+        <div><b>つながる制度</b><span>どんな制度を使える？</span></div>
+      </div>
+      <div class="t-s" style="text-align:center">メニュー ▾</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOP ===== -->
+<div class="screen hub" id="s-top">
+  <div class="screen-head"><h2>TOPページ</h2><span class="url">ozu-company.com</span></div>
+  <div class="phone">
+    <div class="blk"><span class="lbl">ヘッダー</span>
+      <div class="hdr"><span>大洲カンパニー</span><span class="row"><span class="chip" data-to="x-line">LINE登録</span><span class="burger"><i></i><i></i><i></i></span></span></div>
+    </div>
+    <div class="blk"><span class="lbl">ようこそ</span>
+      <div class="img">メインビジュアル（城下町・肱川）</div>
+      <div class="t-s">愛媛県大洲市公式 関係人口づくりプラットフォーム</div>
+      <div class="t-xl">大洲と、どんどこつながろう。</div>
+      <div class="bar"></div><div class="bar s"></div>
+    </div>
+    <div class="blk"><span class="lbl">活用方法</span>
+      <div class="t-l">大洲カンパニーでできること</div>
+      <div class="g3"><div class="tile"><b>知る</b><span>情報が届く</span></div><div class="tile"><b>参加する</b><span>まちづくりへ</span></div><div class="tile"><b>つながる</b><span>人と出会う</span></div></div>
+    </div>
+    <div class="blk"><span class="lbl">LINE登録</span>
+      <div class="t-l">まずはLINEで友だち登録</div>
+      <div class="row"><div class="qr">QR</div><div class="btn solid" style="flex:1" data-to="x-line">LINEで友だち追加</div></div>
+    </div>
+    <div class="blk"><span class="lbl">かかわり方</span>
+      <div class="t-l">大洲とのかかわり方を見る</div>
+      <div class="g2" data-to="s-rich">
+        <div class="tile"><b>ディスカバー大洲</b><span>何を体験できる？</span></div>
+        <div class="tile"><b>まちびとファイル</b><span>どんな人に会える？</span></div>
+        <div class="tile"><b>関わり方ガイド</b><span>自分にできることは？</span></div>
+        <div class="tile"><b>ワーク＆スタディ</b><span>仕事や学びで関われる？</span></div>
+        <div class="tile"><b>まちづくりデータ</b><span>まちはどこへ向かう？</span></div>
+        <div class="tile"><b>つながる制度</b><span>どんな制度を使える？</span></div>
+      </div>
+    </div>
+    <div class="blk"><span class="lbl">OZU555</span>
+      <div class="img">OZU 555 PROJECT キービジュアル</div>
+      <div class="t-l">OZU 555 PROJECT</div>
+      <div style="font-size:11.5px">2030年に向けて、大洲を「まちづくり実験場」にするプロジェクトです。行政や事業者だけでなく、大洲に思いを寄せる一人ひとりが「まちづくり共創パートナー」として参加できます。</div>
+      <div class="t-l">大洲の未来は、みんなで描く。</div>
+      <div class="g3" style="text-align:center"><div><div class="num">5</div><span class="t-s">先進事例</span></div><div><div class="num">50</div><span class="t-s">事業者</span></div><div><div class="num">500</div><span class="t-s">人の雇用</span></div></div>
+      <div class="btn" data-to="s-ozu555">詳しくはこちら</div>
+    </div>
+    <div class="blk"><span class="lbl">お問い合わせ</span>
+      <div class="t-l">お問い合わせ</div>
+      <div class="t-s">大洲カンパニー事務局（キタ・マネジメント）メールで受付</div>
+      <div class="btn" data-to="x-form">お問い合わせフォーム</div>
+    </div>
+    <div class="blk ft"><span class="lbl">フッター</span>
+      <div class="row" style="flex-wrap:wrap;gap:4px"><span class="chip" data-to="x-note">note</span><span class="chip" data-to="x-insta">Instagram</span></div>
+      <div class="t-s">運営：一般社団法人キタ・マネジメント</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== リッチメニュー遷移先（ワイヤー対象外） ===== -->
+<div class="screen rich-col" id="s-rich">
+  <div class="screen-head"><h2>かかわり方6ページ</h2><span class="sub">リッチメニューの遷移先。今回はワイヤー対象外</span></div>
+  <div class="phone">
+    <div class="ext-card" id="s-discover"><b>ディスカバー大洲</b><span class="t-s">/discover（旧 /event/・/town/）</span></div>
+    <div class="ext-card" id="s-machibito"><b>まちびとファイル</b><span class="t-s">/machibito（旧 /people/）</span></div>
+    <div class="ext-card" id="s-guide"><b>関わり方ガイド</b><span class="t-s">/guide</span></div>
+    <div class="ext-card" id="s-work"><b>ワーク＆スタディ</b><span class="t-s">/work（旧 /businesses/）</span></div>
+    <div class="ext-card" id="s-data"><b>まちづくりデータ</b><span class="t-s">/data</span></div>
+    <div class="ext-card" id="s-seido"><b>つながる制度</b><span class="t-s">/seido（旧 /support/）</span></div>
+  </div>
+</div>
+
+<!-- ===== OZU555 ===== -->
+<div class="screen" id="s-ozu555">
+  <div class="screen-head"><h2>OZU 555 PROJECT 特設</h2><span class="url">/ozu555</span><span class="sub">旧 ozu-vision.com を移管</span></div>
+  <div class="phone">
+    <div class="blk"><span class="lbl">とは</span><div class="t-s">TOP ＞ OZU 555 PROJECT</div><div class="img tall">キービジュアル</div><div class="t-s">2026.03.26 始動</div><div class="t-xl">大洲の未来は、みんなで描く。</div><div class="bar"></div></div>
+    <div class="blk"><span class="lbl">STORY</span><div class="t-l">世界に認められたまちづくり。それでも消滅可能性都市の渦中にある。</div><div class="bar s"></div></div>
+    <div class="blk"><span class="lbl">CONCEPT</span><div class="t-l">サステナブルを超えて、リジェネラティブへ。</div><div class="bar s"></div></div>
+    <div class="blk"><span class="lbl">VISION</span><div class="t-l">2030年、大洲が日本の地方創生を先導する。</div><div class="g3" style="text-align:center"><div><div class="num">5</div></div><div><div class="num">50</div></div><div><div class="num">500</div></div></div></div>
+    <div class="blk"><span class="lbl">THEME</span><div class="t-l">5つの実装テーマ</div><div><span class="chip">観光</span><span class="chip">ものづくり</span><span class="chip">教育</span><span class="chip">健康</span><span class="chip">AI</span></div></div>
+    <div class="blk"><span class="lbl">募集</span>
+      <div class="t-l">まちづくり共創パートナー募集</div>
+      <div class="t-s">大洲で働きたい・事業をしたい方は、こちらからご相談ください。</div>
+      <div class="btn solid" data-to="x-work">大洲で働きたい（仕事の相談）</div>
+    </div>
+    <div class="blk"><span class="lbl">進捗</span><div class="t-l">プロジェクトの進捗を見る</div><div class="btn" data-to="x-note">noteで詳しく見る</div></div>
+    <div class="blk ft"><span class="lbl">運営</span><div class="t-s">運営：キタ・マネジメント／バリューマネジメント／伊予銀行</div><div class="btn" data-to="x-form">メディアの方のお問い合わせ</div></div>
+  </div>
+</div>
+
+<!-- ===== 外部 ===== -->
+<div class="screen ext-col" id="s-ext" hidden>
+  <div class="screen-head"><h2>外部サイト</h2><span class="sub">サイトの外へ出るリンク先</span></div>
+  <div class="phone">
+    <div class="ext-card" id="x-line"><b>LINE公式（大洲カンパニー）</b><span class="t-s">友だち追加・リッチメニュー</span></div>
+    <div class="ext-card" id="x-form"><b>Googleフォーム</b><span class="t-s">申し込み・協業・お問い合わせ（LINEの会員IDを引き継ぐ想定）</span></div>
+    <div class="ext-card" id="x-work"><b>仕事の相談フォーム</b><span class="t-s">forms.gle/doNvuMsXBFiUQsbc7</span></div>
+    <div class="ext-card" id="x-note"><b>note</b><span class="t-s">PJT進捗・記事</span></div>
+    <div class="ext-card" id="x-insta"><b>Instagram</b><span class="t-s">@ozu_company</span></div>
+  </div>
+</div>
+
+</div></div></div>
+
+<div class="notes">
+  <h2>メモ</h2>
+  <ul>
+    <li>かかわり方6ページ（リッチメニューの遷移先）は今回ワイヤーを作らず、遷移先として名前だけ置いています。</li>
+    <li>申し込み・相談・お問い合わせは、いったんGoogleフォームにまとめています。フォームを分けるか、1つにするかは要確認です。</li>
+    <li>OZU555の「まちづくり共創パートナー募集」は、仕事の相談フォーム（https://forms.gle/doNvuMsXBFiUQsbc7）への問い合わせにしています。</li>
+    <li>会員登録（FANTS）は入れていません。LINE登録に一本化する前提です。</li>
+    <li>人物・数字の「○○」は仮置きです。まちびとファイルの掲載者は、活動してくれた人が漏れていないか確認が必要です。</li>
+  </ul>
+</div>
+
+<script>
+(function(){
+  const canvas=document.getElementById('canvas'), svg=document.getElementById('links'), scaler=document.getElementById('scaler');
+  let scale=1;
+  function off(el){let x=0,y=0;while(el&&el!==canvas){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return {x,y};}
+  function color(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  function draw(){
+    const W=canvas.scrollWidth,H=canvas.scrollHeight;
+    svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    const cN=color('--note'),cE=color('--ext'),c2=color('--link2');
+    let html=`<defs>
+      <marker id="aN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${cN}"/></marker>
+      <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c2}"/></marker>
+      <marker id="aE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${cE}"/></marker></defs>`;
+    canvas.querySelectorAll('.anno,.xbox').forEach(a=>a.remove());
+    const srcs=[...canvas.querySelectorAll('[data-to]')];
+    // 内部リンク：リンク元→画面右外の縦線（遷移先ごと）→画面上の横レーン→遷移先。同じ遷移先は合流
+    const groups=new Map(), trunksPerPhone=new Map();
+    srcs.forEach(s=>{ if(s.dataset.to.startsWith('x-')) return;
+      const t=document.getElementById(s.dataset.to); if(!t) return;
+      const ph=s.closest('.phone'), tScr=t.closest('.screen'), key=ph.closest('.screen').id+'>'+tScr.id;
+      if(!groups.has(key)){ const k=trunksPerPhone.get(ph)||0; trunksPerPhone.set(ph,k+1);
+        groups.set(key,{ph,tScr,k,items:[]}); }
+      groups.get(key).items.push(s); });
+    let g=0;
+    groups.forEach(G=>{
+      const px=off(G.ph).x+G.ph.offsetWidth, tx0=px+18+G.k*16;
+      const tPh=G.tScr.querySelector('.phone'), tx=off(tPh).x+tPh.offsetWidth/2;
+      const hy=off(G.tScr.querySelector('.screen-head')).y-6, ly=30+g*16; g++;
+      const isO=G.tScr.id==='s-ozu555', col=isO?c2:cN, mk=isO?'a2':'aN';
+      let maxY=0;
+      G.items.forEach(s=>{const o=off(s), sx=o.x+s.offsetWidth, sy=o.y+s.offsetHeight/2; maxY=Math.max(maxY,sy);
+        html+=`<path d="M${sx},${sy} H${tx0}" fill="none" stroke="${col}" stroke-width="1.6"/><circle cx="${sx}" cy="${sy}" r="3" fill="${col}"/>`;});
+      html+=`<path d="M${tx0},${maxY} V${ly} H${tx} V${hy}" fill="none" stroke="${col}" stroke-width="1.6" marker-end="url(#${mk})"/>`;
+    });
+    // 外部リンク：縦線のさらに右に遷移先の箱
+    srcs.forEach(s=>{ if(!s.dataset.to.startsWith('x-')) return;
+      const t=document.getElementById(s.dataset.to); if(!t) return;
+      const ph=s.closest('.phone'), px=off(ph).x+ph.offsetWidth, n=trunksPerPhone.get(ph)||0;
+      const o=off(s), sx=o.x+s.offsetWidth, sy=o.y+s.offsetHeight/2, bx=px+26+n*16;
+      const box=document.createElement('div'); box.className='xbox'; box.textContent=t.querySelector('b').textContent;
+      box.style.left=bx+'px'; box.style.top=(sy-11)+'px'; canvas.appendChild(box);
+      html+=`<path d="M${sx},${sy} H${bx-3}" fill="none" stroke="${cE}" stroke-width="1.6" marker-end="url(#aE)"/>`;
+    });
+    svg.innerHTML=html;
+    
+    canvas.querySelectorAll('.blk').forEach(b=>{const l=b.querySelector('.lbl'); if(!l) return;
+      const o=off(b); const a=document.createElement('div'); a.className='anno'; a.textContent=l.textContent;
+      a.style.left=(o.x-134)+'px'; a.style.top=(o.y+8)+'px'; canvas.appendChild(a);});
+  }
+  function setScale(z){scale=z;scaler.style.transform=`scale(${z})`;
+    scaler.style.width=(canvas.scrollWidth*z)+'px';scaler.style.height=(canvas.scrollHeight*z)+'px';
+    document.querySelectorAll('.tools button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.z)===z)));}
+  document.querySelectorAll('.tools button').forEach(b=>b.addEventListener('click',()=>setScale(Number(b.dataset.z))));
+  function all(){draw();setScale(scale);}
+  all();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(all);
+  window.addEventListener('load',all);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+
+</html>
