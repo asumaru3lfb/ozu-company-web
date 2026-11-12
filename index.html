@@ -37,12 +37,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .copy span{display:inline-block;white-space:nowrap}
 .copy em{font-style:normal;color:var(--blue);position:relative}
 .copy em::after{content:"";position:absolute;left:0;right:0;bottom:.06em;height:.12em;background:var(--yellow)}
-.stage{position:relative;width:100%;aspect-ratio:4/5}
-.photo{position:absolute;left:6%;top:4%;width:88%;height:58%;object-fit:cover;border-radius:10px}
-.pp{position:absolute;bottom:0;width:auto;filter:drop-shadow(0 10px 10px rgba(21,35,63,.22))}
+.stage{position:relative;width:100%;aspect-ratio:1/1.2}
+.photo{position:absolute;left:18%;top:18%;width:64%;aspect-ratio:1;height:auto;object-fit:cover;border-radius:50%;box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--rule)}
+.pp{position:absolute;width:auto;filter:drop-shadow(0 10px 10px rgba(21,35,63,.22))}
 .tags{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;font-weight:500;color:var(--blue)}
 .tags span{white-space:nowrap}
-.htag{position:absolute;z-index:6;background:rgba(246,242,233,.85);padding:0 6px;border-radius:3px;font-size:13.5px;font-weight:500;color:var(--blue);white-space:nowrap;letter-spacing:.06em}
+.htag{position:absolute;z-index:6;font-size:clamp(10px,2.7vw,14px)!important;background:rgba(246,242,233,.85);padding:0 6px;border-radius:3px;font-size:13.5px;font-weight:500;color:var(--blue);white-space:nowrap;letter-spacing:.06em}
 
 /* sections */
 .sec .in{padding-block:64px;display:grid;gap:22px}
@@ -119,14 +119,13 @@ body.enter .stage{animation:up .9s .15s both}
   .fv .in{padding-block:26px 40px;gap:10px}
   .copy{text-align:center;font-size:clamp(40px,4.4vw,58px)}
   .stage{aspect-ratio:2/1}
-  .photo{left:17%;top:3%;width:66%;height:80%}
-  .tags{display:none}
+  .photo{left:28.5%;top:7%;width:43%}
   .ways{grid-template-columns:repeat(3,1fr)}
   .linecard{grid-template-columns:120px 1fr auto;padding:34px 40px}
   .qr{width:120px}
   .linecard .cta{grid-column:auto;justify-self:start}
 }
-@media (max-width:999px){.htag{display:none}}
+.tags{display:none}
 @media (prefers-reduced-motion: reduce){.intro{display:none}body.enter *{animation:none!important}}
 </style>
 
@@ -219,19 +218,18 @@ const PEOPLE={"IMG_4583": "data:image/webp;base64,UklGRpZkAABXRUJQVlA4WAoAAAAQAA
 
   // 人物（静止）。[left%, height%] 画面幅で2パターン
   const st=document.getElementById('stage'), imgs=Object.values(PEOPLE);
-  const SP=[[-3,46],[11,40],[25,36],[39,38],[53,36],[66,40],[80,46]];
-  const PC=[[3,68],[14,58],[28,50],[43,52],[58,50],[71,58],[83,68]];
-  const els=imgs.map((src,i)=>{const im=new Image(); im.src=src; im.alt=''; im.className='pp'; st.appendChild(im); return im;});
-  function place(){const pc=innerWidth>=1000, P=pc?PC:SP;
-    els.forEach((im,i)=>{const p=P[i%P.length]; im.style.left=p[0]+'%'; im.style.height=p[1]+'%'; im.style.zIndex=(i===0||i===6)?3:(i===3?1:2);});}
-  place(); addEventListener('resize',place);
-
+  // [left%, top%, height%, 傾き]
+  const SP=[[-2,30,46,-4],[13,2,30,8],[20,60,38,3],[62,0,30,-7],[75,30,46,4],[58,60,38,-3],[40,70,28,0]];
+  const PC=[[15,28,68,-4],[26,-2,42,7],[31,48,52,3],[61,0,42,-6],[74,26,70,4],[57,48,52,-3],[45,60,40,0]];
+  const els=imgs.map(src=>{const im=new Image(); im.src=src; im.alt=''; im.className='pp'; st.appendChild(im); return im;});
   const TAGS=['#まちづくり','#古民家再生','#サステナブル','#企業研修','#農業体験','#郷土料理','#オソウジダイサクセン','#大洲とつながる','#第二のふるさと','#関係人口','#肱川活用'];
-  document.getElementById('tags').innerHTML=TAGS.map(t=>`<span>${t}</span>`).join('');
-  // PC：写真の左右の余白に縦に並べる
-  TAGS.forEach((t,i)=>{const s=document.createElement('span'); s.className='htag'; s.textContent=t;
-    const left=i<6; const k=left?i:i-6;
-    s.style.top=(3+k*8.5)+'%'; s.style[left?'left':'right']=(left?(k%2?3:0):(k%2?3:0))+'%'; st.appendChild(s);});
+  const TSP=[[1,2],[36,4],[80,4],[1,22],[80,22],[2,90],[28,95],[62,93],[78,82],[0,78],[40,14]];
+  const TPC=[[5,10],[2,26],[6,44],[1,62],[7,82],[39,1],[86,10],[89,30],[87,50],[84,84],[54,93]];
+  const tg=TAGS.map(t=>{const s=document.createElement('span'); s.className='htag'; s.textContent=t; st.appendChild(s); return s;});
+  function place(){const pc=innerWidth>=1000, P=pc?PC:SP, T=pc?TPC:TSP;
+    els.forEach((im,i)=>{const p=P[i]; Object.assign(im.style,{left:p[0]+'%',top:p[1]+'%',height:p[2]+'%',rotate:p[3]+'deg',zIndex:(i===2||i===5||i===6)?4:2});});
+    tg.forEach((s,i)=>{s.style.left=T[i][0]+'%'; s.style.top=T[i][1]+'%';});}
+  place(); addEventListener('resize',place);
 
   const intro=document.getElementById('intro');
   function play(){
