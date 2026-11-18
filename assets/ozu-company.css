@@ -78,3 +78,26 @@ html body,html body *{font-family:var(--oc-font)!important}
   body > .hero .sub,body > .hero .ask,body > .page-band p{font-size:17px !important}
   body > .oc-crumb{max-width:1015px}
 }
+
+/* ===== 「大洲とのかかわり方を見る」を各ページの上部へ（三好 2026-11-18）=====
+   HTMLは毎晩作り直されるため、並び順はCSSで入れ替える。ヘッダー→パンくず→この帯→ページ本体→フッターの順 */
+body{display:flex;flex-direction:column}
+body > *{order:5}
+body > .oc-hd{order:0}
+body > .oc-crumb{order:1}
+body > .oc-ways{order:2}
+body > .oc-foot{order:9}
+.oc-ways{margin:0 !important;background:var(--oc-cream2)}
+.oc-ways .oc-in{max-width:1015px;padding:10px 18px 12px;gap:6px}
+.oc-ways .oc-h{font-size:13px;letter-spacing:.08em}
+.oc-ways .oc-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.oc-ways .oc-grid::-webkit-scrollbar{display:none}
+.oc-ways .oc-way{flex:none;min-height:0;padding:8px 16px;border-radius:999px;display:block}
+.oc-ways .oc-way small,.oc-ways .oc-way i,.oc-ways .oc-totop{display:none}
+.oc-ways .oc-way b{font-size:14px;white-space:nowrap}
+@media (min-width:900px){
+  body > .oc-ways{zoom:1.1}
+  .oc-ways .oc-h{font-size:14px}
+  .oc-ways .oc-way b{font-size:15px}
+  .oc-ways .oc-grid{flex-wrap:wrap;overflow:visible}
+}
