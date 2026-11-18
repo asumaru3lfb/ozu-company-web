@@ -1,0 +1,429 @@
+<!DOCTYPE html><html lang="ja"><head>
+<!-- 独立ページ：scripts/build_ozu_company_pages.py が pages/seido.html から組み立てたもの（台帳 site_ozu_company.json）。手で直さない -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><title>つながる制度｜大洲カンパニー</title>
+<!-- 生成物：scripts/build_ozu555_site_seido.py（土台＝build_ozu555_sumu.py）。手で直さない -->
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* まちの動き 試作（2026-10-01）。3案で共通に使う部品。
+   見出し・年号＝明朝（Visit Ozu のテイスト）／本文＝ゴシック（小さい画面で細い明朝を長く読ませない） */
+:root{--blue:#1f4fa8;--blue-soft:#fff1cf;--ink:#231815;--sub:#5f5f5f;--bg:#ffffff;--paper:#faf8f4;--line:#e5e2dd;--gold:#a77a41}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif;font-size:15px;line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+.min{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif}
+
+/* 写真の帯（低め＝1画面目を前置きで埋めない） */
+.hero{position:relative;height:150px;overflow:hidden;background:#1d2530}
+.hero img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 20%,rgba(20,18,16,.72))}
+.hero .tt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 14px;color:#fff}
+.hero h1{font-family:"Shippori Mincho",serif;font-size:26px;font-weight:700;margin:0;line-height:1.3;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.hero .sub{font-size:12.5px;margin:3px 0 0;opacity:.95}
+
+.wrap{padding:16px 18px 0}
+.one{font-size:15px;line-height:1.75;margin:0 0 12px}
+.upd{font-size:11.5px;color:var(--sub);margin:0 0 10px}
+
+/* 入口（ページ内へ飛ぶ）。押せる高さ 44px 以上 */
+.jump{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.jump a{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px 6px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);text-align:center;background:#fff;font-size:13.5px;font-weight:500;line-height:1.35}
+.jump a small{font-size:10.5px;color:var(--sub);font-weight:400}
+
+/* 区切りの見出し */
+.sec{margin:26px 0 10px}
+.sec .k{font-family:Georgia,serif;font-size:10px;letter-spacing:.28em;color:var(--gold);margin:0}
+.sec h2{font-family:"Shippori Mincho",serif;font-size:20px;margin:0;line-height:1.45}
+
+/* 状態の札 */
+.tag{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;border-radius:10px;font-weight:500;vertical-align:2px}
+.tag.go{background:var(--blue);color:#fff}
+.tag.prep{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.tag.done{background:#efe9df;color:#6b5435}
+
+/* 更新カード（写真＋見出し＋2行＋くわしく） */
+.uc{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.uc:last-of-type{border-bottom:1px solid var(--line)}
+.uc img{width:76px;height:76px;object-fit:cover;border-radius:8px;display:block}
+.uc .d{font-size:11.5px;color:var(--sub);margin:0 0 2px}
+.uc h3{font-size:15px;font-weight:700;margin:0 0 2px;line-height:1.5}
+.uc p{font-size:13px;color:var(--sub);margin:0;line-height:1.65}
+.more{display:block;text-align:center;font-size:13.5px;padding:12px 0;min-height:44px;text-decoration:none}
+
+/* 数字（値と時点をセットで） */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 6px}
+.nums div{background:var(--paper);border-radius:10px;padding:10px 6px;text-align:center}
+.nums b{display:block;font-family:"Shippori Mincho",serif;font-size:24px;color:var(--blue);line-height:1.2}
+.nums b small{font-size:12px}
+.nums span{display:block;font-size:11px;color:var(--sub);line-height:1.5;margin-top:2px}
+.nums-note{font-size:11px;color:var(--sub);margin:0 0 4px;line-height:1.6}
+
+/* 年表 */
+.tl{position:relative;margin:4px 0 0;padding:0 0 0 22px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:#ecdcb4}
+.tl .y{position:relative;padding:0 0 14px}
+.tl .y::before{content:"";position:absolute;left:-21px;top:7px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--blue)}
+.tl .y b.yr{display:block;font-family:"Shippori Mincho",serif;font-size:13.5px;color:var(--gold);letter-spacing:.04em;line-height:1.5}
+.tl .y .h{font-size:15px;font-weight:700;line-height:1.55;margin:0}
+.tl .y.now::before{background:var(--blue);width:14px;height:14px;left:-22px;top:6px;box-shadow:0 0 0 4px var(--blue-soft)}
+.tl .y.now{background:var(--blue-soft);border-radius:12px;padding:12px 14px 12px 14px;margin:0 0 16px -8px}
+.tl .y.now::before{left:-14px;top:18px}
+.tl .y.now b.yr{color:var(--blue)}
+.tl .y.fut::before{border-style:dashed}
+.tl .y img.ph{width:100%;height:150px;object-fit:cover;border-radius:10px;display:block;margin:8px 0 4px}
+
+/* いまの小項目 */
+.nowl{list-style:none;margin:8px 0 0;padding:0}
+.nowl li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px solid #ecdcb4;font-size:14px;line-height:1.6}
+.nowl li:first-child{border-top:none}
+.nowl li .tag{flex:none;margin-top:2px}
+
+/* 畳む（details）。開いたら今の本文をそのまま読める */
+details{margin:6px 0 0}
+details summary{list-style:none;cursor:pointer;font-size:13px;color:var(--blue);display:inline-flex;align-items:center;min-height:36px;gap:4px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"＋";font-size:12px}
+details[open] summary::after{content:"－"}
+details .body{font-size:14px;line-height:1.85;color:var(--ink);padding:4px 0 2px}
+details .body p{margin:0 0 10px}
+.notesoon{display:block;margin:6px 0 2px;font-size:12.5px;color:var(--sub);border:1px dashed #c9c2b6;border-radius:8px;padding:8px 10px;line-height:1.6}
+
+/* タブ（案B） */
+.tabs{position:sticky;top:0;z-index:5;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);margin:0 -18px 12px;padding:0 10px}
+.tabs button{appearance:none;border:none;background:none;font:inherit;font-size:14.5px;font-weight:500;color:var(--sub);min-height:48px;border-bottom:3px solid transparent;cursor:pointer}
+.tabs button.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.pane{display:none}.pane.on{display:block}
+
+/* 横に流すテーマ */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chips span{font-size:12.5px;border:1px solid var(--line);border-radius:14px;padding:4px 11px;background:#fff}
+
+/* 最後：主ボタン1つ＋共通ナビ */
+.main{display:block;margin:26px 0 8px;background:var(--blue);color:#fff;text-align:center;text-decoration:none;border-radius:12px;padding:15px 12px;font-size:16px;font-weight:700;min-height:52px}
+.main small{display:block;font-size:11.5px;font-weight:400;opacity:.9;margin-top:2px}
+.after{font-size:12px;color:var(--sub);text-align:center;margin:0 0 6px}
+.pnav{margin:22px 0 0;padding:16px 18px;border-top:1px solid var(--line);background:var(--paper)}
+.pnav p{font-size:11px;color:var(--sub);margin:0 0 6px}
+.pnav .g{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.pnav a,.pnav span.on{font-size:12.5px;padding:7px 12px;border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--ink);background:#fff;min-height:34px}
+.pnav span.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:14px 18px 30px;line-height:1.8;background:var(--paper)}
+
+/* 2026-10-01 検品で追加：写真の無いお知らせは数字の箱で（無関係な写真を当てない） */
+.uc .nb{width:76px;height:76px;border-radius:8px;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Shippori Mincho",serif;color:var(--blue);font-size:22px;font-weight:700;line-height:1.1}
+.uc .nb small{font-size:10px;color:var(--sub);font-family:"Noto Sans JP",sans-serif;font-weight:400;margin-top:3px}
+.one,.uc h3,.tl .y .h,.nowl li{word-break:auto-phrase}
+.nowl li small{display:block;font-size:12px;color:var(--sub);line-height:1.5}
+.tl .y.fut{padding-bottom:10px}
+.tl .y.fut .h{font-size:14.5px}
+.tl .y.fut details{display:inline;margin:0 0 0 4px}
+.tl .y.fut details summary{min-height:auto}
+.tl .y.fut details[open]{display:block}
+
+/* 住む・もどる C（出身かどうかで入口を分ける）だけが使う部品。
+   色は「まちの動き」試作 mock.css の変数だけを使う（00 の決定：ページごとに色を足さない） */
+
+/* 入口を選ぶ */
+.choice{display:grid;gap:10px;margin:0 0 6px}
+.choice a{position:relative;display:block;min-height:84px;padding:13px 44px 13px 16px;border:1.5px solid var(--blue);border-radius:14px;text-decoration:none;color:var(--ink);background:#fff}
+.choice a::after{content:"↓";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--blue);font-size:18px}
+.choice small{display:block;font-size:11.5px;color:var(--gold);letter-spacing:.1em;font-weight:500;line-height:1.5}
+.choice b{display:block;font-family:"Shippori Mincho",serif;font-size:18px;line-height:1.45}
+.choice span{display:block;font-size:12.5px;color:var(--sub);line-height:1.6;margin-top:2px}
+.choice a.quiet{min-height:52px;border:1px solid var(--line);padding:12px 44px 12px 16px}
+.choice a.quiet b{font-family:"Noto Sans JP",sans-serif;font-size:14.5px;font-weight:500}
+
+/* 外枠ボタン（主ボタン .main より一段弱い） */
+.btn2{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:9px 13px;border:1px solid var(--blue);border-radius:10px;color:var(--blue);background:#fff;text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
+.btn2::after{content:"→";flex:none}
+.btn2.ext::after{content:"↗"}
+.btn2.down::after{content:"↓"}
+.btn2 span{display:block}
+.btn2 small{display:block;font-size:11px;font-weight:400;color:var(--sub)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 0}
+.btns.one-col{grid-template-columns:1fr}
+.tlink{display:inline-block;font-size:13px;margin:8px 0 0;min-height:32px;text-decoration:none}
+
+/* 帰ってきた人（横に流す） */
+.faces{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;margin:12px -18px 0;padding:0 18px 4px;scrollbar-width:none}
+.faces::-webkit-scrollbar{display:none}
+.faces a{flex:0 0 140px;scroll-snap-align:start;text-decoration:none;color:var(--ink)}
+.faces img{width:140px;height:140px;object-fit:cover;border-radius:10px;display:block}
+.faces .tag{margin:8px 0 3px}
+.faces .nm{font-size:13.5px;font-weight:700;margin:0;line-height:1.5}
+.faces .ln{font-size:12px;color:var(--sub);margin:1px 0 0;line-height:1.55}
+.faces .go2{display:block;font-size:12px;color:var(--blue);margin-top:3px}
+.swipe{font-size:11px;color:var(--sub);margin:4px 0 0}
+
+/* 3つの段階 */
+.steps{list-style:none;margin:12px 0 0;padding:0}
+.steps>li{position:relative;padding:0 0 22px 46px}
+.steps>li::before{content:"";position:absolute;left:16px;top:36px;bottom:0;width:2px;background:#ecdcb4}
+.steps>li:last-child::before{display:none}
+.steps .no{position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-family:"Shippori Mincho",serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center}
+.steps .v{font-size:11.5px;color:var(--gold);letter-spacing:.12em;margin:0;line-height:1.5;font-weight:500}
+.steps h3{font-family:"Shippori Mincho",serif;font-size:17.5px;line-height:1.45;margin:0 0 3px}
+.steps p{font-size:13.5px;color:var(--sub);margin:0;line-height:1.7;word-break:auto-phrase}
+.nowbox{display:flex;gap:8px;align-items:flex-start;background:var(--paper);border-radius:10px;padding:9px 11px;margin:9px 0 0;font-size:13px;line-height:1.6}
+.nowbox .tag{flex:none;margin-top:2px}
+
+/* 相談の窓口 */
+.ask{background:var(--paper);border-radius:14px;padding:18px 16px 14px;margin:30px 0 0}
+.ask .k{font-family:Georgia,serif;font-size:10px;letter-spacing:.28em;color:var(--gold);margin:0}
+.ask h2{font-family:"Shippori Mincho",serif;font-size:20px;margin:0 0 6px;line-height:1.45}
+.ask p{font-size:13.5px;margin:0;line-height:1.75}
+.ask .main{margin:14px 0 8px}
+.ask .meta{font-size:12px;color:var(--sub);line-height:1.75;margin:8px 0 0}
+.src{font-size:11px;color:var(--sub);margin:22px 0 0;line-height:1.75}
+
+/* ── 制度のページの部品（2026-10-26 相互レビューの直し。前の版＝_seido_作業/_旧版_seido_レビュー前_2026-10-26.html） ──
+   写真の帯は mock.css の .hero（150px）をそのまま使う。節は青1色（決まり3）、箱の地は薄い青（決まり4）。 */
+
+/* ── 目次の共通の型（6タブ共通・00_共通.md 末尾「目次の共通の型」。ここから「ここまで」までを写す） ──
+   入口を送り過ぎたら上に出て残る、番号つき・下線の細い目次。高さ44px・1行。読んでいる節に下線が付く */
+.page-index{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;gap:8px;height:44px;margin:0;padding:0 18px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;transition:transform .2s ease,visibility .2s}
+.page-index::-webkit-scrollbar{display:none}
+.js .page-index:not(.show){transform:translateY(-100%);visibility:hidden}
+.page-index a{flex:0 0 auto;display:flex;align-items:center;gap:3px;height:100%;padding:0 1px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:500;line-height:1;white-space:nowrap;border-bottom:2px solid transparent}
+.page-index a i{font-style:normal;font-size:11px;color:var(--sub)}
+.page-index a.on{color:var(--blue);border-bottom-color:var(--blue)}
+.page-index a.on i{color:var(--blue)}
+.page-index a:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.grp{scroll-margin-top:52px}
+/* ── ここまで ── */
+
+/* 入口（このタブの形）：番号と「〜の方へ」の1行。番号は節の見出しの番号・上の目次の番号と同じ */
+.entry{list-style:none;margin:2px 0 0;padding:0 18px}
+.entry a{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;min-height:56px;padding:7px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.entry li:last-child a{border-bottom:1px solid var(--line)}
+.entry i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;line-height:26px;text-align:center}
+.entry b{display:block;font-size:15px;line-height:1.4}
+.entry small{display:block;font-size:12px;color:var(--sub);line-height:1.5;word-break:auto-phrase}
+.entry a::after{content:"↓";color:var(--blue)}
+
+/* 節：番号＋明朝の見出し。地は薄い青、上の線は青（1色。準備中は札で示す） */
+.grp{--c:var(--blue);--cs:var(--blue-soft);padding:0 0 8px}
+.ghead{background:var(--cs);border-top:4px solid var(--c);padding:18px 18px 16px;margin:28px 0 0}
+.ghead h2{display:flex;align-items:center;gap:10px;font-family:"Shippori Mincho",serif;font-size:22px;color:var(--c);margin:0 0 6px;line-height:1.35;word-break:auto-phrase}
+.ghead h2 i{flex:none;font-style:normal;font-family:"Noto Sans JP",sans-serif;width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;font-size:15px;line-height:30px;text-align:center}
+.ghead h2 .chk{flex:none;margin-left:auto;font-family:"Noto Sans JP",sans-serif;font-size:11px;font-weight:400;color:var(--sub);line-height:1.4}
+.ghead p{margin:0;font-size:15px;line-height:1.75;color:var(--ink)}
+.ghead p.who{margin:0 0 4px;font-size:12.5px;color:var(--sub);line-height:1.5}
+.ghead .tag{margin:0 0 8px}
+.in{padding:0 18px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--c)}
+.sh h3{font-size:17px;margin:0;line-height:1.45;color:var(--ink)}
+.sh small{flex:none;font-size:12px;color:var(--sub)}
+.dl{margin:-4px 0 4px}  /* 期限の札は見出しのすぐ下（B23：注記に埋もれていた） */
+details.more{margin:10px 0 0;padding:0;min-height:0;text-align:start}  /* mock.css の .more（中央寄せのリンク）を打ち消す */
+details.more summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:40px;font-size:13.5px;color:var(--blue);font-weight:500}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"＋"}
+details.more[open] summary::after{content:"－"}
+details.more .body{font-size:14px;line-height:1.9}
+details.more .body p{margin:0 0 10px}
+/* リンクは3つだけ：塗りの主ボタン（.main・1つ）／矢印の行（.lk。→別のタブ・↗外のサイト・↓このページの下）／畳み */
+.lk{list-style:none;margin:14px 0 0;padding:0}
+.lk a{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;padding:8px 2px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;line-height:1.4}
+.lk li:last-child a{border-bottom:1px solid var(--line)}
+.lk a small{display:block;font-size:12px;color:var(--sub);font-weight:400}
+.lk a::after{content:"→";color:var(--blue);flex:none}
+.lk a.ext::after{content:"↗"}
+.lk a.down::after{content:"↓"}
+.steps .lk{margin-top:8px}
+.ph-wide{margin:16px 0 0}
+.ph-wide img{width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:12px;display:block}
+.ph-wide figcaption{font-size:11.5px;color:var(--sub);margin:5px 0 0}
+.facts{list-style:none;margin:6px 0 0;padding:0}
+.facts>li{display:grid;grid-template-columns:5.2em 1fr;gap:8px;padding:10px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.75}
+.facts>li:last-child{border-bottom:1px solid var(--line)}
+.facts>li>b{font-size:12.5px;color:var(--c);font-weight:700;line-height:1.9}
+.facts ol{margin:4px 0 0;padding-left:1.3em;font-size:13px;line-height:1.7;color:var(--sub)}
+.facts ol li{padding:2px 0}
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 0}
+.plan div{border-radius:10px;padding:12px 11px 11px;background:var(--cs)}
+.plan b{display:block;font-family:"Shippori Mincho",serif;font-size:16px;color:var(--ink);line-height:1.4}
+.plan small{display:block;font-size:11px;color:var(--sub);margin:1px 0 5px}
+.plan p{font-size:12.5px;line-height:1.65;margin:0;color:var(--ink)}
+.aid{list-style:none;margin:0;padding:0}
+.aid li{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:11px 0;border-top:1px solid var(--line)}
+.aid li:first-child{border-top:none}
+.aid .nm{font-size:14.5px;font-weight:700;margin:0;line-height:1.5}
+.aid .ds{font-size:12.5px;color:var(--sub);margin:2px 0 0;line-height:1.65;word-break:auto-phrase}
+.aid .amt{margin:0;text-align:right;font-family:"Shippori Mincho",serif;font-size:19px;font-weight:700;color:var(--c);line-height:1.25;white-space:nowrap}
+.aid .amt small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:10.5px;font-weight:400;color:var(--sub)}
+.note{font-size:12px;color:var(--sub);line-height:1.7;margin:8px 0 0}
+/* 出典：数字・制度のすぐ下に1行（決まり6） */
+.srcl{font-size:11px;color:var(--sub);line-height:1.6;margin:6px 0 0}
+/* 手順の番号は枠だけの小さな丸（節の番号と見分ける・B16） */
+.steps .no{width:28px;height:28px;left:3px;top:3px;background:#fff;color:var(--blue);border:1.5px solid var(--blue);font-size:14px}
+.uc.solo{border-bottom:1px solid var(--line);margin-top:18px}
+/* 箱の地は薄い青（決まり4。紙の地はフッターだけ） */
+.nums div,.nowbox,.ask{background:var(--blue-soft)}
+.ask{margin:14px 0 0}
+.ask + .ask{margin-top:12px}
+.ask .lk{margin-top:8px}
+/* 終了の札は薄茶をやめる（A6・10/23「薄茶の地はやめる」。このページではいま使っていない） */
+.tag.done{background:#ececea;color:#5a5a5a}
+.end{padding:0 18px}
+
+</style><link rel="stylesheet" href="../assets/ozu-company.css">
+<script>window.OC_H=function(){var b=document.getElementById('oc-bar');return b?b.offsetHeight:0};</script>
+</head><body>
+<header class="oc-hd" id="oc-hd"><div class="oc-in" id="oc-bar"><a class="oc-brand" href="https://asumaru3lfb.github.io/ozu-company-web/"><img src="../assets/oc-logo.png" alt="大洲カンパニーのロゴ" width="180" height="157">大洲カンパニー</a><nav class="oc-nav" aria-label="メイン"><a href="https://asumaru3lfb.github.io/ozu-company-web/#about">大洲カンパニーとは</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#can">できること</a><a href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav><span class="oc-r"><a class="oc-pill" href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE登録</a><button type="button" class="oc-burger" id="oc-burger" aria-label="メニューを開く" aria-expanded="false" aria-controls="oc-mnav"><i></i><i></i><i></i></button></span></div><nav class="oc-mnav" id="oc-mnav" hidden aria-label="メニュー"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span class="oc-mlab">大洲とのかかわり方</span><a href="../discover/">ディスカバー大洲<small>大洲で何を体験できる？</small></a><a href="../machibito/">まちびとファイル<small>どんな人に会える？</small></a><a href="../guide/">関わり方ガイド<small>自分にできることは？</small></a><a href="../work/">ワーク＆スタディ<small>仕事や学びで関われる？</small></a><a href="../data/">まちづくりデータ<small>まちはどこへ向かう？</small></a><span class="oc-mcur" aria-current="page">つながる制度<small>いま見ているページ</small></span><a class="oc-msep" href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav></header>
+<nav class="oc-crumb" aria-label="現在地"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span aria-hidden="true">＞</span><span aria-current="page">つながる制度</span></nav>
+
+<div class="hero"><img src="../pages/photos/d_46316e54.jpg" alt="晴れた日の城下町の通りを行く人力車"><div class="ov"></div>
+<div class="tt"><h1>つながる制度</h1><p class="sub">どんな制度を使える？</p></div></div>
+<div class="wrap"><p class="one">家から応援する、登録してつながる、移り住む、店をひらく。大洲とのかかわり方ごとに、国と市の制度をまとめました。</p></div>
+<ul class="entry" id="entry" aria-label="このページの入口"><li><a href="#furusato"><i>1</i><span><b>ふるさと納税</b><small>大洲の外から、家にいながら応援したい方へ</small></span></a></li><li><a href="#nimin"><i>2</i><span><b>第二市民制度</b><small>住民票はそのままで、大洲とつながりたい方へ</small></span></a></li><li><a href="#iju"><i>3</i><span><b>移り住む</b><small>大洲で暮らすことを考えている方へ</small></span></a></li><li><a href="#kaigyo"><i>4</i><span><b>店をひらく・継ぐ</b><small>大洲で店や事業をはじめる・引き継ぐ方へ</small></span></a></li><li><a href="#soudan"><i>5</i><span><b>相談の窓口</b><small>どこに相談すればよいか迷ったら</small></span></a></li></ul>
+<nav class="page-index" aria-label="このページの節"><a href="#furusato"><i>1</i>ふるさと納税</a><a href="#nimin"><i>2</i>第二市民</a><a href="#iju"><i>3</i>移住</a><a href="#kaigyo"><i>4</i>開業・承継</a><a href="#soudan"><i>5</i>相談</a></nav>
+
+<section class="grp" id="furusato">
+<div class="ghead"><p class="who">大洲の外から、家にいながら応援したい方へ</p><h2><i>1</i>ふるさと納税<small class="chk">10月20日に確認</small></h2><p>応援したい自治体に寄附して、税金の控除を受けられる制度です。大洲市の外から、家にいながら応援できます。</p></div>
+<div class="in">
+<ul class="facts">
+<li><b>控除</b><span>寄附した額のうち、2,000円を超える部分が所得税と住民税から差し引かれます（上限があります）。</span></li>
+<li><b>お礼の品</b><span>3,000円以上の寄附で届きます。大洲市にお住まいの方は対象外です。</span></li>
+<li><b>使い道</b><span>7つの事業から選べます。選ばなければ「市長おまかせ」になります。
+<details class="more"><summary>7つの使い道</summary><div class="body"><ol><li>肱川をはじめとする自然環境との共生に関する事業</li><li>子どもの未来に関する事業</li><li>文化の保全継承、活用創造に関する事業</li><li>健康・安心の福祉に関する事業</li><li>地域コミュニティと市内産業の活力創造に関する事業</li><li>デジタルも活用した「幸せ・安心・誇りある」ふるさとづくりに関する事業</li><li>大洲市民文化会館建設に関する事業</li></ol></div></details></span></li>
+<li><b>手続き</b><span>確定申告をしない給与所得者などで、1年の寄附先が5団体以内なら「ワンストップ特例」が使えます（寄附の翌年1月10日必着）。それ以外は、翌年2月16日〜3月15日に確定申告をします。</span></li>
+</ul>
+<p class="srcl">出典：大洲市ホームページ「ふるさと納税」（2026年8月6日更新）</p>
+<ul class="lk"><li><a href="../guide/#home"><span>お礼の品を選ぶ<small>関わり方ガイド：志ぐれ・OZU+ の品など</small></span></a></li><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/kikakujoho/0518.html" target="_blank" rel="noopener"><span>申し込み窓口の一覧<small>大洲市のふるさと納税のページ</small></span></a></li></ul>
+<p class="note">市が案内しているサイト以外では申し込めません。問い合わせは大洲市ふるさと納税サポート室 050-8890-3501（9:00〜17:00、土日祝・年末年始は休み）。</p>
+</div>
+</section>
+
+<section class="grp" id="nimin">
+<div class="ghead"><span class="tag prep">準備中</span><p class="who">住民票はそのままで、大洲とつながりたい方へ</p><h2><i>2</i>第二市民制度<small class="chk">10月20日に確認</small></h2><p>住民票は今の住所のまま、アプリで大洲市に「ふるさと住民」として登録する、国（総務省）の新しい制度です。正式な名前は「ふるさと住民登録制度」。</p></div>
+<div class="in">
+<div class="sh"><h3>登録は2種類</h3><small>国の制度の説明より</small></div>
+<div class="plan">
+<div><b>ベーシック登録</b><small>誰でも、すぐに</small><p>地域の情報を受け取り、地域の担い手活動に参加できます。登録証が出ます。</p></div>
+<div><b>プレミアム登録</b><small>年3回以上の活動＋本人確認</small><p>マイナンバーカードで本人確認をします。市町村が用意する支援を使えます（3地域まで）。</p></div>
+</div>
+<p class="note">支援の中身は市町村ごとに決まります。国の例は、交通費・宿泊費の補助や、公共施設を住民と同じように使えることなどです。</p>
+<div class="nowbox"><span class="tag prep">いつから</span><span>国のアプリでの受付は、2027年3月末に始まる予定です。大洲市で登録できるようになったら、このLINEでお知らせします。</span></div>
+<p class="srcl">出典：総務省「ふるさと住民登録制度ナビ」、同省の全国説明会資料（2026年9月30日）</p>
+<div class="sh"><h3>それまでにできること</h3></div>
+<ul class="lk"><li><a href="../guide/#now"><span>いま参加できること<small>関わり方ガイド：大洲で手伝う</small></span></a></li><li><a href="../discover/"><span>今月の行事<small>ディスカバー大洲</small></span></a></li><li><a class="ext" href="https://www.soumu.go.jp/furusatojuumin/about.html" target="_blank" rel="noopener"><span>国の制度の説明<small>総務省 ふるさと住民登録制度ナビ</small></span></a></li></ul>
+</div>
+</section>
+
+<section class="grp" id="iju">
+<div class="ghead"><p class="who">大洲で暮らすことを考えている方へ</p><h2><i>3</i>移り住む<small class="chk">10月20日に確認</small></h2><p>いきなり引っ越さなくて大丈夫。泊まって、通って、それから相談する。</p></div>
+<div class="in">
+<figure class="ph-wide"><img src="../pages/photos/d_4c0f5e6e.jpg" alt="紅葉のトンネルを歩く人" loading="lazy"><figcaption>秋の大洲</figcaption></figure>
+<div class="sh"><h3>泊まる、通う、相談する</h3></div>
+<ol class="steps">
+<li><span class="no">1</span><p class="v">泊まる</p><h3>数日から、暮らすように泊まる</h3>
+<p>観光ではなく、朝のまちや店、人との距離を確かめる。</p>
+<ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/chiikishinkou/44240.html" target="_blank" rel="noopener"><span>市のお試し住宅<small>5日から</small></span></a></li><li><a href="../discover/#stay"><span>城下町の宿<small>ディスカバー大洲</small></span></a></li></ul></li>
+<li><span class="no">2</span><p class="v">通う</p><h3>季節ごとに通って、知り合いをつくる</h3>
+<p>住む前に知り合いが10人いると、移住は失敗しにくくなります。</p>
+<div class="nowbox"><span class="tag go">いま</span><span>11/29　肱川ふれあいまつり</span></div>
+<ul class="lk"><li><a href="../guide/#now"><span>いま参加できること<small>関わり方ガイド</small></span></a></li><li><a href="../discover/"><span>今月の行事<small>ディスカバー大洲</small></span></a></li><li><a href="../work/"><span>インターンや研修で、しばらく滞在する<small>ワーク＆スタディ</small></span></a></li></ul></li>
+<li><span class="no">3</span><p class="v">相談する</p><h3>住まい・仕事・子育てを相談する</h3>
+<p>市の移住・定住支援センターが、ひとつの窓口で受けています。</p>
+<ul class="lk"><li><a class="down" href="#soudan"><span>相談の窓口へ</span></a></li></ul></li>
+</ol>
+<a class="uc solo" href="../machibito/#meikan"><img src="../pages/img/p09_339.jpg" alt="帽子千秋さん"><div><p class="d">まちびとファイル</p><h3>一度まちを出て、戻ってきた人たち</h3><p>銀行員から町家のオーナーへ。帽子千秋さん、山鬼育子さん、冨永明佳さんの話は「まちびとファイル」に。</p></div></a>
+
+<div class="sh"><h3>移り住むときに使える補助</h3><small>大洲市・令和8年度</small></div>
+<ul class="aid"><li><div><p class="nm">下見の宿泊費</p><p class="ds">移住を考えている県外の人。市内の宿の宿泊費の半分（1回4泊・2人まで、2回まで）</p></div><p class="amt"><small>最大</small>1人1泊<br>3,000円</p></li><li><div><p class="nm">入居・引っ越し費用</p><p class="ds">市外から移り住む世帯。賃貸の敷金・礼金・仲介手数料や、引っ越し業者に払った費用の半分（県外から移る子育て世帯の場合。ほかは5万〜10万円）</p></div><p class="amt"><small>最大</small>15万円</p></li><li><div><p class="nm">仕事のために借りた部屋の家賃</p><p class="ds">市内で働く・起業するために新しく部屋を借りた人。最長2〜3年</p></div><p class="amt"><small>最大</small>月1〜2万円</p></li><li><div><p class="nm">空き家バンクの家を買う</p><p class="ds">空き家バンクに登録された家を買う人。購入費の10分の1（県外から移る子育て世帯の場合。ほかは25万〜75万円）</p></div><p class="amt"><small>最大</small>100万円</p></li><li><div><p class="nm">空き家バンクの家を直す</p><p class="ds">登録された家を直す人。県外から移る子育て世帯の場合（ほかの世帯は25万〜100万円）</p></div><p class="amt"><small>最大</small>400万円</p></li><li><div><p class="nm">東京23区からの移住支援金</p><p class="ds">東京23区に住んでいた・通っていた人が、対象の求人への就職や起業などで移る場合（愛媛県と市）。単身は60万円、18歳未満の子1人につき最大100万円を加算</p></div><p class="amt"><small>世帯で最大</small>100万円</p></li></ul>
+<details class="more"><summary>ほかの補助（6つ）</summary><div class="body"><ul class="aid"><li><div><p class="nm">新築・建売住宅を買う</p><p class="ds">移り住む子育て世帯。工事費・購入費の10分の1（県外からの場合。県内からは125万円）</p></div><p class="amt"><small>最大</small>150万円</p></li><li><div><p class="nm">市外への通勤費</p><p class="ds">移り住む子育て世帯が、鉄道・バスの定期で市外へ通う場合。最長2年</p></div><p class="amt"><small>最大</small>月1万円</p></li><li><div><p class="nm">結婚して新しく暮らす</p><p class="ds">29歳以下・所得の合計500万円未満の夫婦の場合（住まいの取得・家賃・引っ越し）</p></div><p class="amt"><small>最大</small>60万円</p></li><li><div><p class="nm">空き家の家財道具の処分</p><p class="ds">空き家バンクに登録する人、登録された家を買う・借りる人（県外から移る世帯の場合。ほかは10万円）</p></div><p class="amt"><small>最大</small>20万円</p></li><li><div><p class="nm">空き家の仲介手数料</p><p class="ds">空き家バンクの家の売買で、仲介業者に払った手数料の半分</p></div><p class="amt"><small>最大</small>10万円</p></li><li><div><p class="nm">地域おこし協力隊として来る</p><p class="ds">県外から協力隊に就く人の移動・引っ越し費用（3分の2）</p></div><p class="amt"><small>最大</small>15万円</p></li></ul></div></details>
+<p class="note">どの補助も、使う前に市の認定が要ります（先に契約・工事を始めると対象外になるものがあります）。年齢などの条件があり、予算がなくなり次第終わります。まず下の相談の窓口へ。</p>
+<p class="srcl">出典：大洲市「移住・定住促進補助金」（2026年4月1日更新）、愛媛県「令和8年度愛媛県移住支援事業の詳細」</p>
+<ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/chiikishinkou/22872.html" target="_blank" rel="noopener"><span>補助の一覧<small>大洲市 移住・定住促進補助金</small></span></a></li><li><a class="ext" href="https://www.city.ozu.ehime.jp/site/iju-teiju/sumai.html#b" target="_blank" rel="noopener"><span>空き家バンク<small>買いたい・借りたい</small></span></a></li></ul>
+
+<div class="sh"><h3>仕事は、10年前よりあります</h3></div>
+<div class="nums">
+<div><b>41<small>事業者</small></b><span>城下町に<br>店や宿を開いた</span></div>
+<div><b>166<small>人</small></b><span>まちづくりで<br>生まれた仕事</span></div>
+<div><b>36<small>人</small></b><span>その仕事で<br>移り住んだ人</span></div>
+</div>
+<p class="nums-note">事業者は2026年度途中までの通算で、撤退した4事業者を含みます。仕事と移り住んだ人は2024年度までの累計。仕事は延べの数です（辞めた人は差し引いていません）。</p>
+<p class="srcl">出典：キタ・マネジメント「令和7年度実績報告」</p>
+<p class="one" style="margin:14px 0 0">かつては「大洲に仕事がないから出る」でした。いまは<b>「この仕事があるから大洲に来る」</b>人がいます。</p>
+<ul class="lk"><li><a href="../work/#hataraku"><span>大洲で働きたい・仕事にしたい<small>ワーク＆スタディ：働く・仕事の相談</small></span></a></li><li><a href="../data/#done"><span>この数字のくわしい話<small>まちづくりデータ：できたこと</small></span></a></li></ul>
+
+<div style="margin-top:14px">
+<details class="more"><summary>泊まる・通う・相談する、のくわしい話</summary><div class="body">
+<p><b>まず、泊まりに来る。</b>城下町にはゲストハウスやシェアハウスを備えた拠点があります。数日〜数週間の滞在で、朝のまちの空気、スーパーの品揃え、人との距離感——観光では見えない「暮らしの解像度」を確かめてください。市のお試し住宅は5日から180日まで使えます（5〜10日は1日2,000円。市のホームページ 2025年4月更新）。</p>
+<p><b>次に、通ってみる。</b>まちの手伝いに季節ごとに通う、イベントの度に来る。「住む前に知り合いが10人いる」状態をつくってから決める移住は、失敗しにくい移住です。</p>
+<p><b>それから、相談する。</b>住まい・仕事・子育て——具体的に検討する段階になったら、市の移住・定住支援センターへ。空き家バンクや補助制度の案内も、ここが窓口です。</p></div></details>
+<details class="more"><summary>大洲を出たみなさんへ</summary><div class="body"><p>進学や就職で大洲を出たみなさんへ。あなたが出て行ったときの大洲と、いまの大洲は、たぶん別のまちです。取り壊されかけていた城下町には40を超える事業者が灯りをともし、大洲の高校生の70.2%が「いまのまちづくりに関心がある」と答える（2025年度の調査）まちになりました。盆と正月に帰るたび、少しずつ変わっていく——その変化の側に、次はあなたの席があります。</p></div></details>
+</div>
+</div>
+</section>
+
+<section class="grp" id="kaigyo">
+<div class="ghead"><p class="who">大洲で店や事業をはじめる・引き継ぐ方へ</p><h2><i>4</i>店をひらく・継ぐ<small class="chk">10月20日に確認</small></h2><p>大洲で店や事業をはじめる人、引き継ぐ人の相談には、市と商工会議所・商工会・地元の金融機関がいっしょに乗っています。</p></div>
+<div class="in">
+<figure class="ph-wide"><img src="../pages/photos/d_79904b02.jpg" alt="足場の組まれた古民家" loading="lazy"><figcaption>改修前の古民家と工事</figcaption></figure>
+<div class="sh"><h3>相談する、学ぶ、使う</h3></div>
+<ol class="steps">
+<li><span class="no">1</span><p class="v">相談する</p><h3>まず市の窓口へ</h3>
+<p>どこに相談すればよいか迷ったら、市の商工の窓口へ。商工会議所や銀行など、合う相談先を紹介してくれます。</p></li>
+<li><span class="no">2</span><p class="v">学ぶ</p><h3>創業の支援を、4回以上受ける</h3>
+<p>個別相談か、いよぎんの起業塾で、経営・財務・人材育成・販路開拓を1か月以上かけて学びます。</p></li>
+<li><span class="no">3</span><p class="v">使う</p><h3>受けた人だけが使える支援</h3>
+<p>会社をつくるときの登録免許税が半分になり、信用保証協会の創業向け保証の特例や、市の創業支援の補助を使えるようになります。</p></li>
+</ol>
+<div class="sh"><h3>開業・承継の補助</h3><small>大洲市・令和8年度</small></div>
+<p class="dl"><span class="tag prep">申請は2027年2月26日まで</span></p>
+<ul class="aid"><li><div><p class="nm">創業支援</p><p class="ds">市内に店・事業所を開く、会社をつくる人。店の賃料・改装・備品・広報などの半分</p></div><p class="amt"><small>最大</small>50万円</p></li><li><div><p class="nm">創業（上乗せ）支援</p><p class="ds">地域の資源を使い、地域の課題に取り組み、地元の金融機関の融資を受けるなど、5つの条件を満たす開業</p></div><p class="amt"><small>最大</small>200万円</p></li><li><div><p class="nm">商店街の空き店舗の家賃</p><p class="ds">商店街の空き店舗を借りて、週5日以上、昼に営業する人。家賃の半分（2年目は3分の1、3年目は4分の1）</p></div><p class="amt"><small>最大</small>60万円</p></li><li><div><p class="nm">事業承継支援</p><p class="ds">店や事業を引き継ぐ人。改装・備品・専門家への相談料などの半分</p></div><p class="amt"><small>最大</small>50万円</p></li></ul>
+<p class="note">申請は2027年2月26日まで（予算に達した時点で終わり）。移り住んで起業する人は、上の「仕事のために借りた部屋の家賃」の補助も対象です。</p>
+<p class="srcl">出典：大洲市「創業支援」（2025年12月16日更新）、「中小企業者・小規模事業者応援事業補助金」（2026年4月15日更新）</p>
+<ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/shoukou/23380.html" target="_blank" rel="noopener"><span>創業の支援<small>大洲市</small></span></a></li><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/shoukou/26248.html" target="_blank" rel="noopener"><span>補助の一覧<small>大洲市 中小企業者・小規模事業者応援事業補助金</small></span></a></li><li><a href="../machibito/#g-shop"><span>城下町で店をひらいた人の話<small>まちびとファイル：店や宿を営む人</small></span></a></li></ul>
+</div>
+</section>
+
+<section class="grp" id="soudan">
+<div class="ghead"><p class="who">どこに相談すればよいか迷ったら</p><h2><i>5</i>相談の窓口</h2><p>移り住むことは市の移住・定住支援センター、店をひらく・継ぐことは市の商工の窓口が受けています。</p></div>
+<div class="in">
+<div class="sh"><h3>そのほかの手続き・行政サービス</h3></div>
+<ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/site/iju-teiju/kurashi.html#e" target="_blank" rel="noopener"><span>転入の手続き<small>大洲市</small></span></a></li><li><a class="ext" href="https://www.city.ozu.ehime.jp/" target="_blank" rel="noopener"><span>市のホームページ<small>手続き全般</small></span></a></li></ul>
+<div class="ask" id="soudan-iju"><h2>住まい・仕事・子育ての相談</h2>
+<p>大洲市の移住・定住支援センターが受けています。空き家バンクや補助制度の案内もここです。</p>
+<a class="main" href="https://www.city.ozu.ehime.jp/form/detail.php?sec_sec1=76&inq=04" target="_blank" rel="noopener">相談フォームで送る<small>大洲市 移住・定住支援センター</small></a>
+<ul class="lk"><li><a class="tel" href="tel:0893579989"><span>電話する<small>0893-57-9989</small></span></a></li></ul>
+<p class="meta">大洲市役所5階 地域振興課内／平日 8:30〜17:15（事前に連絡すれば時間外も可）</p><ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/site/iju-teiju/" target="_blank" rel="noopener"><span>市の移住・定住支援サイト</span></a></li></ul></div>
+<div class="ask"><h2>店をひらく・継ぐ相談</h2>
+<p>大洲市の商工の窓口が、最初の相談を受けています。</p>
+<ul class="lk"><li><a class="tel" href="tel:0893241722"><span>電話する<small>0893-24-1722</small></span></a></li></ul>
+<p class="meta">大洲市 商工観光課 商工産業係</p><ul class="lk"><li><a class="ext" href="https://www.city.ozu.ehime.jp/soshiki/shoukou/23380.html" target="_blank" rel="noopener"><span>市の創業支援のページ</span></a></li></ul></div>
+</div>
+</section>
+
+<div class="end"><p class="src">出どころ：写真の帯・移り住む・店をひらく・継ぐの写真は OZU 555 PROJECT 写真共有フォルダ（秋の大洲は VM（バリューマネジメント）提供）。写真と人物の経歴は「大洲まちづくりブック」（2026年5月・キタ・マネジメント発行）とキタ・マネジメントの提供。窓口とお試し住宅は大洲市ホームページ（2026年10月1日に確認）。ふるさと納税・第二市民制度・移り住むときの補助・開業の支援は、各節の出典のページで2026年10月20日に確認。</p></div>
+
+<section class="oc-ways" aria-labelledby="oc-ways-h"><div class="oc-in"><h2 class="oc-h" id="oc-ways-h">大洲とのかかわり方を見る</h2><div class="oc-grid"><a class="oc-way" href="../discover/"><small>大洲で何を体験できる？</small><b>ディスカバー大洲</b><i>体験する →</i></a><a class="oc-way" href="../machibito/"><small>どんな人に会える？</small><b>まちびとファイル</b><i>会う →</i></a><a class="oc-way" href="../guide/"><small>自分にできることは？</small><b>関わり方ガイド</b><i>関わる →</i></a><a class="oc-way" href="../work/"><small>仕事や学びで関われる？</small><b>ワーク＆スタディ</b><i>学ぶ →</i></a><a class="oc-way" href="../data/"><small>まちはどこへ向かう？</small><b>まちづくりデータ</b><i>知る →</i></a><div class="oc-way on" aria-current="page"><small>どんな制度を使える？</small><b>つながる制度</b><i>いま見ているページ</i></div></div><a class="oc-totop" href="https://asumaru3lfb.github.io/ozu-company-web/">大洲カンパニーの TOP へ</a></div></section>
+<footer class="oc-foot"><div class="oc-in"><img src="../assets/oc-logo.png" alt="" width="60" height="52"><div class="oc-links"><a href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE</a><span class="oc-none">note（準備中）</span><a href="https://www.instagram.com/ozu_company/" target="_blank" rel="noopener">Instagram</a></div><span>運営：一般社団法人キタ・マネジメント／愛媛県大洲市大洲649-1 2F まちの駅あさもや</span></div></footer>
+<script>
+/* 目次の共通の型（00_共通.md 末尾）。スクロールのたびに2つだけ決める：
+   ①入口（#entry）の下端が上から60px（目次44px＋余白）より上に行ったら、上の目次を出す
+   ②画面の上から45%の線より上に頭が来ている節のうち、いちばん下のものを「読んでいる節」として目次に下線
+   IntersectionObserver は使わない：iframe の中では rootMargin が効かず（親の画面が基準になる）、目次の1番を押すと目次が消えた（10/26 実測） */
+(function(){var N=document.querySelector('.page-index'),E=document.getElementById('entry');if(!N)return;
+var L=[].slice.call(N.querySelectorAll('a')),S=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}),q=0;
+function upd(){q=0;N.classList.toggle('show',!E||E.getBoundingClientRect().bottom<60+OC_H());
+var k=-1,y=window.innerHeight*0.45;S.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=y)k=i;});
+if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2)k=S.length-1;
+L.forEach(function(a,i){a.classList.toggle('on',i===k);});
+if(k>=0&&N.scrollWidth>N.clientWidth)N.scrollLeft=L[k].offsetLeft-18;}
+window.addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(upd);}},{passive:true});window.addEventListener('resize',upd);upd();})();
+</script>
+<script>
+/* 大洲カンパニーのヘッダー（2026-11-16・scripts/build_ozu_company_pages.py）：ヘッダーの高さを --oc-hh に／メニューの開け閉め */
+(function(){var b=document.getElementById('oc-bar'),bg=document.getElementById('oc-burger'),mn=document.getElementById('oc-mnav');if(!b||!bg||!mn)return;
+function hh(){document.documentElement.style.setProperty('--oc-hh',b.offsetHeight+'px');}
+hh();window.addEventListener('resize',hh);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(hh);
+function set(o){mn.hidden=!o;bg.setAttribute('aria-expanded',String(o));bg.setAttribute('aria-label',o?'メニューを閉じる':'メニューを開く');}
+bg.addEventListener('click',function(){set(mn.hidden);});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mn.hidden){set(false);bg.focus();}});})();
+</script>
+</body></html>

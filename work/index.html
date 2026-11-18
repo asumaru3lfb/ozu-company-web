@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="ja"><head>
+<!-- 独立ページ：scripts/build_ozu_company_pages.py が pages/kasegu.html から組み立てたもの（台帳 site_ozu_company.json）。手で直さない -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow">
+<script>document.documentElement.classList.add('js')</script>
+<title>ワーク＆スタディ｜大洲カンパニー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- 生成：scripts/build_ozu555_site_kasegu.py（案2・旧 manabu.html・shigoto.html と台帳 site_kasegu.json から）。手で直さない -->
+<style>
+/* 学ぶ 2026-10-02 版：入口を写真のタイルで選ぶ（丸岡 10/2 デザイン候補1）。
+   色・写真の帯・数字の箱・主ボタン・共通ナビは10本共通（まちの動き 試作 mock.css）にそろえる。ページで色を足さない */
+:root{--blue:#1f4fa8;--blue-soft:#fff1cf;--ink:#231815;--sub:#5f5f5f;--bg:#ffffff;--paper:#faf8f4;--line:#e5e2dd;--gold:#a77a41}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif;font-size:15px;line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+
+/* 写真の帯（10本共通） */
+.hero{position:relative;height:150px;overflow:hidden;background:#1d2530}
+.hero img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 20%,rgba(20,18,16,.72))}
+.hero .tt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 14px;color:#fff}
+.hero h1{font-family:"Shippori Mincho",serif;font-size:26px;font-weight:700;margin:0;line-height:1.3;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.hero .sub{font-size:12.5px;margin:3px 0 0;opacity:.95}
+
+.wrap{padding:14px 18px 0}
+.one{font-size:13.5px;color:var(--sub);line-height:1.6;margin:0 0 8px}
+
+/* 入口＝写真のタイル（タブとして働く） */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.tile{appearance:none;font:inherit;text-align:left;padding:0;margin:0;cursor:pointer;display:block;width:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;color:var(--ink)}
+.tile img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.tile .lb{display:block;padding:6px 12px 8px}
+.tile b{display:block;font-family:"Shippori Mincho",serif;font-size:18px;font-weight:700;line-height:1.35}
+.tile small{display:block;font-size:11.5px;color:var(--sub);line-height:1.4}
+.tile[aria-selected="true"]{border:2px solid var(--blue)}
+.tile[aria-selected="true"] .lb{background:var(--blue);color:#fff}
+.tile[aria-selected="true"] small{color:#fff;opacity:.9}
+.tile:focus-visible,.nums a:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* 数字（値と時点をセットで。10本共通の箱） */
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 4px}
+.nums a{display:block;background:var(--paper);border-radius:10px;padding:10px 6px;text-align:center;text-decoration:none;color:var(--ink)}
+.nums b{display:block;font-family:"Shippori Mincho",serif;font-size:24px;color:var(--blue);line-height:1.2}
+.nums b small{font-size:12px}
+.nums span{display:block;font-size:11px;color:var(--sub);line-height:1.5;margin-top:2px}
+
+/* 開いた入口の中身 */
+.pn{padding:18px 0 0;border-top:1px solid var(--line);margin-top:14px}
+.pn[hidden]{display:none}
+.pn .who{font-size:12px;color:var(--gold);margin:0}
+.pn h2{font-family:"Shippori Mincho",serif;font-size:22px;margin:2px 0 6px;line-height:1.45}
+.pn p{font-size:14.5px;margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
+.chips span{font-size:12.5px;border:1px solid var(--line);border-radius:14px;padding:4px 11px;background:#fff}
+.main{display:block;margin:14px 0 8px;background:var(--blue);color:#fff;text-align:center;text-decoration:none;border-radius:12px;padding:15px 12px;font-size:16px;font-weight:700;min-height:52px}
+.main small{display:block;font-size:11.5px;font-weight:400;opacity:.9;margin-top:2px}
+.main.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.pn .note{font-size:12.5px;color:var(--sub);line-height:1.75;margin:4px 0 0}
+.pn .note a.openrec{display:inline-block;padding:8px 0}
+
+/* 畳む（一覧の行） */
+.fl{margin:10px 0 0;border-top:1px solid var(--line)}
+.fl details{border-bottom:1px solid var(--line)}
+.fl summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;font-size:14.5px}
+.fl summary::-webkit-details-marker{display:none}
+.fl summary::after{content:"＋";color:var(--blue);flex:none}
+.fl details[open]>summary::after{content:"－"}
+.fl .body{font-size:14px;line-height:1.85;padding:0 0 14px}
+.fl .body p{margin:0 0 10px}
+.fl .body ul{margin:0 0 10px;padding-left:1.2em}
+.fl .body h4{font-family:"Shippori Mincho",serif;font-size:15.5px;margin:6px 0 4px}
+.fl .body .s{font-size:12px;color:var(--sub)}
+.fl .body img{width:100%;display:block;border-radius:8px;margin:4px 0}
+table{border-collapse:collapse;width:100%;border:1px solid var(--line);font-size:13px;margin:4px 0 8px}
+th{background:var(--blue-soft);color:var(--blue);text-align:left;padding:7px 8px;font-size:12px;vertical-align:top;font-weight:500}
+td{padding:7px 8px;border-top:1px solid var(--line);vertical-align:top;line-height:1.65}
+table.fee td:nth-child(n+2){white-space:nowrap}
+table.cost th{width:4.2em}
+table.sch td:last-child,table.sch th:last-child{white-space:nowrap}
+.voice{border-left:3px solid var(--gold);padding:2px 0 2px 12px;margin:0 0 12px}
+.voice p{font-family:"Shippori Mincho",serif;font-size:14.5px;margin:0 0 2px;line-height:1.8}
+.voice span{font-size:11.5px;color:var(--sub)}
+
+/* 区切りの見出し（10本共通） */
+.sec{margin:30px 0 8px}
+.sec .k{font-family:Georgia,serif;font-size:10px;letter-spacing:.28em;color:var(--gold);margin:0}
+.sec h2{font-family:"Shippori Mincho",serif;font-size:20px;margin:0;line-height:1.45}
+
+/* 受け入れの記録：年の箱＋見出し（写真の無いものは数字の箱で。無関係な写真を当てない） */
+.rec summary{display:grid;grid-template-columns:64px 1fr 16px;gap:12px;align-items:center;padding:10px 0;min-height:84px}
+.rec summary::after{justify-self:end}
+.nb{width:64px;height:64px;border-radius:8px;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Shippori Mincho",serif;color:var(--blue);font-size:18px;font-weight:700;line-height:1.1}
+.nb small{font-size:10px;color:var(--sub);font-family:"Noto Sans JP",sans-serif;font-weight:400;margin-top:3px}
+.rec .t b{display:block;font-size:14.5px;font-weight:700;line-height:1.5}
+.rec .t span{display:block;font-size:12px;color:var(--sub);line-height:1.5}
+
+.award{font-size:13px;line-height:1.75;border:1px solid var(--gold);background:var(--paper);border-radius:10px;padding:10px 12px;margin:22px 0 0}
+.award b{display:block;font-size:11px;color:var(--gold);font-weight:400}
+.contact{font-size:14px;margin:0 0 6px}
+.read{display:flex;gap:10px;align-items:center;min-height:56px;border-bottom:1px solid var(--line);padding:8px 0;text-decoration:none;color:var(--ink)}
+.read b{display:block;font-size:14.5px;line-height:1.5}
+.read span{font-size:12px;color:var(--sub)}
+.after{font-size:12px;color:var(--sub);text-align:center;margin:14px 0 6px}
+.src{font-size:10.5px;color:var(--sub);line-height:1.7;margin:10px 0 0}
+
+/* 共通ナビ（10本共通） */
+.pnav{margin:22px 0 0;padding:16px 18px;border-top:1px solid var(--line);background:var(--paper)}
+.pnav p{font-size:11px;color:var(--sub);margin:0 0 6px}
+.pnav .g{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.pnav a,.pnav span.on{font-size:12.5px;padding:7px 12px;border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--ink);background:#fff;min-height:34px}
+.pnav span.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:14px 18px 30px;line-height:1.8;background:var(--paper)}
+.one,.pn p,.rec .t b{word-break:auto-phrase}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ワーク＆スタディ 2026-10-27 案2：実績を主役に。色は10本共通の変数だけ。箱の地は薄い青（紙色はフッターだけ） */
+.nums a{background:var(--blue-soft)}
+.wrap p.nsrc{font-size:11px;color:var(--sub);line-height:1.6;margin:2px 0 6px}
+/* 1画面目の入口6つ（10/23 版のタイル。丸岡 10/27「わかりやすいから残したい」）。押すと同じ写真の帯で始まる節へ */
+.grp{font-family:"Shippori Mincho",serif;font-size:14px;font-weight:700;color:var(--blue);margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.grp::after{content:"";flex:1;border-top:1px solid var(--line)}
+.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 10px}
+a.tile{text-decoration:none;position:relative}
+.tile img{aspect-ratio:16/10}
+.tile .lb{padding:5px 8px 7px}
+.tile b{font-size:14.5px;line-height:1.35;word-break:keep-all}
+.tile small{font-size:10.5px;line-height:1.4;word-break:auto-phrase}
+.tile i{position:absolute;left:6px;top:6px;z-index:1;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-style:normal;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff}
+.tile:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* 節の頭の写真の帯（110px・番号と見出しを重ねる） */
+.pn{border-top:none;margin-top:26px;padding-top:0}
+.band{position:relative;height:110px;margin:0 -18px 12px;overflow:hidden;background:#1d2530}
+.band img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 25%,rgba(20,18,16,.7))}
+.band h2{position:absolute;left:18px;right:18px;bottom:10px;z-index:1;margin:0;display:flex;align-items:center;gap:10px;color:#fff;font-family:"Shippori Mincho",serif;font-size:21px;line-height:1.35;text-shadow:0 1px 8px rgba(0,0,0,.45)}
+.band h2 .no{flex:none;width:30px;height:30px;border-radius:50%;background:#fff;color:var(--blue);font-size:15px;display:flex;align-items:center;justify-content:center;text-shadow:none}
+.pn .lead{font-size:13.5px;color:var(--sub);line-height:1.7;margin:0 0 10px}
+/* ① 実例：写真つきの4枚 */
+/* 10/27 丸岡「実績と団体が長すぎる。カルーセルとか」→ 実例は横にめくるカード（次のカードの端を見せる）*/
+.car{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:4px -18px 0;padding:2px 18px 4px;scroll-padding:0 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.car::-webkit-scrollbar{display:none}
+.ex{flex:0 0 84%;scroll-snap-align:start;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.ex img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.ex .in{padding:9px 12px 10px;display:flex;flex-direction:column;flex:1}
+.ex .when{font-size:11.5px;color:var(--blue);margin:0;line-height:1.5;font-weight:500}
+.ex h3{font-family:"Shippori Mincho",serif;font-size:16px;line-height:1.45;margin:1px 0 4px;word-break:auto-phrase}
+.ex p.b{font-size:13px;line-height:1.7;margin:0}
+.ex a.more{font-size:12.5px;padding:6px 0 0;margin-top:auto}
+.carnav{display:flex;align-items:center;justify-content:space-between;margin:6px 0 0;font-size:11.5px;color:var(--sub)}
+.carnav .dots{display:flex;gap:6px}
+.carnav .dots i{width:7px;height:7px;border-radius:50%;background:#ecdcb4}
+.carnav .dots i.on{background:var(--blue)}
+.pn .cap{font-size:11px;color:var(--sub);line-height:1.6;margin:6px 0 0}
+.award{background:var(--blue-soft);border:none;border-radius:10px;padding:10px 14px;margin:12px 0 0;font-size:13px;line-height:1.75}
+/* ② 受け入れてきた団体：文字の一覧 */
+/* 団体は分類名のあとに名前を続けて流す（左の欄をやめて行数を減らす） */
+.orgs{margin:0;padding:0;list-style:none}
+.orgs li{padding:7px 0;border-top:1px solid var(--line);font-size:13.5px;line-height:1.7;word-break:auto-phrase}
+.orgs li:last-child{border-bottom:1px solid var(--line)}
+.orgs b{display:inline-block;font-size:12px;color:var(--blue);font-weight:700;margin-right:8px}
+.orgs b small{font-size:10.5px;color:var(--sub);font-weight:400;margin-left:4px}
+.voices{margin:14px 0 0}
+/* 1〜6 の節：誰向けと札の1行 → 条件の表 → ボタン1つ → くわしく1つ */
+.pn>.aph{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 0 6px}
+.pn>.aph .who{font-size:12.5px;color:var(--sub);margin:0}
+.pn>dl,.part>dl{display:grid;grid-template-columns:4.6em 1fr;gap:2px 8px;margin:0 0 8px;font-size:13.5px;line-height:1.65}
+.pn>dl dt,.part>dl dt{font-size:12px;color:var(--blue);font-weight:700;line-height:1.85}
+.pn>dl dd,.part>dl dd{margin:0}
+.pn>p{font-size:14px;line-height:1.8;margin:0 0 6px}
+.pn>a.sl{display:inline-block;font-size:13px;padding:4px 0}
+.part{border-top:1px solid var(--line);margin:16px 0 0;padding:14px 0 0;scroll-margin-top:52px}
+.part .aph{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:0 0 6px}
+.part .aph b{font-family:"Shippori Mincho",serif;font-size:18px;line-height:1.4}
+.part .aph .who{font-size:12.5px;color:var(--sub);flex-basis:100%}
+.pn .main{margin:8px 0 6px}
+.tag{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;border-radius:10px;font-weight:500}
+.tag.go{background:var(--blue);color:#fff}
+.tag.prep{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.tag.done{background:#ececea;color:#5a5a5a}
+.chk{font-size:11px;color:var(--sub)}
+.hours{font-size:13px;margin:0 0 2px}
+.hours b{font-family:"Shippori Mincho",serif;font-size:18px;color:var(--blue)}
+.formbox{background:var(--blue-soft);border-radius:12px;padding:12px 14px 4px;margin:14px 0 4px;scroll-margin-top:52px}
+.formbox .main{margin:0 0 8px}
+.formbox .fl{border-top:1px solid #ecdcb4;margin:0}
+.howto h4{font-family:"Shippori Mincho",serif;font-size:14.5px;margin:8px 0 2px}
+.howto ol{margin:0 0 8px;padding-left:1.3em;font-size:13.5px}
+.howto p{font-size:13.5px;margin:0 0 6px}
+.howto p.fine{font-size:12.5px;color:var(--sub)}
+.flow4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:4px 0 12px;font-size:11px;color:var(--sub);text-align:center;line-height:1.45}
+.flow4 div{background:#fff;border-radius:8px;padding:6px 2px}
+.flow4 b{display:block;font-size:13px;color:var(--blue)}
+/* 細いボタン（他タブと同じ .btn2） */
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 4px}
+.btn2{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:9px 13px;border:1px solid var(--blue);border-radius:10px;color:var(--blue);background:#fff;text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
+.btn2::after{content:"→";flex:none}
+.btn2.ext::after{content:"↗"}
+.btn2 span{display:block}
+.btn2 small{display:block;font-size:11px;font-weight:400;color:var(--sub)}
+.sec{margin:30px 0 8px}
+.credit{font-size:10.5px;color:var(--sub);line-height:1.7;margin:14px 0 10px}
+/* 目次の共通の型（⑥制度 build_ozu555_site_seido.py と同じ・00_共通.md） */
+.page-index{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;gap:8px;height:44px;margin:0;padding:0 18px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;transition:transform .2s ease,visibility .2s}
+.page-index::-webkit-scrollbar{display:none}
+.js .page-index:not(.show){transform:translateY(-100%);visibility:hidden}
+.page-index a{flex:0 0 auto;display:flex;align-items:center;gap:3px;height:100%;padding:0 1px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:500;line-height:1;white-space:nowrap;border-bottom:2px solid transparent}
+.page-index a i{font-style:normal;font-size:11px;color:var(--sub)}
+.page-index a.on{color:var(--blue);border-bottom-color:var(--blue)}
+.page-index a.on i{color:var(--blue)}
+.page-index a:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.pn,details,.ex{scroll-margin-top:52px}
+/* ここまで */
+
+</style><link rel="stylesheet" href="../assets/ozu-company.css">
+<script>window.OC_H=function(){var b=document.getElementById('oc-bar');return b?b.offsetHeight:0};</script>
+</head><body>
+<header class="oc-hd" id="oc-hd"><div class="oc-in" id="oc-bar"><a class="oc-brand" href="https://asumaru3lfb.github.io/ozu-company-web/"><img src="../assets/oc-logo.png" alt="大洲カンパニーのロゴ" width="180" height="157">大洲カンパニー</a><nav class="oc-nav" aria-label="メイン"><a href="https://asumaru3lfb.github.io/ozu-company-web/#about">大洲カンパニーとは</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#can">できること</a><a href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav><span class="oc-r"><a class="oc-pill" href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE登録</a><button type="button" class="oc-burger" id="oc-burger" aria-label="メニューを開く" aria-expanded="false" aria-controls="oc-mnav"><i></i><i></i><i></i></button></span></div><nav class="oc-mnav" id="oc-mnav" hidden aria-label="メニュー"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span class="oc-mlab">大洲とのかかわり方</span><a href="../discover/">ディスカバー大洲<small>大洲で何を体験できる？</small></a><a href="../machibito/">まちびとファイル<small>どんな人に会える？</small></a><a href="../guide/">関わり方ガイド<small>自分にできることは？</small></a><span class="oc-mcur" aria-current="page">ワーク＆スタディ<small>いま見ているページ</small></span><a href="../data/">まちづくりデータ<small>まちはどこへ向かう？</small></a><a href="../seido/">つながる制度<small>どんな制度を使える？</small></a><a class="oc-msep" href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav></header>
+<nav class="oc-crumb" aria-label="現在地"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span aria-hidden="true">＞</span><span aria-current="page">ワーク＆スタディ</span></nav>
+<div class="hero"><img alt="天神産紙工場で、紙すきの道具を手にする人たち" src="../pages/photos/d_7d0e6ddf.jpg"/><div class="ov"></div>
+<div class="tt"><h1>ワーク＆スタディ</h1><p class="sub">仕事や学びで関われる？</p></div></div><div class="wrap"><p class="one">大洲で働く・組む・学ぶ。入口を選んでください。</p><div id="entry"><p class="grp">仕事</p><nav aria-label="仕事の入口" class="tiles"><a class="tile" href="#hataraku"><i>1</i><img alt="養老酒造の蔵で、湯気の立つ仕込み" src="../pages/photos/d_a6bd16f4.jpg"/><span class="lb"><b>働く</b><small>本業・副業</small></span></a><a class="tile" href="#self"><i>2</i><img alt="パソコンに向かう手元（AIセミナー）" src="../pages/photos/d_2e01367e.jpg"/><span class="lb"><b>特技で関わる</b><small>個人・副業</small></span></a><a class="tile" href="#org"><i>3</i><img alt="歴史的資源の活用に向けた連携協定の締結式" src="../pages/img/p06_116.jpg"/><span class="lb"><b>組んで​事業をする</b><small>共同事業・実証・出資など</small></span></a></nav><p class="grp">学び</p><nav aria-label="学びの入口" class="tiles"><a class="tile" href="#shisatsu"><i>4</i><img alt="改修後の村上邸（江戸期）と城下町の通り" src="../pages/img/ba_oki_out_after.jpg"/><span class="lb"><b>視察・研修</b><small>日帰り〜2泊3日</small></span></a><a class="tile" href="#intern"><i>5</i><img alt="インターンが住む城下町のシェアハウス「城下町テラスTAMON」のテラス" src="../pages/img/manabu_tamon.jpg"/><span class="lb"><b>インターン</b><small>2週間〜1か月</small></span></a><a class="tile" href="#gakko"><i>6</i><img alt="城下町で課題に取り組む大洲高校の1年生（良知の時間）" src="../pages/img/manabu_school.jpg"/><span class="lb"><b>学校の授業</b><small>1回〜通年</small></span></a></nav></div><nav aria-label="このページの節" class="page-index"><a href="#jirei">実績</a><a href="#hataraku"><i>1</i>働く</a><a href="#self"><i>2</i>特技</a><a href="#org"><i>3</i>組む</a><a href="#shisatsu"><i>4</i>視察</a><a href="#intern"><i>5</i>インターン</a><a href="#gakko"><i>6</i>学校</a></nav><section class="pn" id="jirei"><div class="band"><img alt="大洲の城下町の通り" loading="lazy" src="../pages/photos/d_a1799406.jpg"/><h2><span class="t">これまでの例</span></h2></div><p class="lead">視察・研修・インターン・学校の授業で、大洲の城下町は学びに来る人を受け入れてきました。</p><div class="nums">
+<a href="#dantai"><b>122<small>団体</small></b><span>視察 1,074名<br/>2021〜2025年度</span></a>
+<a href="#intern"><b>11<small>名</small></b><span>大学生インターン<br/>2024・2025年度</span></a>
+<a href="#gakko"><b>233<small>名</small></b><span>小中高生の授業<br/>2025年度</span></a>
+</div><p class="nsrc">出典：キタ・マネジメント「視察概要」（2026年6月版）・令和6年度／令和7年度 実績報告</p><div aria-label="これまでの例（横にめくると4つ）" class="car" role="list"><article class="ex" id="rec-jnto" role="listitem"><img alt="再生された町家の中庭" loading="lazy" src="../pages/img/p08_333.jpg"/><div class="in"><p class="when">2023年1・2月｜研修</p><h3>日本政府観光局（JNTO）の若手職員研修</h3><p class="b">入って2〜3年目の職員を、3日間×2班で受け入れました。初日に一人ひとりが目標を宣言し、講義のたびにグループで振り返り、2日目の講義は英語で、3日目は地域の事業者との交流と最終発表。</p><a class="more" href="https://kita-m.com/wp/wp-content/uploads/2023/11/2db2f8d5afe534d7ea26b91565dbec83.pdf" rel="noopener" target="_blank">実施報告書（PDF）↗</a></div></article><article class="ex" id="rec-dmo" role="listitem"><img alt="大洲の城下町の町家と通り" loading="lazy" src="../pages/photos/d_5b42883d.jpg"/><div class="in"><p class="when">2024年2月｜視察</p><h3>全国のDMO 21団体32名を受け入れ</h3><p class="b">全国の観光地域づくり法人（DMO）を、2泊3日×3回に分けて受け入れました。</p><a class="more" href="https://kita-m.com/cat_info/2670/" rel="noopener" target="_blank">お知らせ（キタ・マネジメント） ↗</a></div></article><article class="ex" id="rec-intern" role="listitem"><img alt="アンケートをとった場所のひとつ、伊予大洲駅観光案内所" loading="lazy" src="../pages/photos/d_7277f3ab.jpg"/><div class="in"><p class="when">2024年度｜インターン</p><h3>大学生3名が、163件のアンケートをPRの戦略に</h3><p class="b">応募9名から3名（東京女子大学・東洋大学・和歌山大学大学院）を受け入れ、臥龍山荘と伊予大洲駅の観光案内所で海外からのお客さまに163件のアンケートをとり、それをもとにPRの戦略を立てました。2025年度の夏も3名が7月末から9月末まで滞在し、成果報告会で発表しています。</p></div></article><article class="ex" id="rec-kono" role="listitem"><img alt="盤泉荘（河野邸はこの前にある空き家）" loading="lazy" src="../pages/photos/d_a00cbf86.jpg"/><div class="in"><p class="when">2025年春｜インターン</p><h3>東大生5名と大洲高校生6名が、空き家を掃除する</h3><p class="b">盤泉荘の前にある空き家「河野邸」をいっしょに掃除し、活用を考えるワークショップをしました。このまちの再生が、空き家の掃除から始まったことを体で知る時間です。</p></div></article></div><div aria-hidden="true" class="carnav"><span class="dots"><i class="on"></i><i></i><i></i><i></i></span><span>横にめくると、ほかの例</span></div><div class="award"><b>2026年9月28日</b>第10回ジャパン・ツーリズム・アワードで、大洲城キャッスルステイが「学生が選ぶジャパン・ツーリズム・アワード」と審査委員特別賞を受賞しました。<a href="https://kita-m.com/cat_awards/3653/" rel="noopener" target="_blank">お知らせ（キタ・マネジメント）</a></div></section><section class="pn" id="dantai"><div class="band"><img alt="夜の NIPPONIA HOTEL 大洲 城下町" loading="lazy" src="../pages/photos/d_419685e9.jpg"/><h2><span class="t">受け入れてきた団体</span></h2></div><p class="lead">これまでに視察・研修で来た団体の一部です。</p><ul class="orgs"><li><b>国・観光機関</b>日本政府観光局・観光庁</li><li><b>DMO・観光協会</b>田辺市熊野ツーリズムビューロー・かまいしDMC・熱海観光局・伊賀上野DMO・豊岡観光イノベーションほか</li><li><b>自治体</b>上越市・越前市・南城市・富良野市ほか</li><li><b>企業・経済団体</b>JTB・日立製作所・四国電力・三井不動産・UR都市機構・中部経済同友会・東京商工会議所ほか</li><li><b>学会・大学</b>日本建築学会・日本観光学会・小樽商科大学ほか</li><li><b>インターン生の大学<small>2024・2025年度</small></b>東京大学・東京女子大学・東洋大学・和歌山大学・和歌山大学大学院・國學院大學</li></ul></section><section class="pn" id="hataraku"><div class="band"><img alt="養老酒造の蔵で、湯気の立つ仕込み" loading="lazy" src="../pages/photos/d_a6bd16f4.jpg"/><h2><span class="no">1</span><span class="t">大洲で働く</span></h2></div><div class="aph"><span class="who">本業でも副業でも、大洲で働きたい方へ</span><span class="tag prep">募集の一覧は準備中</span></div><p>大洲の事業者やプロジェクトで働きたい方の窓口です。本業でも、副業・短期でもかまいません。いま決まった募集がなくても、内容を見て合いそうな仕事があればご連絡します。仕事の募集は、このLINEの配信でもお知らせします。</p><a class="main" href="https://forms.gle/doNvuMsXBFiUQsbc7" rel="noopener" target="_blank">仕事の相談を送る<small>働き方・できることを書いて送る</small></a></section><section class="pn" id="self"><div class="band"><img alt="パソコンに向かう手元（AIセミナー）" loading="lazy" src="../pages/photos/d_2e01367e.jpg"/><h2><span class="no">2</span><span class="t">特技で関わる</span></h2></div><div class="aph"><span class="who">個人の方へ（副業・フリーランスも）</span></div><p>写真・文章・翻訳・デザイン・Web・企画など。フォームの内容をもとに、まちの事業ごとの担当が受け入れを考えてご連絡します。専門性のあるお願いには、謝礼をつけることがあります。</p><a class="sl" href="../guide/#now">まず気軽に手伝いたい方は「関わり方ガイド」へ →</a></section><section class="pn" id="org"><div class="band"><img alt="歴史的資源の活用に向けた連携協定の締結式" loading="lazy" src="../pages/img/p06_116.jpg"/><h2><span class="no">3</span><span class="t">組んで事業をする</span></h2></div><div class="aph"><span class="who">会社・団体・自治体の方へ</span></div><p>共同事業・実証・出資・調達・専門の協力など。どの形でも、最初はフォームから事務局（一般社団法人キタ・マネジメント）にご連絡ください。以後のやり取りは、メールなどで個別に行います。</p><a class="sl" href="#shisatsu">関わるか決める前に、まず視察で見る ↓</a><div class="formbox" id="form"><a class="main" href="https://kita-m.com/contact/" rel="noopener" target="_blank">フォームで送る<small>個人・会社・団体 共通。キタ・マネジメントの窓口につながります</small></a><div class="fl"><details class="howto"><summary>フォームの書き方・ご連絡からの流れ</summary><div class="body"><h4>個人の方</h4><p>お問い合わせ種別は「OZU 555 PROJECT」を選び、団体・組織名の欄には「個人」とお書きください。内容の欄に、次の3つがあると話が早く進みます。</p><ol><li>お住まいの地域（大洲市内／愛媛県内／県外）</li><li>できること・やってみたいこと（200字まで）</li><li>きっかけ（どなたのご紹介か、何をご覧になったか）</li></ol><h4>会社・団体・自治体の方</h4><p>お問い合わせ種別は「OZU 555 PROJECT」を選んでください。内容の欄に、次の4つがあると話が早く進みます。</p><ol><li>所在地（大洲市内／愛媛県内／県外）</li><li>関わりの種類（視察・共創・出資・調達・その他）</li><li>やってみたいこと（200字まで）</li><li>きっかけ（どなたのご紹介か、何をご覧になったか）</li></ol><p class="fine"><b>営業のご提案</b>（ツール・広告・制作などの売り込み）は、このフォームではお受けしていません。</p><h4>ご連絡からの流れ</h4><div class="flow4"><div><b>書く</b>フォームに</div><div><b>返事</b>事務局から</div><div><b>話す</b>オンラインか現地で</div><div><b>動き出す</b>担当と個別に</div></div></div></details></div></div></section><section class="pn" id="shisatsu"><div class="band"><img alt="改修後の村上邸（江戸期）と城下町の通り" loading="lazy" src="../pages/img/ba_oki_out_after.jpg"/><h2><span class="no">4</span><span class="t">視察・研修で来る</span></h2></div><div class="aph"><span class="who">自治体・DMO・企業・議会・大学の方へ</span></div><dl><dt>期間</dt><dd>日帰り〜2泊3日</dd><dt>費用</dt><dd>日帰り 100,000円〜（5名まで・税込）</dd><dt>申し込み</dt><dd>担当に問い合わせのうえ、フォームで申し込み</dd></dl><a class="main" href="https://forms.gle/8C2zxVQcFRMJHECm7" rel="noopener" target="_blank">視察を申し込む<small>キタ・マネジメントのフォームが開きます</small></a><div class="fl"><details><summary>くわしく：料金・モデル行程・見るもの聞くこと</summary><div class="body"><p>城下町を歩いて再生の前と後を見比べ、座学で仕組みを聞き、実際に手がけた人と意見を交わします。1グループ原則10名まで。</p><h4>料金の一覧（5コース・税込）</h4>
+<table class="fee"><tr><th>コース</th><th>時間</th><th>5名まで</th><th>6人目から</th></tr>
+<tr><td>日帰り</td><td>4時間</td><td>100,000円</td><td>+15,000円</td></tr>
+<tr><td>1泊2日（NIPPONIA泊つき）</td><td>8時間</td><td>200,000円</td><td>+30,000円</td></tr>
+<tr><td>1泊2日（宿の手配なし）</td><td>8時間</td><td>145,000円</td><td>+19,000円</td></tr>
+<tr><td>2泊3日（宿泊つき）</td><td>15時間</td><td>340,000円</td><td>+54,000円</td></tr>
+<tr><td>2泊3日（宿の手配なし）</td><td>15時間</td><td>230,000円</td><td>+32,000円</td></tr></table>
+<p class="s">「6人目から」は1人ごとの追加料金です。研修資料の印刷は別料金です。最新の料金は<a href="https://kita-m.com/inspection/course/" rel="noopener" target="_blank">キタ・マネジメントの視察ページ</a>でご確認ください。</p>
+<h4>1泊2日のモデル行程（平日・おすすめ）</h4>
+<h4>1日目</h4><p>12:30 まちの駅あさもや集合 → オリエンテーション → 座学 → 城下町を歩く（再生前の古民家・ホテルのフロントと客室・ショップ）→ 座学 → 質疑と意見交換 → NIPPONIA HOTEL に泊まる（夜は地元の食材の夕食・鵜飼・大洲城のナイトツアーを選べます）</p>
+<h4>2日目</h4><p>臥龍山荘または大洲城 → 座学 → 質疑 → 12:30 解散</p>
+<p class="s">講師は、代表理事の髙岡公三（元・伊予銀行）、企画広報の井上陽祐、インバウンド担当の謝璠ほか。ご希望に合わせて顔ぶれを組みます。</p>
+<h4>現地で見るもの・座学で聞くこと</h4>
+<img alt="改修前の城下町の空き家" loading="lazy" src="../pages/img/p02_4.jpg"/><p class="s">改修前の空き家。視察では、再生の前と後を両方見ます</p>
+<h4>現地を歩く（4つ）</h4><ul><li>古民家の客室・ショップ・臥龍山荘</li><li>改修前の空き家と、事業者との交流（OZU STORIES）</li><li>古民家の耐震化と改修の前後</li><li>城泊のための文化財の活用（大洲城・お湯殿・加藤家住宅）</li></ul>
+<h4>座学で聞く（8つ）</h4><ul><li>産官金の連携</li><li>地域DMOのつくり方</li><li>キャッスルステイ</li><li>持続可能な観光の国際基準</li><li>ファンドを使ったDMOのお金の回し方</li><li>インバウンドの地域戦略</li><li>分散型ホテルの経営</li><li>古民家の耐震化と改修</li></ul>
+<h4>最近の受け入れ</h4><p>2025年度・28件に291名、2024年度・23件に172名。2025年度はそのうち61名が NIPPONIA HOTEL に泊まりました。</p><p class="s">出典：キタ・マネジメント 令和6年度・令和7年度 実績報告、お知らせ（2024年2月）</p><p>再生の現場を案内人と歩くツアー「OZU STORIES」は2025年度に52件。案内人の養成講座も毎年開いています。学びに来た人を迎えるのも、学び続けている人たちです。</p><h4>視察の感想</h4><div class="voice"><p>理論と強いリーダーシップの両方がそろった事例。交流人口を増やすには、その地域に合った目的をはっきりさせることが大事だと分かった。</p><span>ある市の観光協会の職員（視察の感想の要旨）</span></div><div class="voice"><p>立場の違う何人もの人から話を聞けたので、気づきが多かった。</p><span>ある市の職員（視察の感想の要旨）</span></div><h4>自分の町でも取り組みたい方へ（自治体・まちづくり会社・金融機関）</h4><p>大洲が決めたこと、やったこと、つまずいたことは「まちづくりデータ」のページで公開しています。個別のご相談は、まず視察にお越しいただき、現地でお話ししています。</p><div class="btns"><a class="btn2" href="../data/#past"><span>大洲の10年の動き<small>まちづくりデータ</small></span></a><a class="btn2 ext" href="https://kita-m.com/inspection/" rel="noopener" target="_blank"><span>視察・研修の内容<small>キタ・マネジメント</small></span></a></div></div></details></div><div class="part" id="kenshu"><div class="aph"><b>研修</b><span class="who">企業・団体の人材育成の担当の方へ</span></div><dl><dt>期間</dt><dd>3日間〜</dd><dt>内容</dt><dd>依頼する側と一緒に組み立てる</dd><dt>申し込み</dt><dd>内容と料金は事前に相談</dd></dl><a class="main ghost" href="https://kita-m.com/inspection/training/" rel="noopener" target="_blank">研修の案内を見る<small>キタ・マネジメントのページが開きます</small></a><div class="fl"><details><summary>くわしく：研修の組み立て方</summary><div class="body"><p>視察より長く、参加者の「宣言」から始めて最終発表で終わる形に組み立てます。研修のゴールは、依頼する側の人事部門と一緒に決めます。</p><div class="voice"><p>『現場』を感じることができたのが良かったです</p><span>研修の参加者（キタ・マネジメントの研修ページより）</span></div><p>日本政府観光局（JNTO）の研修では、人事部と話し合い、研修のゴールを「地方の知識と海外の知見を併せ持つ職員」に置いています。終わりに求めたのは、職場に戻ってからの行動の変化です。</p></div></details></div></div></section><section class="pn" id="intern"><div class="band"><img alt="インターンが住む城下町のシェアハウス「城下町テラスTAMON」のテラス" loading="lazy" src="../pages/img/manabu_tamon.jpg"/><h2><span class="no">5</span><span class="t">インターンで来る</span></h2></div><div class="aph"><span class="tag done">2025年度は終了</span><span class="tag prep">2026年度は準備中</span><span class="chk">10月27日に確認</span><span class="who">大学1〜3年生・大学院1年生の方へ</span></div><dl><dt>期間</dt><dd>2週間〜1か月</dd><dt>報酬</dt><dd>月5万円（手取り）</dd><dt>住まい</dt><dd>シェアハウスを貸与</dd></dl><div class="btns" style="grid-template-columns:1fr"><a class="btn2 ext" href="https://kita-m.com/business/recruit/" rel="noopener" target="_blank"><span>インターンの募集ページ<small>キタ・マネジメント</small></span></a></div><div class="fl"><details><summary>くわしく：やること・住まいと報酬・体験談</summary><div class="body"><p>城下町に住み込み、キタ・マネジメントの仕事を事務の基本から経験します。視察に同行して事業の全体をつかみ、最後に自分の成果（観光客アンケートの分析など）を発表します。</p><h4>インターンでやること</h4><ul><li><b>観光客の動きと声を集める</b>。臥龍山荘や駅の観光案内所でアンケートをとり、分析します。</li><li><b>新しい観光商品を考え、発信する</b>。記事やSNSで、大洲の外へ届けます。</li><li><b>宿と案内の仕事に加わる</b>。NIPPONIA HOTEL 大洲 城下町でのスタッフ業務、海外からのお客さま・視察の案内。</li></ul><p class="hours">全体 <b>176</b>時間・学ぶ時間 <b>45</b>時間・実務 <b>124</b>時間</p><p class="s">2025年度の要項より。大学で単位になる場合は、書類づくりに協力します。　出典：キタ・マネジメント 2025年度 長期インターンシップ募集要項</p><h4>住まい・報酬・時期</h4><table class="cost"><tr><th>住まい</th><td>城下町のシェアハウス「TAMON」を貸与（水道光熱費込み）</td></tr><tr><th>報酬</th><td>月5万円（最低賃金での雇用契約から寮費を差し引いた手取り。労災保険つき・2025年度の要項）</td></tr><tr><th>貸与</th><td>家具・家電・自転車・PC</td></tr><tr><th>時期</th><td>7〜9月（2025年度の例）</td></tr><tr><th>選考</th><td>オンライン面談</td></tr></table><div class="voice"><p>学校では決して学べない観光やまちづくりの現場</p><span>東洋大学のインターン生（体験談より）</span></div><div class="voice"><p>何よりも素晴らしい人々と出会うことができました</p><span>和歌山大学大学院のインターン生（体験談より）</span></div><div class="voice"><p>大洲に来て本当に良かったです。</p><span>東京女子大学のインターン生（体験談より）</span></div><p class="s">2025年度の募集は終わっています。2026年度の募集は、決まり次第キタ・マネジメントの採用ページでお知らせします。</p></div></details></div></section><section class="pn" id="gakko"><div class="band"><img alt="城下町で課題に取り組む大洲高校の1年生（良知の時間）" loading="lazy" src="../pages/img/manabu_school.jpg"/><h2><span class="no">6</span><span class="t">学校で学ぶ</span></h2></div><div class="aph"><span class="who">小中高校・大学のゼミの先生の方へ</span></div><dl><dt>回数</dt><dd>1回〜通年</dd><dt>申し込み</dt><dd>メールで相談</dd></dl><a class="main ghost" href="mailto:kita-management@kita-m.com">キタ・マネジメントに相談する<small>メールが開きます</small></a><div class="fl"><details id="rec-school"><summary>くわしく：2025年度の7校と、高校生の発表</summary><div class="body"><p>まち全体を教室に、城下町の空き家の調査から活用のアイデアづくり、成果の発表まで。授業の回数に合わせて組み立てます。</p><h4>小中高生233名が、まちを教材に学ぶ（7校・39回・2025年度）</h4><table class="sch"><tr><th>学校</th><th>取り組んだこと</th><th>人数</th></tr>
+<tr><td>大洲高校 普通科1年</td><td>食品ロスとモビリティを調べ、シンポジウムで発表</td><td>16名</td></tr>
+<tr><td>大洲高校 商業科3年</td><td>工芸とアートの催しで、作品と作家を紹介するコンテンツをつくる</td><td>27名</td></tr>
+<tr><td>大洲南中学校 1年</td><td>古民家を現地で調べ、空き家の活用のアイデアを発表</td><td>69名</td></tr>
+<tr><td>新谷中学校 3年</td><td>大洲藩加藤家の末裔の空き家の活用法を考える</td><td>35名</td></tr>
+<tr><td>長浜小学校 3年</td><td>長浜の魅力を見つけ直し、小学生の目線でPRを考える</td><td>27名</td></tr>
+<tr><td>大洲小学校 3年</td><td>大洲の取り組みと台湾の事例を知る</td><td>39名</td></tr>
+<tr><td>宇和島南中等教育学校・大洲農業高校（有志）</td><td>大洲城の見学・町並みの散策</td><td>20名</td></tr></table><p>成果は2025年12月の「持続可能なまちづくりシンポジウム」で、高校生が自分たちで発表しました。来場は約100名、満足度は97.9%でした。</p><p>2024年度は4校・32回、235名でした。高校生は2023年12月・2025年1月・2025年12月のシンポジウムで、自分たちで発表しています。2024年度は大洲高校商業科3年が、まちのイベントに店を出しました。</p><p class="s">出典：キタ・マネジメント 令和6年度・令和7年度 実績報告</p></div></details></div></section><div class="sec"><h2>申し込み・相談の窓口</h2></div><p class="contact">一般社団法人キタ・マネジメント 事業課</p><div class="btns"><a class="btn2" href="tel:0893247060"><span>電話で相談する<small>0893-24-7060</small></span></a><a class="btn2" href="mailto:kita-management@kita-m.com"><span>メールで相談する<small>事業課</small></span></a></div><div class="sec"><h2>来る前に、あわせて見る</h2></div><a class="read" href="../data/"><div><b>まちづくりデータ →</b><span>壊される寸前だった城下町の、過去・今・未来と、10年でまちに何が残ったか</span></div></a><a class="read" href="../machibito/#g-maker2"><div><b>まちびとファイル →</b><span>視察やインターンで会う人たち</span></div></a><p class="src">出どころ：キタ・マネジメントの公開ページと公開資料（視察概要・視察コースと研修のページ・インターンの募集ページと要項・令和6年度／令和7年度 実績報告・お知らせ）。団体名は同社が公開しているもので、ロゴは使っていません。視察と研修の感想、インターンの体験談も、同社が公開しているものから引いています。このページの内容は10月27日に確認。</p></div>
+<div class="wrap"><p class="credit">写真：大洲まちづくりブック・キタ・マネジメント提供・OZU 555 PROJECT 写真共有フォルダ</p></div>
+<section class="oc-ways" aria-labelledby="oc-ways-h"><div class="oc-in"><h2 class="oc-h" id="oc-ways-h">大洲とのかかわり方を見る</h2><div class="oc-grid"><a class="oc-way" href="../discover/"><small>大洲で何を体験できる？</small><b>ディスカバー大洲</b><i>体験する →</i></a><a class="oc-way" href="../machibito/"><small>どんな人に会える？</small><b>まちびとファイル</b><i>会う →</i></a><a class="oc-way" href="../guide/"><small>自分にできることは？</small><b>関わり方ガイド</b><i>関わる →</i></a><div class="oc-way on" aria-current="page"><small>仕事や学びで関われる？</small><b>ワーク＆スタディ</b><i>いま見ているページ</i></div><a class="oc-way" href="../data/"><small>まちはどこへ向かう？</small><b>まちづくりデータ</b><i>知る →</i></a><a class="oc-way" href="../seido/"><small>どんな制度を使える？</small><b>つながる制度</b><i>使う →</i></a></div><a class="oc-totop" href="https://asumaru3lfb.github.io/ozu-company-web/">大洲カンパニーの TOP へ</a></div></section>
+<footer class="oc-foot"><div class="oc-in"><img src="../assets/oc-logo.png" alt="" width="60" height="52"><div class="oc-links"><a href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE</a><span class="oc-none">note（準備中）</span><a href="https://www.instagram.com/ozu_company/" target="_blank" rel="noopener">Instagram</a></div><span>運営：一般社団法人キタ・マネジメント／愛媛県大洲市大洲649-1 2F まちの駅あさもや</span></div></footer>
+<script>
+/* 入口・数字・目次から節へ移る。畳まれた中身へ飛ぶときは開いてから移る（kasegu.html#rec-school のように直接開いても同じ） */
+(function(){
+  function openTo(id,smooth){
+    var d=document.getElementById(id); if(!d)return false;
+    if(d.tagName==="DETAILS")d.open=true;
+    d.scrollIntoView({behavior:smooth?"smooth":"auto"}); return true;
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener("click",function(e){
+      var id=a.getAttribute("href").slice(1);
+      if(openTo(id,true)){e.preventDefault();history.replaceState(null,"","#"+id);}
+    });
+  });
+  if(location.hash)openTo(location.hash.slice(1),false);
+})();
+/* 実例のカルーセル：いま見ているカードの点を青に */
+(function(){var c=document.querySelector('.car'),d=document.querySelectorAll('.carnav .dots i');if(!c||!d.length)return;
+var it=c.querySelectorAll('.ex'),q=0;function upd(){q=0;var k=0,b=1e9;it.forEach(function(e,i){var x=Math.abs(e.getBoundingClientRect().left-c.getBoundingClientRect().left-18);if(x<b){b=x;k=i;}});
+d.forEach(function(e,i){e.classList.toggle('on',i===k);});}
+c.addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(upd);}},{passive:true});})();
+/* 上に残る目次（6タブ共通の型・⑥制度と同じ。IntersectionObserver は iframe の中で当てにならないので使わない）。
+   読んでいる節＝頭が目次の下（60px）まで来た節のうち一番下。共通の型の「45%の線」だと、1〜3 の短い節では押した節の次が光る（10/27 実測）ので、45% は最初の節にだけ使う */
+(function(){var N=document.querySelector('.page-index'),E=document.getElementById('entry');if(!N)return;
+var L=[].slice.call(N.querySelectorAll('a')),S=L.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}),q=0;
+function upd(){q=0;N.classList.toggle('show',!E||E.getBoundingClientRect().bottom<60+OC_H());
+var k=-1,y=window.innerHeight*0.45;S.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=60+OC_H())k=i;});if(k<0&&S[0]&&S[0].getBoundingClientRect().top<=y)k=0;
+if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2)k=S.length-1;
+L.forEach(function(a,i){a.classList.toggle('on',i===k);});
+if(k>=0&&N.scrollWidth>N.clientWidth)N.scrollLeft=L[k].offsetLeft-18;}
+window.addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(upd);}},{passive:true});window.addEventListener('resize',upd);upd();})();
+</script>
+<script>
+/* 大洲カンパニーのヘッダー（2026-11-16・scripts/build_ozu_company_pages.py）：ヘッダーの高さを --oc-hh に／メニューの開け閉め */
+(function(){var b=document.getElementById('oc-bar'),bg=document.getElementById('oc-burger'),mn=document.getElementById('oc-mnav');if(!b||!bg||!mn)return;
+function hh(){document.documentElement.style.setProperty('--oc-hh',b.offsetHeight+'px');}
+hh();window.addEventListener('resize',hh);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(hh);
+function set(o){mn.hidden=!o;bg.setAttribute('aria-expanded',String(o));bg.setAttribute('aria-label',o?'メニューを閉じる':'メニューを開く');}
+bg.addEventListener('click',function(){set(mn.hidden);});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mn.hidden){set(false);bg.focus();}});})();
+</script>
+</body></html>

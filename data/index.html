@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="ja"><head>
+<!-- 独立ページ：scripts/build_ozu_company_pages.py が pages/kazu.html から組み立てたもの（台帳 site_ozu_company.json）。手で直さない -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><title>まちづくりデータ｜大洲カンパニー</title>
+<!-- 生成物：scripts/build_ozu555_site_kazu.py（台帳 kazu_koremade.json・ugoki_timeline.json・指標ダッシュボード）。手で直さない -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1f4fa8;--blue-soft:#fff1cf;--ink:#231815;--sub:#5f5f5f;--bg:#ffffff;--paper:#faf8f4;--line:#e5e2dd;--gold:#a77a41}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif;font-size:15px;line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+.hero{position:relative;height:150px;overflow:hidden;background:#1d2530}
+.hero img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.05) 20%,rgba(20,18,16,.72))}
+.hero .tt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 14px;color:#fff}
+.hero h1{font-family:"Shippori Mincho",serif;font-size:26px;font-weight:700;margin:0;line-height:1.3;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.hero .sub{font-size:12.5px;margin:3px 0 0;opacity:.95}
+.wrap{max-width:640px;margin:0 auto;padding:16px 18px 0}
+.upd{font-size:11.5px;color:var(--sub);margin:0 0 10px}
+.one{font-size:15px;line-height:1.75;margin:0 0 12px}
+.one,.tl .y .h,.nowl li{word-break:auto-phrase}
+.tag{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;border-radius:10px;font-weight:500;vertical-align:2px;white-space:nowrap}
+.tag.go{background:var(--blue);color:#fff}
+.tag.prep{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.tag.done{background:#ececea;color:#5a5a5a}
+.move{background:var(--blue-soft);border-radius:12px;padding:12px 14px 6px;margin:0 0 12px}
+.move .t{font-family:"Shippori Mincho",serif;font-size:16px;font-weight:700;color:var(--blue);margin:0}
+.nowl{list-style:none;margin:8px 0 0;padding:0}
+.nowl li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px solid #ecdcb4;font-size:14px;line-height:1.6}
+.nowl li:first-child{border-top:none}
+.nowl li .tag{flex:none;margin-top:2px}
+.nowl li small{display:block;font-size:12px;color:var(--sub);line-height:1.5}
+.nowl li small a{white-space:nowrap}
+.jump{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 6px}
+.jump a{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);text-align:center;background:#fff;font-size:13.5px;font-weight:500;line-height:1.35}
+.jump a small{font-size:10.5px;color:var(--sub);font-weight:400}
+.jump a::after{content:"↓";font-size:11px;color:var(--sub);margin-top:1px}
+.sec{margin:26px 0 10px}
+.sec .k{font-family:Georgia,serif;font-size:10px;letter-spacing:.28em;color:var(--gold);margin:0}
+.sec h2{font-family:"Shippori Mincho",serif;font-size:20px;margin:0;line-height:1.45;word-break:auto-phrase}
+.sec .es{font-size:12px;color:var(--sub);margin:4px 0 0;line-height:1.7}
+.tl{position:relative;margin:4px 0 0;padding:0 0 0 22px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:#ecdcb4}
+.tl .y{position:relative;padding:0 0 14px}
+.tl .y::before{content:"";position:absolute;left:-21px;top:7px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--blue)}
+.tl .y b.yr{display:block;font-family:"Shippori Mincho",serif;font-size:13.5px;color:var(--gold);letter-spacing:.04em;line-height:1.5}
+.tl .y .h{font-size:15px;font-weight:700;line-height:1.55;margin:0}
+.tl .y img.ph{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:block;margin:8px 0 4px}
+.fut .tl::before{background:repeating-linear-gradient(180deg,#c9c2b6 0 6px,transparent 6px 11px)}
+.fut .tl .y::before{border-style:dashed}
+details{margin:6px 0 0}
+details summary{list-style:none;cursor:pointer;font-size:13px;color:var(--blue);display:inline-flex;align-items:center;min-height:36px;gap:4px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"＋";font-size:12px}
+details[open] summary::after{content:"－"}
+details .body{font-size:14px;line-height:1.85;color:var(--ink);padding:4px 0 2px}
+details .body p{margin:0 0 10px}
+.tonote{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:8px 12px;border:1px solid var(--blue);border-radius:10px;text-decoration:none;font-size:13.5px;margin:4px 0 6px}
+.tonote::after{content:"↗"}
+.quote{font-family:"Shippori Mincho",serif;font-size:16px;color:var(--ink);line-height:1.9;border-left:3px solid var(--gold);padding:2px 0 2px 14px;margin:6px 0 10px}
+.quote small{display:block;font-size:11px;color:var(--sub);font-family:"Noto Sans JP",sans-serif;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.chips span{font-size:12.5px;border:1px solid var(--line);border-radius:14px;padding:4px 11px;background:#fff}
+.src{font-size:11px;color:var(--sub);margin:8px 0 0;line-height:1.6}
+.bigone{text-align:center;margin:10px 0 12px}
+.bigone b{font-family:"Shippori Mincho",serif;font-size:44px;color:var(--blue);line-height:1.1}
+.bigone b small{font-size:18px}
+.bigone span{display:block;font-size:13.5px;margin-top:2px}
+.bigone .bs{font-size:11.5px;color:var(--sub);line-height:1.6}
+.bap{background:#fff;border-radius:12px;overflow:hidden;margin:0 0 10px;box-shadow:0 0 0 1px var(--line)}
+.bap .ph{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.bap .ph div{position:relative}
+.bap .ph img{width:100%;height:118px;object-fit:cover;display:block}
+.bap .ph span{position:absolute;left:6px;top:6px;font-size:10.5px;background:rgba(15,20,30,.62);color:#fff;padding:2px 7px;border-radius:8px;letter-spacing:.06em}
+.bap .ph div:last-child span{background:var(--blue)}
+.bap p{margin:0;padding:8px 12px 10px;font-size:12.5px;line-height:1.6}
+.biz{background:#fff;border-radius:12px;box-shadow:0 0 0 1px var(--line);padding:12px 12px 0;margin:0 0 10px}
+.biz .bh{margin:0;font-size:14px;font-weight:700}
+.biz .bl{margin:2px 0 4px;font-size:12px;color:var(--sub);line-height:1.6}
+.biz ul{list-style:none;margin:0;padding:0}
+.biz li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.biz li img,.biz li .ic{flex:none;width:64px;height:48px;border-radius:6px}
+.biz li img{object-fit:cover;display:block}
+.biz li .ic{display:flex;align-items:center;justify-content:center;background:var(--blue-soft)}
+.biz li .ic svg{width:22px;height:22px;fill:var(--blue)}
+.biz li b{display:block;font-size:13px;line-height:1.45}
+.biz li span{display:block;font-size:12px;color:var(--sub);line-height:1.55;margin-top:1px}
+.biz .more{display:flex;align-items:center;min-height:44px;border-top:1px solid var(--line);font-size:13px;color:var(--blue);text-decoration:none}
+.subh{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px}
+.subh b{font-family:"Shippori Mincho",serif;font-size:17px}
+.subh span{font-family:Georgia,serif;font-size:10px;letter-spacing:.22em;color:var(--gold)}
+.slide{background:#fff;border-radius:14px;padding:14px 16px;margin:0 0 10px;box-shadow:0 0 0 1px var(--line)}
+.slide .sl{font-size:12px;color:var(--sub);margin:0 0 6px;display:flex;justify-content:space-between;gap:8px}
+.slide .sl em{font-style:normal;font-family:Georgia,serif;font-size:10px;letter-spacing:.2em;color:var(--gold)}
+.slide .sn{font-size:15px;font-weight:700;margin:0 0 8px;line-height:1.45}
+.slide .nt{font-size:11.5px;color:var(--sub);margin:6px 0 0;line-height:1.6}
+.ba2{display:grid;grid-template-columns:1fr 28px 1.25fr;align-items:end}
+.ba2 .c .y{display:block;font-size:10.5px;color:var(--sub);line-height:1.4}
+.ba2 .c b{display:block;font-family:"Shippori Mincho",serif;line-height:1.1}
+.ba2 .c.bf b{font-size:24px;color:var(--sub)}
+.ba2 .c.af b{font-size:36px;color:var(--blue)}
+.ba2 .c b small{font-size:13px}
+.ba2 .ar{font-size:18px;color:var(--blue);text-align:center;padding-bottom:6px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:4px 0 10px}
+.trio figure{margin:0}
+.trio img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:6px}
+.trio figcaption{font-size:10.5px;color:var(--sub);text-align:center;line-height:1.4;margin-top:2px}
+.chart{margin-top:8px}.chart svg{display:block;width:100%;height:auto;font-family:"Noto Sans JP",sans-serif}
+.bars2{margin:10px 0 2px}
+.bars2 .r{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:6px;margin:3px 0;font-size:10.5px;color:var(--sub)}
+.bars2 .t{height:9px;border-radius:5px;background:var(--blue-soft);position:relative;overflow:hidden}
+.bars2 .t i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.bars2 .r.bf i{background:var(--blue);opacity:.35}.bars2 .r.af i{background:var(--blue)}
+.slides2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
+.slides2 .slide{margin:0;padding:12px}
+.slides2 .slide .sn{font-size:13px;margin:0 0 6px}
+.slides2 .now2 b{display:block;font-family:"Shippori Mincho",serif;font-size:30px;color:var(--blue);line-height:1.1}
+.slides2 .now2 b small{font-size:13px}
+.slides2 .now2 span{display:block;font-size:10.5px;color:var(--sub);margin-top:2px;line-height:1.5}
+.slides2 .was{font-size:11.5px;color:var(--sub);margin:6px 0 0}
+.slides2 .was b{font-family:"Shippori Mincho",serif;font-size:15px}
+.split{display:flex;height:26px;border-radius:5px;overflow:hidden;margin:6px 0 3px;font-size:11px;color:#fff;line-height:26px;text-align:center}
+.split i{font-style:normal;white-space:nowrap;overflow:hidden}
+.splitl{font-size:11px;color:var(--sub);line-height:1.6;margin:0}
+.have{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 4px}
+.have div{background:var(--blue-soft);border-radius:10px;padding:10px 12px 9px}
+.have b{display:block;font-family:"Shippori Mincho",serif;font-size:24px;color:var(--blue);line-height:1.15}
+.have b small{font-size:12.5px}
+.have span{display:block;font-size:12px;line-height:1.5;margin-top:3px}
+.have i{display:block;font-style:normal;font-size:10.5px;color:var(--sub);line-height:1.4;margin-top:2px}
+.fut{margin:30px -18px 0;padding:2px 18px 4px;border-top:4px solid var(--blue)}
+.fut .sec{margin-top:18px}
+.q{background:var(--blue-soft);border-radius:12px;padding:12px 14px;margin:14px 0 12px}
+.q .qk{font-size:11px;color:var(--blue);font-weight:700;margin:0}
+.q .qt{font-family:"Shippori Mincho",serif;font-size:17px;line-height:1.55;margin:2px 0 6px}
+.q p{font-size:12.5px;margin:0;line-height:1.7}
+.q .lk{font-size:11px;color:var(--sub);margin-top:4px}
+.five{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 4px}
+.five div{background:var(--blue-soft);border-radius:10px;padding:9px 6px 8px;text-align:center}
+.five b{display:block;font-family:"Shippori Mincho",serif;font-size:30px;color:var(--blue);line-height:1.1}
+.five b small{font-size:13px}
+.five span{display:block;font-size:12px;line-height:1.45;margin-top:2px;font-weight:500}
+.five i{display:block;font-style:normal;font-size:11px;color:var(--sub);margin-top:5px;line-height:1.45;border-top:1px dashed var(--line);padding-top:5px}
+.fivel{font-size:11.5px;color:var(--sub);line-height:1.7;margin:4px 0 4px;padding-left:1em;text-indent:-1em}
+.ringh{font-size:14.5px;font-weight:700;margin:16px 0 2px}
+.ringh small{display:block;font-size:12px;font-weight:400;color:var(--sub)}
+.main{display:block;margin:26px 0 8px;background:var(--blue);color:#fff;text-align:center;text-decoration:none;border-radius:12px;padding:15px 12px;font-size:16px;font-weight:700;min-height:52px}
+.main small{display:block;font-size:11.5px;font-weight:400;opacity:.9;margin-top:2px}
+.btn2{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:9px 13px;margin:12px 0 0;border:1px solid var(--blue);border-radius:10px;color:var(--blue);background:#fff;text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
+.btn2::after{content:"→";flex:none}
+.btn2 small{display:block;font-size:11px;font-weight:400;color:var(--sub)}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:14px 18px 30px;line-height:1.8;background:var(--paper);margin-top:22px}
+
+.page-index{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;gap:18px;min-height:44px;padding:0 12px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform .2s}
+.page-index.show{transform:none}
+.page-index a{display:flex;align-items:center;gap:5px;min-height:44px;padding:0 2px;color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:500;white-space:nowrap;border-bottom:1px solid transparent}
+.page-index a i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-size:11px;font-weight:700}
+.page-index a.on{color:var(--blue);border-bottom:2px solid var(--blue)}
+.page-index a.on i{background:var(--blue);color:#fff}
+.page-index a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.page-index{transition:none}}
+.jumpc{display:grid;gap:8px;margin:6px 0}
+.jumpc a{display:flex;align-items:center;gap:12px;min-height:62px;padding:10px 14px;border-radius:12px;text-decoration:none;color:var(--ink);background:var(--blue-soft)}
+.jumpc a .no,.chh .no{display:inline-flex;align-items:center;justify-content:center;flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:14px}
+.jumpc a b{display:block;font-family:"Shippori Mincho",serif;font-size:17px}
+.jumpc a small{display:block;font-size:11.5px;color:var(--sub)}
+.jumpc a svg{width:24px;height:24px;color:var(--blue);flex:none;margin-left:auto}
+.chh{scroll-margin-top:56px;display:flex;align-items:center;gap:10px;margin:34px 0 0;padding:0 0 8px;border-bottom:2px solid var(--blue)}
+.chh b{font-family:"Shippori Mincho",serif;font-size:19px;color:var(--blue)}
+.chh svg{width:22px;height:22px;color:var(--blue);margin-left:auto}
+.chh + .sec{margin-top:12px}
+.chh + .fut{margin-top:0;border-top:0;padding-top:0}
+.cnts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
+.cnt{background:var(--blue-soft);border-radius:14px;padding:12px}
+.cnt .top{display:flex;justify-content:space-between;align-items:flex-start}
+.cnt .big{width:30px;height:30px;fill:#1f4fa8;color:#1f4fa8}
+.ring{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;border:3px solid #1f4fa8;background:#fff;font-family:"Shippori Mincho",serif;font-weight:700;color:#1f4fa8;font-size:15px;line-height:1}
+.cnt .sn{font-size:13px;font-weight:700;margin:6px 0 0;line-height:1.4}
+.cu{font-family:"Shippori Mincho",serif;font-size:36px;color:#1f4fa8;line-height:1.1}
+.cnt .u{font-size:13px;color:#1f4fa8;margin-left:2px}
+.cnt .was{font-size:11.5px;color:var(--sub);margin:2px 0 0}
+.cnt .nt2{font-size:10.5px;color:var(--sub);margin:2px 0 0;line-height:1.5}
+.nexts{margin:18px 0 0;border-top:1px solid var(--line)}
+.nexts .nh{font-size:12px;color:var(--sub);margin:10px 0 0}
+.nexts a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;padding:8px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.nexts a b{display:block;font-size:14.5px}
+.nexts a small{display:block;font-size:12px;color:var(--sub)}
+.nexts a::after{content:"→";color:var(--blue)}
+.contact{background:var(--blue-soft);border-radius:14px;padding:14px 16px;margin:18px 0 0}
+.contact .ch{font-size:14.5px;font-weight:700;margin:0}
+.contact .co{font-size:12.5px;color:var(--sub);margin:2px 0 8px}
+.cbtn{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cbtn a{display:block;min-height:48px;padding:8px 12px;border:1px solid var(--blue);border-radius:10px;background:#fff;color:var(--blue);text-decoration:none;font-size:14px;font-weight:500;line-height:1.4}
+.cbtn a small{display:block;font-size:10.5px;color:var(--sub);font-weight:400;word-break:break-all}
+.srcs{max-width:640px;margin:22px auto 0;padding:0 18px}
+.srcs .sh{font-size:12px;font-weight:700;color:var(--sub);margin:0 0 4px}
+.srcs ul{margin:0;padding:0 0 0 1.1em;font-size:11px;color:var(--sub);line-height:1.7}
+
+</style><link rel="stylesheet" href="../assets/ozu-company.css">
+<script>window.OC_H=function(){var b=document.getElementById('oc-bar');return b?b.offsetHeight:0};</script>
+</head><body>
+<header class="oc-hd" id="oc-hd"><div class="oc-in" id="oc-bar"><a class="oc-brand" href="https://asumaru3lfb.github.io/ozu-company-web/"><img src="../assets/oc-logo.png" alt="大洲カンパニーのロゴ" width="180" height="157">大洲カンパニー</a><nav class="oc-nav" aria-label="メイン"><a href="https://asumaru3lfb.github.io/ozu-company-web/#about">大洲カンパニーとは</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#can">できること</a><a href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav><span class="oc-r"><a class="oc-pill" href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE登録</a><button type="button" class="oc-burger" id="oc-burger" aria-label="メニューを開く" aria-expanded="false" aria-controls="oc-mnav"><i></i><i></i><i></i></button></span></div><nav class="oc-mnav" id="oc-mnav" hidden aria-label="メニュー"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span class="oc-mlab">大洲とのかかわり方</span><a href="../discover/">ディスカバー大洲<small>大洲で何を体験できる？</small></a><a href="../machibito/">まちびとファイル<small>どんな人に会える？</small></a><a href="../guide/">関わり方ガイド<small>自分にできることは？</small></a><a href="../work/">ワーク＆スタディ<small>仕事や学びで関われる？</small></a><span class="oc-mcur" aria-current="page">まちづくりデータ<small>いま見ているページ</small></span><a href="../seido/">つながる制度<small>どんな制度を使える？</small></a><a class="oc-msep" href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav></header>
+<nav class="oc-crumb" aria-label="現在地"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span aria-hidden="true">＞</span><span aria-current="page">まちづくりデータ</span></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-shop" viewBox="0 0 12 12"><path d="M1 5.2 6 1.2l5 4V11H1z"/><rect x="4.9" y="7" width="2.2" height="4" fill="#fff"/></symbol>
+<symbol id="i-person" viewBox="0 0 12 12"><circle cx="6" cy="3.1" r="2.3"/><path d="M1.8 11.6c0-4.6 8.4-4.6 8.4 0z"/></symbol>
+<symbol id="i-home" viewBox="0 0 12 12"><path d="M1 5.6 6 1.4l5 4.2V11H7.6V8H4.4v3H1z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h10M6 1c-2.4 2.8-2.4 7.2 0 10M6 1c2.4 2.8 2.4 7.2 0 10" fill="none" stroke="currentColor" stroke-width="1.1"/></symbol>
+<symbol id="i-house" viewBox="0 0 12 12"><path d="M.6 5.4 6 .9l5.4 4.5H10V11H2V5.4z"/><path d="M4 11V7.4h4V11" fill="#fff"/></symbol>
+<symbol id="c-past" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5.4l3.4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="c-done" viewBox="0 0 24 24"><path d="M4 20V11M10 20V6M16 20v-6M21 20H3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+<symbol id="c-future" viewBox="0 0 24 24"><path d="M6 21V3M6 4h11l-2.6 3.6L17 11H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+</svg>
+<nav class="page-index" aria-label="このページの章" hidden><a href="#past" data-sec="past"><i>1</i>これまでの10年</a><a href="#done" data-sec="done"><i>2</i>できたこと</a><a href="#future" data-sec="future"><i>3</i>2030年の目標</a></nav>
+<div class="hero"><img src="../pages/photos/d_a1840ff6.jpg" alt="大洲城下町の町並み"><div class="ov"></div><div class="tt"><h1>まちづくりデータ</h1><p class="sub">まちはどこへ向かう？</p></div></div>
+<div class="wrap">
+<p class="one">大洲のまちづくりは、城下町の再生（まちづくり1.0）を土台に、2030年に向けた次の段階（まちづくり2.0）に入っています。城下町の10年を<b>古い順に</b>たどり、そのあと2030年に目指すことを並べます。</p>
+<div class="jumpc"><a href="#past"><span class="no">1</span><span><b>これまでの10年</b><small>2016〜2024 取り壊しの危機から世界1位まで</small></span><svg><use href="#c-past"/></svg></a><a href="#done"><span class="no">2</span><span><b>できたこと</b><small>39棟・41事業者・雇用166人</small></span><svg><use href="#c-done"/></svg></a><a href="#future"><span class="no">3</span><span><b>2030年の目標</b><small>先進事例5・事業者50・雇用500</small></span><svg><use href="#c-future"/></svg></a></div>
+<div class="chh" id="past"><span class="no">1</span><b>これまでの10年</b><svg><use href="#c-past"/></svg></div><div class="sec"><p class="k">まちづくり1.0 ／ 2016〜2026</p><h2>取り壊されかけた城下町が、世界1位になるまで</h2></div><div class="tl"><div class="y"><b class="yr">2016年</b><p class="h">城下町の古い建物の取り壊しが相次ぐ</p><details><summary>くわしく</summary><div class="body"><p>大洲の城下町には、歴史的な風情を感じられる建物が約100件残っていました。ところが2016年から17年にかけて、所有者の高齢化や相続、修繕費の負担から、取り壊しや建て替えが一斉に進む時期が訪れます。</p><p>広い範囲で町並みが失われれば、消えるのは景色だけではありません。まちの記憶と、地域らしさそのものでした。</p></div></details></div><div class="y"><b class="yr">2017年</b><p class="h">地域の若者が、空き家の掃除から始めた</p><img class="ph" src="../pages/img/p04_89.jpg" alt="お茶のいそさきの前に並ぶYATSUGIのメンバーたち" loading="lazy"><details><summary>くわしく</summary><div class="body"><p>2017年4月、地域の若者を中心に「YATSUGI（やつぎ）」が結成されます。最初にやったのは大きな計画づくりではなく、<b>空き家の掃除と障子の張り替え</b>。人の出入りがあるだけで空き家の傷みは遅くなる——小さな手入れがまちの時間を稼ぎました。</p><p>その延長で生まれた町家イベント「城下のMACHIBITO」は、100年前のにぎわいを再現する催しとして3年間開かれ、最多の年には町家18棟・123ブースが出店。事業者たちが「町家で商いができる」と気づくきっかけになりました。</p><p>同じ年の6月には、市役所と伊予銀行の職員による勉強会も始まり、先進地の丹波篠山を訪ねて学びを重ねました。</p></div></details></div><div class="y"><b class="yr">2018年</b><p class="h">市・銀行・企業の5者が手を組み、まちづくりの会社ができる</p><details><summary>くわしく</summary><div class="body"><p>2018年4月、<b>大洲市・バリューマネジメント・ノオト・NOTE・伊予銀行の5者</b>で連携協定を結びました。同じ年の7月、まちづくりの司令塔となる<b>一般社団法人キタ・マネジメント</b>が設立され、まちづくりファンドもつくられます。</p><p>事業費約10億円（公的資金約5億円＋民間資金約5億円）が、短い期間にまちへ注がれました。</p></div></details></div><div class="y"><b class="yr">2020年</b><p class="h">城に泊まる宿と、まち全体をホテルにする宿が同時に開業</p><img class="ph" src="../pages/photos/d_d0c0e017.jpg" alt="大洲城の天守の前に並ぶキャッスルステイの入城の行列" loading="lazy"><details><summary>くわしく</summary><div class="body"><p>前の市長の急逝、西日本豪雨、コロナ禍。苦難が続くなかでも、歩みは止まりませんでした。</p><p>2020年7月、日本初の木造天守に泊まる「大洲城キャッスルステイ」と、まち全体がホテルになる分散型ホテル「NIPPONIA HOTEL 大洲 城下町」が同時に開業。取り壊されるはずだった商家や蔵が、客室やレストラン、店としてよみがえっていきました。</p></div></details></div><div class="y"><b class="yr">2022年</b><p class="h">世界の持続可能な観光地トップ100に選ばれる</p><details><summary>くわしく</summary><div class="body"><p>2022年9月、持続可能な観光地を選ぶ国際的な団体グリーン・デスティネーションズの「世界の持続可能な観光地TOP100」に選ばれました。</p></div></details></div><div class="y"><b class="yr">2023年</b><p class="h">文化・伝統を守る部門で世界1位。トップ100にも2年続けて選ばれる</p><details><summary>くわしく</summary><div class="body"><p>2023年3月、グリーン・デスティネーションズの「The Green Destinations Story Awards（ITB Berlin）」の「文化・伝統保全」の部門で世界1位になりました。</p><p>同じ年の10月には、「世界の持続可能な観光地TOP100」に2年続けて選ばれています。</p></div></details></div><div class="y"><b class="yr">2024年</b><p class="h">持続可能な観光地の国際認証で、シルバー賞を受賞（四国で初めて）</p><details><summary>くわしく</summary><div class="body"><p>同じグリーン・デスティネーションズの認証で、シルバーアワードを四国で初めて取得しました。壊されかけた城下町の再生が、世界の観光の最前線で評価されたことになります。</p></div></details></div><div class="y"><b class="yr">2026年</b><p class="h">大洲城キャッスルステイが、ジャパン・ツーリズム・アワードでダブル受賞</p><details><summary>くわしく</summary><div class="body"><p>2026年9月、第10回ジャパン・ツーリズム・アワードで、大洲城キャッスルステイが「学生が選ぶジャパン・ツーリズム・アワード」と「審査委員特別賞」の2つを受賞しました。</p><p><a href="https://kita-m.com/cat_awards/3653/" target="_blank" rel="noopener">お知らせ（キタ・マネジメント） ↗</a></p></div></details></div></div>
+<div class="chh" id="done"><span class="no">2</span><b>できたこと</b><svg><use href="#c-done"/></svg></div><div class="sec"><p class="k">まちづくり1.0 ／ いま</p><h2>これまで：城下町の再生で、できたこと</h2><p class="es">分散型ホテルが開業した2020年7月より前と、いまを比べます。</p></div>
+<div class="bigone"><b>39<small>棟</small></b><span>城下町の建物が、よみがえった</span><span class="bs">うち歴史的建造物35棟（2025年）<br>ホテル開業前は0棟</span></div>
+<div class="bap"><div class="ph"><div><img src="../pages/photos/d_116b4e6d.jpg" alt="村上邸（江戸期）の改修前" loading="lazy"><span>改修前</span></div><div><img src="../pages/img/ba_oki_out_after.jpg" alt="村上邸（江戸期）の改修後" loading="lazy"><span>改修後</span></div></div><p><b>村上邸（江戸期）</b> → ホテルのフロントと客室に（2020年7月）</p></div>
+<div class="bap"><div class="ph"><div><img src="../pages/img/ba_mune_kura_before.jpg" alt="村上邸の土蔵（江戸期）の改修前" loading="lazy"><span>改修前</span></div><div><img src="../pages/img/ba_mune_kura_after.jpg" alt="村上邸の土蔵（江戸期）の改修後" loading="lazy"><span>改修後</span></div></div><p><b>村上邸の土蔵（江戸期）</b> → 小屋組を見せる客室に（2021年8月）</p></div>
+<div class="bap"><div class="ph"><div><img src="../pages/img/ba_sada_before.jpg" alt="浦岡邸（大正期）の改修前" loading="lazy"><span>改修前</span></div><div><img src="../pages/img/ba_sada_after.jpg" alt="浦岡邸（大正期）の改修後" loading="lazy"><span>改修後</span></div></div><p><b>浦岡邸（大正期）</b> → レストランと客室に（2020年7月）</p></div>
+<div class="biz"><p class="bh">ホテルのほかにも、店や宿に</p><p class="bl">古い建物を受け継いで、店や宿を営む事業者もいます。</p><ul><li><img src="../pages/img/hito_zui.jpg" alt="" width="64" height="48" loading="lazy"><div><b>島田薬館カフェ 随（まにまに）</b><span>大正期の薬局を改装したカフェ。</span></div></li><li><img src="../pages/img/hito_sawada-noriyasu.jpg" alt="" width="64" height="48" loading="lazy"><div><b>酒乃さわだ 小倉邸</b><span>1995年に酒店を開き、2021年に城下町の小倉邸を開いた。肱川町で無農薬の酒米を育て、地元の酒蔵と日本酒をつくる。</span></div></li><li><span class="ic" aria-hidden="true"><svg><use href="#i-house"/></svg></span><div><b>城下の宿 燈 TOMOSHIBI／まろや四季</b><span>一棟貸しの古民家の宿。燈はオーナー自ら改修し、まろや四季は県外から移り住んだ人が営む。</span></div></li></ul><a class="more" href="../machibito/#g-shop">まちびとファイルで、お店と営む人を見る →</a></div>
+<div class="subh"><b>数字で見る、前といま</b></div>
+<div class="slide"><p class="sl"><span>大洲城・臥龍山荘・盤泉荘の入館者</span></p><div class="trio"><figure><img src="../pages/photos/d_2fd7f4ae.jpg" alt="大洲城の天守" loading="lazy"><figcaption>大洲城</figcaption></figure><figure><img src="../pages/photos/d_261fa63f.jpg" alt="肱川の岸に建つ臥龍山荘の不老庵" loading="lazy"><figcaption>臥龍山荘</figcaption></figure><figure><img src="../pages/photos/d_5ec6b9bb.jpg" alt="石垣の上に建つ盤泉荘" loading="lazy"><figcaption>盤泉荘</figcaption></figure></div><div class="ba2"><div class="c bf"><span class="y">2019年度</span><b>7.4<small>万人</small></b></div><div class="ar">→</div><div class="c af"><span class="y">2025年度</span><b>15.5<small>万人</small></b></div></div><div class="chart"><svg viewBox="0 0 330 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="入館者の年度ごとの推移：2019年度 7.4万人、2020年度 3.4万人、2021年度 3.9万人、2022年度 8.3万人、2023年度 10.1万人、2024年度 12.2万人、2025年度 15.5万人"><line x1="0" y1="128" x2="330" y2="128" stroke="#e5e2dd"/><rect x="15.0" y="76.8" width="30" height="51.2" rx="3" fill="#1f4fa8" fill-opacity="1"/><text x="30.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2019</text><text x="30.0" y="71.8" font-size="11.5" text-anchor="middle" fill="#1f4fa8" font-weight="700">7.4万</text><rect x="60.0" y="104.9" width="30" height="23.1" rx="3" fill="#1f4fa8" fill-opacity="0.5"/><text x="75.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2020</text><text x="75.0" y="99.9" font-size="10" text-anchor="middle" fill="#5f5f5f">3.4万</text><rect x="105.0" y="101.3" width="30" height="26.7" rx="3" fill="#1f4fa8" fill-opacity="0.5"/><text x="120.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2021</text><text x="120.0" y="96.3" font-size="10" text-anchor="middle" fill="#5f5f5f">3.9万</text><rect x="150.0" y="70.7" width="30" height="57.3" rx="3" fill="#1f4fa8" fill-opacity="0.5"/><text x="165.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2022</text><text x="165.0" y="65.7" font-size="10" text-anchor="middle" fill="#5f5f5f">8.3万</text><rect x="195.0" y="58.7" width="30" height="69.3" rx="3" fill="#1f4fa8" fill-opacity="0.5"/><text x="210.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2023</text><text x="210.0" y="53.7" font-size="10" text-anchor="middle" fill="#5f5f5f">10.1万</text><rect x="240.0" y="43.9" width="30" height="84.1" rx="3" fill="#1f4fa8" fill-opacity="0.5"/><text x="255.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2024</text><text x="255.0" y="38.9" font-size="10" text-anchor="middle" fill="#5f5f5f">12.2万</text><rect x="285.0" y="21.2" width="30" height="106.8" rx="3" fill="#1f4fa8" fill-opacity="1"/><text x="300.0" y="143" font-size="10.5" text-anchor="middle" fill="#5f5f5f">2025</text><text x="300.0" y="16.2" font-size="11.5" text-anchor="middle" fill="#1f4fa8" font-weight="700">15.5万</text></svg></div><p class="nt">2020・2021年度は感染症の影響で減少。2019年度は盤泉荘の開館前で、大洲城と臥龍山荘の2つだけで比べると1.7倍。</p></div>
+<div class="cnts"><div class="cnt"><div class="top"><svg class="big"><use href="#i-shop"/></svg><span class="ring">10倍</span></div><p class="sn">城下町に進出した事業者</p><b class="cu" data-from="4" data-to="41">41</b><small class="u"></small><p class="was">開業前 4 → いま</p><p class="nt2">2026年度途中・撤退した4を含む</p></div><div class="cnt"><div class="top"><svg class="big"><use href="#i-person"/></svg><span class="ring">12倍</span></div><p class="sn">生まれた雇用（延べ）</p><b class="cu" data-from="14" data-to="166">166</b><small class="u">人</small><p class="was">開業前 14人 → いま</p><p class="nt2">2024年度まで</p></div><div class="cnt"><div class="top"><svg class="big"><use href="#i-home"/></svg><span class="ring">18倍</span></div><p class="sn">城下町へ移り住んだ人</p><b class="cu" data-from="2" data-to="36">36</b><small class="u">人</small><p class="was">開業前 2人 → いま</p><p class="nt2">2024年度まで</p></div><div class="cnt"><div class="top"><svg class="big"><use href="#i-globe"/></svg><span class="ring">38倍</span></div><p class="sn">外国から市内に泊まった人</p><b class="cu" data-from="142" data-to="5363">5,363</b><small class="u">人</small><p class="was">2022年度 142人 → いま</p><p class="nt2">2025年度</p></div></div><div class="slide"><p class="sl"><span>大洲城に泊まったお金の行き先</span></p><p class="sn">経費の約3割が、文化財の保全と伝統の継承へ</p><div class="split"><i style="width:63%;background:#5d7bab">人件費・物件費 63%</i><i style="width:20%;background:#1f4fa8">伝統 20%</i><i style="width:11%;background:#3a68ad">11%</i><i style="width:6%;background:#5f5f5f"></i></div><p class="splitl">伝統文化の継承（神楽・御長柄行列など）20%／市への文化財使用料 11%／利益 6%</p><p class="nt">1617年の藩主の入城を再現する、日本で初めての木造天守での城泊。2020年7月から2026年4月までに66組が泊まりました。始める前に、地元説明会を30回以上重ねています。</p></div>
+<div class="subh"><b>いま、まちにあるもの</b></div><div class="have">
+<div><b>31<small>室</small></b><span>城下町の分散型ホテルの客室</span><i>2026年4月</i></div>
+<div><b>47<small>%</small></b><span>城下町の事業者の仕入れのうち市内の割合</span><i>県内では65%・2024年決算</i></div>
+<div><b>4.26<small>億円</small></b><span>17事業者の年間売上</span><i>2024年決算</i></div>
+<div><b>88.4<small>%</small></b><span>まちづくりへの住民の賛同</span><i>肱南地区・2025年12月</i></div>
+</div>
+<details><summary>宿・大洲カンパニーのいま</summary><div class="body"><p><b>分散型ホテル</b>　毎年客室を増やし、第四期の開発まで終えて、日本最大級の分散型ホテルになりました。客室を増やすこと自体が、町並みを守る仕組みになっています。</p><p><b>大洲カンパニー</b>　「大洲がちょっと気になる」だけで誰でも無料で参加できる、まちづくりを自分ごとにする集まりです。このLINEも、その入口のひとつです。</p></div></details>
+<p class="src">開業前＝分散型ホテルが開業した2020年7月より前の値（おおず未来のまちづくり構想の表）。出典：キタ・マネジメント『大洲まちづくりブック』（2026年5月）・「令和7年度実績報告」／おおず未来のまちづくり構想（2026年3月）</p>
+<div class="chh" id="future"><span class="no">3</span><b>2030年の目標</b><svg><use href="#c-future"/></svg></div><div class="fut"><div class="sec"><p class="k">まちづくり2.0 ／ OZU 555 PROJECT</p><h2>これから：2030年に、目指すこと</h2><p class="es">まちづくり2.0。このあとの数字は、インパクトレポートの指標の台帳から自動で書き換わります（台帳の更新 2026年9月28日）。</p></div>
+<div class="tl"><div class="y"><b class="yr">2026年3月</b><p class="h">「おおず未来のまちづくり構想」を発表</p><details><summary>くわしく</summary><div class="body"><p>これまでの10年は、壊れかけたものを直す時期でした。構想では、これからの10年を「まちづくり2.0」と呼び、2つの考え方で進めます。</p><p><b>みんなで関わる（共創型）</b>　行政や特定の事業者だけが進めるのではなく、地域の内と外の人が対等に組み、それぞれが自分から関わる進め方です。</p><p><b>関わるほど良くなる（リジェネラティブ）</b>　いまあるものを保つだけでも、壊れたものを元に戻すだけでもなく、人が関わるほどまちが良くなり、自分たちで変わり続けていく状態を目指します。</p><p>中心にあるのは、住んでいなくても大洲に関わり続ける人（関係人口）を増やすこと。大洲にとってのまちづくりは、関わる人を増やすことです。その主役は、大洲に思いを寄せるあなたです。</p><p>人口5万人以下の自治体は、全国の3分の2を占めます。人口が減り、まちの中心が空いていく大洲の課題は、日本の地方都市の縮図です。だからこそ、大洲がこの課題を乗り越える形をつくれば、同じ課題を抱える日本中のまちの道しるべになります。城下町（肱南）での成果を、駅のある肱北、山の河辺、海の長浜へ広げていきます。</p><p class="quote">大洲の未来は、みんなで描く。<br>ひと、まち、つながる、ワクワクの物語、はじまる。<small>——おおず未来のまちづくり構想（2026年3月）</small></p></div></details></div></div>
+<div class="q"><p class="qk">問い</p><p class="qt">人口5万人以下のまちは、この先も続いていけるか。</p><p>いちばん上で見る数字は、人の出入り（転入と転出の差）。<span class="tag prep">準備中</span><br>直接は動かせないので、その手前の「来る → 応援する → 担い手になる → 住む」を数字で追います。</p><p class="lk">出典：<a href="https://www.e-stat.go.jp/dbview?sid=0003419945" target="_blank" rel="noopener">総務省「住民基本台帳人口移動報告 年報」表11</a></p></div>
+<p class="ringh">OZU 555 PROJECT ＝ 2030年の3つの目標</p><div class="five">
+<div><b>5</b><span>先進事例</span><i>いま 0<br>これからつくる</i></div>
+<div><b>50</b><span>事業者</span><i>いま 41<br>撤退4を含む</i></div>
+<div><b>500<small>人</small></b><span>雇用</span><i>いま 延べ166<br>2024年度まで</i></div>
+</div>
+<p class="fivel">※ 先進事例は、観光・ものづくり・教育・健康・AI の5つのテーマで、外の第三者に評価されるものを1件ずつ。まちづくり1.0 の城泊・分散型ホテル・世界1位の受賞は数えません。</p>
+<p class="fivel">※ 2030年を目標の年として「おおずビジョン2030」の名で進めます。</p>
+<div class="chips"><span>観光</span><span>ものづくり</span><span>教育</span><span>健康</span><span>AI</span></div><details><summary>5つのテーマをくわしく</summary><div class="body"><p><b>観光</b>　ここでしかできない歴史体験を大洲の柱の産業にし、関わる人を生む最大の入口に。3施設あわせて20万人、大洲カンパニーの延べ5,000人登録を目指し、365日の観光カレンダーづくりや、鵜飼・棚田の活かし方の見直しを進めます。</p><p><b>ものづくり</b>　養蚕や木蝋など、大洲の地場産業に受け継がれてきたものをいまに合わせて組み直し、「大洲でつくれば稼げる」場をつくります。年商1,000万円規模のヒット商品を、5つの事業者で新しく開発します。</p><p><b>教育</b>　まち全体を教室に。行政・企業・学校が組む学びの場をつくり、中高生の探究学習からインターンシップまで、まちへの誇りを育て、人が大洲へ戻ってくる流れをつくります。</p><p><b>健康</b>　100年の歴史をもつ建物と自然を、心と体を整える場として活かします。神社でのヨガや肱川沿いを走るランなど30種のプログラムを常に用意し、見て回る観光から、滞在して元気になる旅へ。大洲アンバサダーの制度もつくります。</p><p><b>AI</b>　合言葉は「Invisible AI, Visible Humanity（見えないAI、際立つ人間性）」。AIが舞台裏で働き、人は文化的な活動に打ち込めるまちを目指します。このLINEも、その一歩です。</p></div></details>
+<p class="src">出典：おおず未来のまちづくり構想（2026年3月・キタ・マネジメント／バリューマネジメント／伊予銀行）。</p></div>
+<a class="main" href="../guide/#now">2030年に向けて、一緒に動かす<small>関わり方ガイド：いま参加できること</small></a><div class="nexts"><p class="nh">次に見る</p><a href="../machibito/#g-maker2"><span><b>まちびとファイル</b><small>この10年をつくってきた人たち</small></span></a><a href="../work/"><span><b>ワーク＆スタディ</b><small>視察・研修・インターンで、再生の現場を見る</small></span></a><a href="../seido/"><span><b>つながる制度</b><small>移り住む・店をひらく・ふるさと納税</small></span></a><a href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html"><span><b>OZU 555 PROJECT</b><small>2030年に向けたプロジェクトの特設ページ</small></span></a></div><div class="contact"><p class="ch">数字や数え方についてのお問い合わせ</p><p class="co">一般社団法人キタ・マネジメント</p><div class="cbtn"><a href="tel:0893247060">電話する<small>0893-24-7060</small></a><a href="mailto:kita-management@kita-m.com">メールする<small>kita-management@kita-m.com</small></a></div></div>
+</div>
+<section class="srcs"><p class="sh">出どころ</p><ul><li>年表と構想の文：キタ・マネジメント『大洲まちづくりブック』（2026年5月）・おおず未来のまちづくり構想（2026年3月）。2026年10月2日に確認</li><li>2022年・2023年の国際的な評価：大洲市観光まちづくり戦略会議『第2期大洲市観光まちづくり戦略ビジョン』。2026年11月16日に確認</li><li>2026年の受賞：キタ・マネジメント「お知らせ」（2026年9月28日）。2026年10月26日に確認</li><li>ホテルのほかの店と宿：まちびとファイルの名鑑（キタ・マネジメント集計・大洲カンパニー「大洲のひと」）。2026年9月28日に確認</li><li>これからの数字：インパクトレポートの指標の台帳（2026年9月28日に更新）</li><li>写真：大洲まちづくりブック・キタ・マネジメント提供／セキ撮影・OZU 555 PROJECT 写真共有フォルダ／Visit Ozu・大洲カンパニー「大洲のひと」</li></ul></section>
+<section class="oc-ways" aria-labelledby="oc-ways-h"><div class="oc-in"><h2 class="oc-h" id="oc-ways-h">大洲とのかかわり方を見る</h2><div class="oc-grid"><a class="oc-way" href="../discover/"><small>大洲で何を体験できる？</small><b>ディスカバー大洲</b><i>体験する →</i></a><a class="oc-way" href="../machibito/"><small>どんな人に会える？</small><b>まちびとファイル</b><i>会う →</i></a><a class="oc-way" href="../guide/"><small>自分にできることは？</small><b>関わり方ガイド</b><i>関わる →</i></a><a class="oc-way" href="../work/"><small>仕事や学びで関われる？</small><b>ワーク＆スタディ</b><i>学ぶ →</i></a><div class="oc-way on" aria-current="page"><small>まちはどこへ向かう？</small><b>まちづくりデータ</b><i>いま見ているページ</i></div><a class="oc-way" href="../seido/"><small>どんな制度を使える？</small><b>つながる制度</b><i>使う →</i></a></div><a class="oc-totop" href="https://asumaru3lfb.github.io/ozu-company-web/">大洲カンパニーの TOP へ</a></div></section>
+<footer class="oc-foot"><div class="oc-in"><img src="../assets/oc-logo.png" alt="" width="60" height="52"><div class="oc-links"><a href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE</a><span class="oc-none">note（準備中）</span><a href="https://www.instagram.com/ozu_company/" target="_blank" rel="noopener">Instagram</a></div><span>運営：一般社団法人キタ・マネジメント／愛媛県大洲市大洲649-1 2F まちの駅あさもや</span></div></footer>
+<script>
+(function(){
+var nav=document.querySelector('.page-index'),entry=document.querySelector('.jumpc');
+var links=nav?nav.querySelectorAll('a'):[],ids=['past','done','future'];
+function upd(){
+ if(!nav||!entry)return;
+ nav.hidden=false;
+ nav.classList.toggle('show',entry.getBoundingClientRect().bottom<OC_H());
+ var cur='';ids.forEach(function(i){var el=document.getElementById(i);if(el&&el.getBoundingClientRect().top<=120+OC_H())cur=i;});
+ links.forEach(function(a){a.classList.toggle('on',a.dataset.sec===cur);});
+}
+window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
+if('IntersectionObserver' in window){
+ var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var co=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting||reduce)return;co.unobserve(e.target);
+  var el=e.target,a=+el.dataset.from,b=+el.dataset.to,t0=null;function f(t){t0=t0||t;var p=Math.min(1,(t-t0)/1100);p=1-Math.pow(1-p,3);el.textContent=Math.round(a+(b-a)*p).toLocaleString();if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);});},{threshold:.6});
+ document.querySelectorAll('.cu').forEach(function(el){co.observe(el);});
+}})();
+</script><script>
+/* 大洲カンパニーのヘッダー（2026-11-16・scripts/build_ozu_company_pages.py）：ヘッダーの高さを --oc-hh に／メニューの開け閉め */
+(function(){var b=document.getElementById('oc-bar'),bg=document.getElementById('oc-burger'),mn=document.getElementById('oc-mnav');if(!b||!bg||!mn)return;
+function hh(){document.documentElement.style.setProperty('--oc-hh',b.offsetHeight+'px');}
+hh();window.addEventListener('resize',hh);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(hh);
+function set(o){mn.hidden=!o;bg.setAttribute('aria-expanded',String(o));bg.setAttribute('aria-label',o?'メニューを閉じる':'メニューを開く');}
+bg.addEventListener('click',function(){set(mn.hidden);});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mn.hidden){set(false);bg.focus();}});})();
+</script>
+</body></html>

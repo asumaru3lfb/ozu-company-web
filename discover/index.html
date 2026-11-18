@@ -1,0 +1,364 @@
+<!DOCTYPE html><html lang="ja"><head>
+<!-- 独立ページ：scripts/build_ozu_company_pages.py が pages/event.html から組み立てたもの（台帳 site_ozu_company.json）。手で直さない -->
+<title>ディスカバー大洲｜大洲カンパニー</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow">
+<!-- 生成物：scripts/build_ozu555_site_event.py（今の kyou.html・asobu_cards.json・行事の台帳 event_ledger.json から）。手で直さない -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* きょうの大洲（kyou.html）の部品。10本共通の部品（土台＝outputs/line-pages/2026-10-01_ugoki_試作/mock.css）。見出し＝明朝／本文＝ゴシック */
+:root{--blue:#1f4fa8;--blue-soft:#fff1cf;--ink:#231815;--sub:#5f5f5f;--bg:#ffffff;--paper:#faf8f4;--line:#e5e2dd;--gold:#a77a41}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif;font-size:15px;line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+.wrap{padding:16px 18px 0}
+.sec{margin:30px 0 12px}
+.sec h2{font-family:"Shippori Mincho",serif;font-size:20px;margin:0;line-height:1.45}
+.sec .s{font-size:12.5px;color:var(--sub);margin:2px 0 0}
+.tag{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;border-radius:10px;font-weight:500;vertical-align:2px}
+.tag.go{background:var(--blue);color:#fff}
+.tag.prep{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.uc{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.uc img{width:76px;height:76px;object-fit:cover;border-radius:8px;display:block}
+.uc h3{font-size:15px;font-weight:700;margin:0 0 2px;line-height:1.5}
+.uc p{font-size:13px;color:var(--sub);margin:0;line-height:1.65}
+.uc .go{font-size:12.5px;color:var(--blue);margin-top:4px}
+.main{display:block;margin:30px 0 8px;background:var(--blue);color:#fff;text-align:center;text-decoration:none;border-radius:12px;padding:15px 12px;font-size:16px;font-weight:700;min-height:52px}
+.main small{display:block;font-size:11.5px;font-weight:400;opacity:.9;margin-top:2px}
+.after{font-size:13px;color:var(--sub);text-align:center;margin:0 0 6px}
+.note{font-size:11.5px;color:var(--sub);line-height:1.75;margin:22px 0 0}
+.pnav{margin:26px 0 0;padding:16px 18px;border-top:1px solid var(--line);background:var(--paper)}
+.pnav p{font-size:11px;color:var(--sub);margin:0 0 6px}
+.pnav .g{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.pnav a,.pnav span.on{font-size:12.5px;padding:7px 12px;border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--ink);background:#fff;min-height:34px}
+.pnav span.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:14px 18px 30px;line-height:1.8;background:var(--paper)}
+
+/* ── このページの部品 ── */
+/* 2週間のカレンダー（行事が始まる日に点。押すとその行事へ） */
+.cal{border:1px solid var(--line);border-radius:12px;padding:12px 10px 8px;background:#fff;margin:0 0 4px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px 0}
+.cal-g .w{font-size:11px;color:var(--sub);text-align:center;padding:0 0 4px}
+.cal-g .w.su{color:var(--gold)}.cal-g .w.sa{color:var(--blue)}
+.cal-g .d{appearance:none;border:0;background:none;font:inherit;color:var(--ink);min-height:44px;padding:4px 0 6px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;cursor:default;position:relative}
+.cal-g .d b{font-family:"Shippori Mincho",serif;font-size:16px;font-weight:500;width:30px;height:30px;line-height:30px;border-radius:50%;text-align:center}
+.cal-g .d small{position:absolute;top:-3px;left:50%;transform:translateX(-50%);font-size:9.5px;color:var(--gold);white-space:nowrap}
+.cal-g .d i{width:6px;height:6px;border-radius:50%;background:transparent}
+.cal-g .d.has{cursor:pointer}
+.cal-g .d.has i{background:var(--blue)}
+.cal-g .d.today b{background:var(--blue);color:#fff;font-weight:700}
+.cal-g .d.out{opacity:.32}
+.cal-l{font-size:11.5px;color:var(--sub);margin:6px 4px 0;display:flex;align-items:center;gap:6px}
+.cal-l i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+
+/* 行事のカード：左に日付の箱、カード全体を押すと市・Visit Ozu の案内が開く */
+.ev{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--ink);scroll-margin-top:12px}
+.evs .ev:last-child{border-bottom:1px solid var(--line)}
+.db{width:64px;min-height:72px;border-radius:10px;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.15;padding:6px 2px}
+.db small{font-size:10.5px;color:var(--sub)}
+.db b{font-family:"Shippori Mincho",serif;font-size:26px;color:var(--blue);font-weight:700;line-height:1.15}
+.db span{font-size:11px;color:var(--sub)}
+.db.on{background:var(--blue)}
+.db.on small,.db.on span{color:#fff;opacity:.9}
+.db.on b{color:#fff;font-size:17px;margin:3px 0}
+.ev h3{font-size:15.5px;font-weight:700;margin:0;line-height:1.55;word-break:auto-phrase}
+.ev .mt{font-size:12.5px;color:var(--sub);margin:3px 0 0;line-height:1.65}
+.ev .nt{font-size:13px;margin:5px 0 0;line-height:1.7}
+.ev .sr{display:inline-block;font-size:12.5px;color:var(--blue);margin:6px 0 0}
+.ev .tag{margin-left:6px}
+.nowbox{background:var(--blue-soft);border-radius:12px;padding:4px 14px}
+.nowbox .ev{border-top:0}
+.nowbox .ev+.ev{border-top:1px solid #ecdcb4}
+.empty{font-size:13.5px;color:var(--sub);background:var(--paper);border-radius:10px;padding:14px;margin:0;line-height:1.75}
+
+/* 季節の見どころ：横に送る12か月（いまの月から） */
+.mcar{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;margin:0 -18px;padding:2px 18px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.mcar::-webkit-scrollbar{display:none}
+.mc{flex:none;width:262px;scroll-snap-align:start;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.mc .ph{position:relative;height:138px;background:var(--paper)}
+.mc .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.mc .ph .mo{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.94);color:var(--ink);font-family:"Shippori Mincho",serif;font-weight:700;font-size:14px;border-radius:14px;padding:2px 10px}
+.mc .ph .cap{position:absolute;right:8px;bottom:6px;font-size:10px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.mc .ph.tx{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mc .ph.tx b{font-family:"Shippori Mincho",serif;font-size:40px;color:var(--blue);line-height:1}
+.mc .ph.tx span{font-family:Georgia,serif;font-size:10px;letter-spacing:.3em;color:var(--gold)}
+.mc .bd{padding:12px 14px 14px}
+.mc .en{font-family:Georgia,serif;font-size:10px;letter-spacing:.26em;color:var(--gold);margin:0}
+.mc h3{font-family:"Shippori Mincho",serif;font-size:17px;margin:0 0 4px;line-height:1.5}
+.mc .it{border-top:1px solid var(--line);padding:8px 0 0;margin:8px 0 0}
+.mc .it .wh{font-size:11.5px;color:var(--gold);margin:0}
+.mc .it h4{font-size:14px;margin:0;line-height:1.55}
+.mc .it p{font-size:12.5px;color:var(--sub);margin:2px 0 0;line-height:1.7}
+.mc .now{margin-left:6px}
+.chip{display:inline-block;font-size:10.5px;line-height:1;padding:3px 7px;border-radius:9px;border:1px solid var(--line);color:var(--sub);font-weight:400;vertical-align:2px;margin-left:5px;background:#fff}
+.mc .ph.tx + .bd .en{display:none}
+.legend{font-size:11.5px;color:var(--sub);line-height:1.75;margin:0}
+/* ── あそぶ・会う の部品（build_ozu555_asobu.CSS から） ── */
+.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;margin:0 -16px 10px;padding:0 16px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rail::-webkit-scrollbar{display:none}
+.rc{flex:0 0 74%;max-width:300px;scroll-snap-align:start;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;color:var(--ink);display:flex;flex-direction:column}
+.rc.sm{flex-basis:60%;max-width:250px}
+.rc .ph{aspect-ratio:4/3;background:#e9e4dc}
+.rc .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.rc .ph.tx{display:flex;align-items:center;justify-content:center;background:var(--paper);border-bottom:1px solid var(--line)}
+.rc .ph.tx span{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-size:26px;letter-spacing:.08em;color:var(--gold);padding:0 14px;text-align:center;line-height:1.4}
+.rc .bd{padding:10px 12px 12px;display:flex;flex-direction:column;flex:1}
+.rc h3{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-size:16px;margin:0 0 2px;line-height:1.45}
+.rc p{font-size:12.5px;color:var(--sub);margin:0;line-height:1.65;flex:1}
+.rc .go{display:block;margin-top:8px;font-size:13px;color:var(--blue);min-height:24px}
+.card{display:flex;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px;margin:0 0 10px;background:#fff;color:var(--ink)}
+.card .th{flex:0 0 84px;height:84px;border-radius:6px;overflow:hidden}
+.card .th img{width:100%;height:100%;object-fit:cover;display:block}
+.card .bd{flex:1;min-width:0}
+.card h3{font-size:15px;margin:0 0 2px;line-height:1.5;font-weight:500}
+.card p{font-size:13px;color:var(--sub);margin:0;line-height:1.7}
+.card .nx{color:var(--blue);font-weight:500;font-size:13px}
+.card .nx:empty{display:none}
+.card .go{display:inline-block;margin-top:6px;font-size:13px;color:var(--blue)}
+.more{display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--blue);border-radius:10px;color:var(--blue);padding:10px 12px;min-height:48px;font-size:14px;margin:4px 0 12px}
+details{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;background:#fff}
+summary{list-style:none;padding:12px;font-size:14.5px;color:var(--ink);min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";color:var(--sub);flex:0 0 auto}
+details[open] summary::after{content:"－"}
+details p{font-size:14px;margin:0;padding:0 12px 14px;line-height:1.9}
+
+/* ── 統合ページで足した部品 ── */
+/* ページ上部と目次（2026-10-26 相互レビューの直し・00_共通「相互レビューの直し」決まり1・2・5）
+   .page-band＝150px の写真の帯（名前と問いだけ）／.lede＝帯の下の説明（白地・本文の字）／
+   .page-index＝上に残る番号つきの下線の目次（制度の形・高さ44px・1行。読んでいる節に色が付く） */
+.page-band{position:relative;height:150px;overflow:hidden;background:var(--ink);color:#fff}
+.page-band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.page-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,24,21,.05) 25%,rgba(35,24,21,.78))}
+.page-band .tt{position:absolute;z-index:1;left:18px;right:18px;bottom:14px}
+.page-band h1{margin:0;font-family:"Shippori Mincho",serif;font-size:28px;line-height:1.3;font-weight:700;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.page-band .question{margin:3px 0 0;font-size:13px;font-weight:700}
+.lede{margin:0;padding:16px 18px 0;font-size:15px;line-height:1.75;word-break:auto-phrase}
+.now1{margin:8px 18px 0;font-size:13.5px;line-height:1.6}
+.now1[hidden]{display:none}
+.now1 a{color:var(--blue);text-decoration:none}
+.page-index{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);display:flex;justify-content:space-between;margin:12px 0 0;padding:0 18px;border-bottom:1px solid var(--line)}
+.page-index a{flex:0 0 auto;display:flex;align-items:center;gap:4px;min-height:44px;color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent}
+.page-index a i{font-style:normal;font-size:11px;color:var(--sub)}
+.page-index a.on{color:var(--blue);border-bottom-color:var(--blue)}
+.page-index a.on i{color:var(--blue)}
+.page-index a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.page-index+.wrap{padding-top:0}
+/* 節の見出し：目次と同じ番号＋明朝22px（節の色は青1色・決まり3）。見出しの右に件数・確認日 */
+.sec h2{display:flex;align-items:center;gap:10px;font-size:22px}
+.sec h2 i{flex:none;font-style:normal;font-family:"Noto Sans JP",sans-serif;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;line-height:26px;text-align:center}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hrow .cnt{flex:none;font-size:12.5px;color:var(--sub);white-space:nowrap}
+/* 箱の地は薄い青（決まり4。紙色はフッターだけ）・薄茶の地は使わない（10/23） */
+.db,.empty,.rc .ph,.rc .ph.tx,.mc .ph.tx{background:var(--blue-soft)}
+/* 季節の見どころ：札の高さをそろえ、短い月の下に空きを出さない（相互レビュー A-11） */
+.mcar{align-items:stretch}
+.mcar .mc{display:flex;flex-direction:column}
+details img{display:block;width:calc(100% - 24px);margin:0 12px 12px;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+/* ページの終わり：他タブへの行の並び（相互レビュー C-28・決まり9） */
+.next{margin:30px 0 0}
+.next .lb{margin:0 0 4px;font-size:12.5px;color:var(--sub)}
+.next a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:58px;padding:8px 2px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.next a:last-child{border-bottom:1px solid var(--line)}
+.next a b{display:block;font-size:15px;font-weight:700}
+.next a small{display:block;font-size:12.5px;color:var(--sub)}
+.next a::after{content:"→";flex:none;color:var(--blue)}
+[id]{scroll-margin-top:56px}
+.rail{margin:10px -18px 6px;padding:0 18px 8px;scroll-padding-left:18px}
+.rc,.card{text-decoration:none}
+.mc .it .ol{display:inline-block;font-size:12.5px;color:var(--blue);margin:4px 0 0;text-decoration:none;min-height:24px}
+.more{text-decoration:none;margin:18px 0 6px}
+.src{font-size:11px;color:var(--sub);margin:14px 0 0;line-height:1.8}
+</style><link rel="stylesheet" href="../assets/ozu-company.css">
+<script>window.OC_H=function(){var b=document.getElementById('oc-bar');return b?b.offsetHeight:0};</script>
+</head><body>
+<header class="oc-hd" id="oc-hd"><div class="oc-in" id="oc-bar"><a class="oc-brand" href="https://asumaru3lfb.github.io/ozu-company-web/"><img src="../assets/oc-logo.png" alt="大洲カンパニーのロゴ" width="180" height="157">大洲カンパニー</a><nav class="oc-nav" aria-label="メイン"><a href="https://asumaru3lfb.github.io/ozu-company-web/#about">大洲カンパニーとは</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#can">できること</a><a href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav><span class="oc-r"><a class="oc-pill" href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE登録</a><button type="button" class="oc-burger" id="oc-burger" aria-label="メニューを開く" aria-expanded="false" aria-controls="oc-mnav"><i></i><i></i><i></i></button></span></div><nav class="oc-mnav" id="oc-mnav" hidden aria-label="メニュー"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span class="oc-mlab">大洲とのかかわり方</span><span class="oc-mcur" aria-current="page">ディスカバー大洲<small>いま見ているページ</small></span><a href="../machibito/">まちびとファイル<small>どんな人に会える？</small></a><a href="../guide/">関わり方ガイド<small>自分にできることは？</small></a><a href="../work/">ワーク＆スタディ<small>仕事や学びで関われる？</small></a><a href="../data/">まちづくりデータ<small>まちはどこへ向かう？</small></a><a href="../seido/">つながる制度<small>どんな制度を使える？</small></a><a class="oc-msep" href="https://asumaru3lfb.github.io/ozu-company-web/ozu555.html">OZU 555 PROJECT</a><a href="https://asumaru3lfb.github.io/ozu-company-web/#contact">お問い合わせ</a></nav></header>
+<nav class="oc-crumb" aria-label="現在地"><a href="https://asumaru3lfb.github.io/ozu-company-web/">TOP</a><span aria-hidden="true">＞</span><span aria-current="page">ディスカバー大洲</span></nav>
+<header class="page-band"><img src="../pages/photos/d_bfaf2055.jpg" alt="緑の肱川をゆく屋形船"><div class="tt"><h1>ディスカバー大洲</h1><p class="question">大洲で何を体験できる？</p></div></header><p class="lede">きょうの行事と、この先2週間の予定。城に泊まる、まちを歩く体験と、季節の見どころまで。申し込みと予約は、各行事・施設の案内から。</p><p class="now1" id="nowLine" hidden></p><nav class="page-index" aria-label="このページの節"><a href="#today"><i>1</i>きょう</a><a href="#soon"><i>2</i>予定</a><a href="#stay"><i>3</i>泊まる</a><a href="#monthly"><i>4</i>毎月</a><a href="#seasons"><i>5</i>季節</a><a href="#more"><i>6</i>読み物</a></nav>
+<div class="wrap">
+<div class="sec" id="today" style="margin-top:22px"><h2><i>1</i>きょうの大洲</h2><p class="s" id="heroSub">季節の見どころと、この先2週間の行事</p></div>
+<div id="tdyNow"></div>
+
+<div class="sec" id="soon"><div class="hrow"><h2><i>2</i>この先2週間</h2><span class="cnt">9月28日に確認</span></div></div>
+<div class="cal" aria-label="この先2週間のカレンダー">
+<div class="cal-g" id="calGrid"></div>
+<p class="cal-l"><i></i>行事が始まる日。押すとその行事へ</p>
+</div>
+<div id="tdySoon" class="evs"></div>
+<p class="note" id="tdyNote">大洲市・Visit Ozu で日付を確かめた行事を載せています。お出かけの前に、各行事の案内で最新の情報をご確認ください。</p>
+<script type="application/json" id="kyouData">
+{
+"checked": "2026-09-28",
+"events": [
+{
+"title": "もみじまつり",
+"start": "2026-11-01",
+"end": "2026-11-30",
+"time": "",
+"place": "新谷",
+"kind": "例年",
+"note": "",
+"src": "https://jp.visitozu.com/archives/feature/4748",
+"apply": "",
+"by": ""
+},
+{
+"title": "城下のMACHIBITO",
+"start": "2026-11-28",
+"end": "2026-11-29",
+"time": "",
+"place": "城下町（肱南地区）",
+"kind": "",
+"note": "",
+"src": "https://jp.visitozu.com/archives/feature/4748",
+"apply": "",
+"by": ""
+},
+{
+"title": "肱川ふれあいまつり",
+"start": "2026-11-29",
+"end": "2026-11-29",
+"time": "",
+"place": "肱川風の博物館・歌麿館横",
+"kind": "行事",
+"note": "",
+"src": "https://www.city.ozu.ehime.jp/soshiki/hijikawash/74769.html",
+"apply": "",
+"by": ""
+}
+]
+}
+</script>
+<div class="sec" id="stay"><div class="hrow"><h2><i>3</i>泊まる・歩く・体験する</h2><span class="cnt">4件 →</span></div><p class="s">横に送って選ぶ。予約と空きは各公式で。</p></div>
+<div class="rail"><a class="rc" href="https://www.ozucastle.com/" target="_blank" rel="noopener"><div class="ph"><img src="../pages/photos/d_2b719a21.jpg" alt="夕暮れに灯りがともる NIPPONIA HOTEL の町家" loading="lazy"></div><div class="bd"><h3>NIPPONIA HOTEL 大洲 城下町</h3><p>城下町に点在する町家に分かれて泊まり、まちを歩いて食事へ向かう。</p><span class="go">公式 ↗</span></div></a><a class="rc" href="https://www.garyusanso.jp/" target="_blank" rel="noopener"><div class="ph"><img src="../pages/photos/d_261fa63f.jpg" alt="肱川の崖の上に建つ臥龍山荘の不老庵" loading="lazy"></div><div class="bd"><h3>臥龍山荘</h3><p>明治30年代の数寄屋（建物は国の重要文化財、庭園は国の名勝）。毎日9時〜17時に開いている。</p><span class="go">公式 ↗</span></div></a><a class="rc" href="https://guide.visitozu.com/" target="_blank" rel="noopener"><div class="ph"><img src="../pages/photos/d_a5b6ee4c.jpg" alt="おはなはん通りの町並み" loading="lazy"></div><div class="bd"><h3>城下町さんぽ</h3><p>おはなはん通り、赤煉瓦館、まちの駅あさもや。町家に入った店を、志ぐれ片手にはしごする。</p><span class="go">まちのガイド ↗</span></div></a><a class="rc" href="https://castlestay.ozucastle.com/" target="_blank" rel="noopener"><div class="ph"><img src="../pages/photos/d_2570bc18.jpg" alt="大洲城の天守の中に敷かれた寝床" loading="lazy"></div><div class="bd"><h3>大洲城キャッスルステイ</h3><p>木造で復元した天守に泊まる。入城の場面を再現し、鉄砲隊の祝砲と地域の伝統芸能が迎える。</p><span class="go">公式 ↗</span></div></a></div>
+<div class="sec" id="monthly"><h2><i>4</i>毎月・毎週の催し</h2><p class="s">大洲城の本丸で、決まった日に開かれています。</p></div>
+<a class="card" href="https://ozucastle.jp/experience/hatafuri/" target="_blank" rel="noopener"><div class="th"><img src="../pages/photos/d_a1eeca45.jpg" alt="" loading="lazy"></div><div class="bd"><h3>大洲藩鉄砲隊の公開練習</h3><p class="nx" data-nth="2" data-wd="6" data-time="14:00"></p><p>大洲城本丸。実物の火縄銃による演武を、毎月第2土曜の14時から公開している。観覧無料。</p><span class="go">大洲城 ↗</span></div></a><a class="card" href="https://ozucastle.jp/experience/hatafuri/" target="_blank" rel="noopener"><div class="th"><img src="../pages/photos/d_249d9dd5.jpg" alt="" loading="lazy"></div><div class="bd"><h3>列車に旗を振る（歓迎旗振り）</h3><p>観光列車「伊予灘ものがたり」が肱川の鉄橋を渡るとき、大洲城本丸から旗を振って迎える。土・日・祝日の2回、だれでも参加できる（無料）。時刻は大洲城の公式で。</p><span class="go">大洲城 ↗</span></div></a>
+<div class="sec" id="seasons"><div class="hrow"><h2><i>5</i>季節の見どころ</h2><span class="cnt">12か月 →</span></div><p class="s">大洲は一年を通して「見頃」が入れ替わるまちです。</p></div>
+<div class="mcar" id="mcar">
+<div class="mc" data-m="1"><div class="ph"><img src="../pages/img/p01_891.jpg" alt="朝霧に包まれる大洲盆地と肱川" loading="lazy"><span class="mo">1月</span></div><div class="bd"><p class="en">JANUARY</p><h3>朝霧と、静かな城下町</h3>
+<div class="it"><p class="wh">冬期（11月頃〜3月頃）</p><h4>肱川あらし<span class="chip">見頃</span></h4><p>流域で冷えた霧が川面を海へと流れ下る、大洲でしか見られない気象現象。冷え込んだ晴れの朝が狙い目です。</p></div></div></div>
+<div class="mc" data-m="2"><div class="ph"><img src="../pages/photos/d_abeda7fb.jpg" alt="霧のかかる冬の肱川と山" loading="lazy"><span class="mo">2月</span><span class="cap">冬の朝の霧</span></div><div class="bd"><p class="en">FEBRUARY</p><h3>雲海の季節、まちはあたたかく</h3>
+<div class="it"><p class="wh">冬期</p><h4>雲海と冨士山（とみすやま）<span class="chip">見頃</span></h4><p>盆地のまちが朝霧の底に沈み、雲海が広がります。カメラを持った人たちが早朝のまちに現れる季節。</p></div></div></div>
+<div class="mc" data-m="3"><div class="ph"><img src="../pages/photos/d_c3383275.jpg" alt="桜の咲く大洲城" loading="lazy"><span class="mo">3月</span><span class="cap">大洲城の桜</span></div><div class="bd"><p class="en">MARCH</p><h3>春のきざし</h3>
+<div class="it"><p class="wh">下旬〜</p><h4>桜のつぼみ、ふくらむ<span class="chip">見頃</span></h4><p>大洲城の桜が開きはじめます。見頃の速報はこのLINEでお知らせします。</p></div></div></div>
+<div class="mc" data-m="4"><div class="ph"><img src="../pages/photos/d_c487914a.jpg" alt="満開の桜と大洲城の天守" loading="lazy"><span class="mo">4月</span><span class="cap">大洲城の桜</span></div><div class="bd"><p class="en">APRIL</p><h3>城とまちが、いちばん華やぐ</h3>
+<div class="it"><p class="wh">上旬</p><h4>大洲城の桜<span class="chip">見頃</span></h4><p>市民の寄付も集めて2004年に木造復元された天守と、桜。大洲の春のいちばんの見どころです。</p></div></div></div>
+<div class="mc" data-m="5"><div class="ph"><img src="../pages/photos/d_e8d3561f.jpg" alt="青もみじ越しに見る臥龍山荘の不老庵と肱川" loading="lazy"><span class="mo">5月</span><span class="cap">臥龍山荘の青もみじ</span></div><div class="bd"><p class="en">MAY</p><h3>新緑の川とまち</h3>
+<div class="it"><p class="wh">5月中</p><h4>臥龍山荘の青もみじ<span class="chip">見頃</span></h4><p>明治の数寄屋の名建築と、若葉の緑。紅葉と並ぶもう一つの見頃です。</p></div></div></div>
+<div class="mc" data-m="6"><div class="ph"><img src="../pages/photos/d_c65c11a7.jpg" alt="かがり火を焚く鵜飼の舟" loading="lazy"><span class="mo">6月</span><span class="cap">大洲のうかい</span></div><div class="bd"><p class="en">JUNE</p><h3>川のまちの夏、開幕</h3>
+<div class="it"><p class="wh">例年6月上旬〜</p><h4>大洲のうかい 開幕<span class="chip">例年</span></h4><p>日本三大鵜飼に数えられる夏の風物詩。屋形船の上から、かがり火に照らされた鵜匠の技を間近に。その年の日程はLINEでお知らせします。</p><a class="ol" href="http://ozuukai.com/" target="_blank" rel="noopener">公式 ↗</a></div></div></div>
+<div class="mc" data-m="7"><div class="ph"><img src="https://kita-m.com/wp/wp-content/uploads/2020/08/52abb85efc276315b0c1d8bfd69e30a9.jpg" alt="夜の肱川、かがり火を焚く鵜飼の舟" loading="lazy"><span class="mo">7月</span><span class="cap">大洲のうかい</span></div><div class="bd"><p class="en">JULY</p><h3>かがり火と川風</h3>
+<div class="it"><p class="wh">シーズン中</p><h4>大洲のうかい<span class="chip">例年</span></h4><p>夏本番の鵜飼。夕暮れの乗船から、かがり火の漁まで。浴衣での乗船も似合います。</p><a class="ol" href="http://ozuukai.com/" target="_blank" rel="noopener">公式 ↗</a></div></div></div>
+<div class="mc" data-m="8"><div class="ph"><img src="../pages/photos/d_a676073f.jpg" alt="夜の肱川に浮かぶ灯りのともった舟" loading="lazy"><span class="mo">8月</span><span class="cap">夏の夜の肱川</span></div><div class="bd"><p class="en">AUGUST</p><h3>川辺がいちばん賑わう月</h3>
+<div class="it"><p class="wh">例年8月下旬〜</p><h4>いもたき、はじまる<span class="chip">例年</span></h4><p>肱川の河原に桟敷が並び、鍋を囲む灯りがともる大洲の風習。藩政時代の川原の寄り合いに由来すると伝えられ、大洲はその本場として知られています。</p><a class="ol" href="https://www.city.ozu.ehime.jp/site/kanko/68648.html" target="_blank" rel="noopener">市の案内 ↗</a></div></div></div>
+<div class="mc" data-m="9"><div class="ph"><img src="../pages/photos/d_9e604fde.jpg" alt="かがり火を焚く鵜飼の舟" loading="lazy"><span class="mo">9月</span><span class="cap">大洲のうかい</span></div><div class="bd"><p class="en">SEPTEMBER</p><h3>いもたきの最盛期</h3>
+<div class="it"><p class="wh">9月中</p><h4>いもたき 最盛期<span class="chip">例年</span></h4><p>夕暮れの河原で、里芋の鍋を囲む——秋の大洲のいちばん濃い時間。予約方法はLINEでご案内します。</p><a class="ol" href="https://www.city.ozu.ehime.jp/site/kanko/68648.html" target="_blank" rel="noopener">市の案内 ↗</a></div>
+<div class="it"><p class="wh">2026年は9月20日まで</p><h4>大洲のうかい シーズン終盤<span class="chip">例年</span></h4><p>夏の鵜飼もいよいよ見納め。2026年のシーズンは9月20日で終わりました。</p><a class="ol" href="http://ozuukai.com/" target="_blank" rel="noopener">公式 ↗</a></div></div></div>
+<div class="mc" data-m="10"><div class="ph"><img src="../pages/photos/d_f90ed797.jpg" alt="緑の肱川と崖の上の臥龍山荘" loading="lazy"><span class="mo">10月</span><span class="cap">肱川</span></div><div class="bd"><p class="en">OCTOBER</p><h3>祭りと実りの秋</h3>
+<div class="it"><p class="wh">例年10月頃まで</p><h4>いもたき、シーズン終盤<span class="chip">例年</span></h4><p>河原の桟敷は秋が深まるまで続きます。今年の終わりの時期と予約は、大洲市の案内でご確認ください。</p><a class="ol" href="https://www.city.ozu.ehime.jp/site/kanko/68648.html" target="_blank" rel="noopener">市の案内 ↗</a></div></div></div>
+<div class="mc" data-m="11"><div class="ph"><img src="https://kita-m.com/wp/wp-content/uploads/2025/05/LINE_ALBUM_2019machibito_240622_28-768x511.jpg" alt="城下町の通りを着物で歩く人たち" loading="lazy"><span class="mo">11月</span><span class="cap">城下のMACHIBITO</span></div><div class="bd"><p class="en">NOVEMBER</p><h3>紅葉と、100年前の賑わい</h3>
+<div class="it"><p class="wh">2026年は11月28日・29日</p><h4>城下のMACHIBITO<span class="chip">例年</span></h4><p>100年前の賑わいを再現するクラフト＆フードイベント。第1回は2017年11月25・26日に開催されました。開催情報はLINEでお知らせします。</p><a class="ol" href="https://jp.visitozu.com/archives/feature/4748" target="_blank" rel="noopener">Visit Ozu ↗</a></div>
+<div class="it"><p class="wh">11月中</p><h4>臥龍山荘の紅葉<span class="chip">見頃</span></h4><p>国重要文化財の数寄屋建築と、肱川の淵にもみじが映える季節。一年でいちばん臥龍山荘が美しい頃です。</p></div>
+<div class="it"><p class="wh">冷え込む朝</p><h4>肱川あらし、シーズン入り<span class="chip">見頃</span></h4><p>霧が川面を走る朝が始まります。</p></div></div></div>
+<div class="mc" data-m="12"><div class="ph"><img src="../pages/photos/d_8237f5eb.jpg" alt="肱川を海へ流れ下る霧" loading="lazy"><span class="mo">12月</span><span class="cap">肱川あらし</span></div><div class="bd"><p class="en">DECEMBER</p><h3>朝霧の底の、年の瀬</h3>
+<div class="it"><p class="wh">冬期</p><h4>肱川あらしと雲海<span class="chip">見頃</span></h4><p>冬の大洲の主役。早起きした人だけが見られる景色です。</p></div></div></div>
+</div>
+<p class="legend"><span class="chip" style="margin:0 2px 0 0">例年</span>は毎年行われている行事（日程は年によって変わります）、<span class="chip" style="margin:0 2px 0 0">見頃</span>は気象・季節ものです。その年の日付は、上の「この先2週間」と各行事の案内でご確認ください。</p>
+<div class="sec" id="more"><h2><i>6</i>くわしく読む</h2></div>
+<details><summary>NIPPONIA HOTEL 大洲 城下町</summary><img src="../pages/photos/d_c300243a.jpg" alt="夕暮れの NIPPONIA HOTEL の中庭" loading="lazy"><p>分散型ホテル「NIPPONIA HOTEL 大洲 城下町」は、城下町に点在する再生町家31室に泊まり、まちを歩いて食事に向かう「まち全体がホテル」の宿です。レストランでは、同じ土で育った野菜を同じ土でつくられた器（砥部焼）に盛る——空気も土も水も含めた「地産地消」を、神戸のレストランガイドで4年連続1位を獲得したグランシェフが仕立てます。</p></details><details><summary>臥龍山荘と「数寄の宴」</summary><img src="../pages/photos/d_1655b230.jpg" alt="臥龍山荘の建物" loading="lazy"><p>国の重要文化財であり名勝・臥龍山荘は、明治時代に木蝋貿易で財をなした河内寅次郎が建てた数寄屋建築です。彼が賓客をもてなした「数寄の宴」を再現する試みでは、肱川から舟で客人を迎え、不老庵での呈茶ののち、能や食が往時のかたちで供されました（2021年12月に実証）。文化財を「見る」から「往時の歴史体験をする」へ——大洲が全国に先駆けて取り組んできた文化財活用のかたちです。</p></details><details><summary>大洲城キャッスルステイ</summary><img src="../pages/photos/d_9aa43f66.jpg" alt="夕暮れの大洲城で迎える甲冑と着物の人たち" loading="lazy"><p>「大洲城キャッスルステイ」は、日本で初めての木造天守での宿泊事業です。1617年、大洲藩主・加藤貞泰が米子から大洲に転封されたときの記録から入城の様子を再現し、食事には江戸時代に藩主へ献上されたと伝わるこの地域の食材を、グランシェフが現代風に仕立てて提供します。鉄砲隊の祝砲、伝統芸能の舞——お客さまを迎えるその舞台が、そのまま地域の伝統文化が継承される場になっています。2020年7月の開始から66組（2026年5月時点）。</p></details>
+<p class="note" style="margin-top:8px">泊まりのご予約や施設の詳しいことは、各施設の公式サイトへどうぞ（このLINEでは受け付けていません）。</p>
+<nav class="next" aria-label="あわせて見る"><p class="lb">あわせて見る</p><a href="../machibito/#jump"><span><b>まちびとファイル</b><small>会いに行ける人を、分類から探す</small></span></a><a href="../guide/#now"><span><b>関わり方ガイド</b><small>いま参加できること</small></span></a><a href="../seido/#iju"><span><b>つながる制度</b><small>移り住む：お試し住宅・城下町の宿</small></span></a></nav>
+<p class="note">「365日観光カレンダー」は「おおず未来のまちづくり構想」（2026年3月）の観光アクションに掲げられた取り組みです。行事の時期は年によって変わります。確定日程は各行事の案内でご確認ください。</p>
+<p class="src">写真：大洲まちづくりブック・キタ・マネジメント・OZU 555 PROJECT 写真共有フォルダ・セキ撮影・予報会青野さん提供。本文の一部は「大洲まちづくりブック」（2026年5月・キタ・マネジメント発行）より。行事の日付は大洲市・Visit Ozu・大洲城の公式の案内で確かめたもの（10月1日に確認）。</p>
+</div>
+<section class="oc-ways" aria-labelledby="oc-ways-h"><div class="oc-in"><h2 class="oc-h" id="oc-ways-h">大洲とのかかわり方を見る</h2><div class="oc-grid"><div class="oc-way on" aria-current="page"><small>大洲で何を体験できる？</small><b>ディスカバー大洲</b><i>いま見ているページ</i></div><a class="oc-way" href="../machibito/"><small>どんな人に会える？</small><b>まちびとファイル</b><i>会う →</i></a><a class="oc-way" href="../guide/"><small>自分にできることは？</small><b>関わり方ガイド</b><i>関わる →</i></a><a class="oc-way" href="../work/"><small>仕事や学びで関われる？</small><b>ワーク＆スタディ</b><i>学ぶ →</i></a><a class="oc-way" href="../data/"><small>まちはどこへ向かう？</small><b>まちづくりデータ</b><i>知る →</i></a><a class="oc-way" href="../seido/"><small>どんな制度を使える？</small><b>つながる制度</b><i>使う →</i></a></div><a class="oc-totop" href="https://asumaru3lfb.github.io/ozu-company-web/">大洲カンパニーの TOP へ</a></div></section>
+<footer class="oc-foot"><div class="oc-in"><img src="../assets/oc-logo.png" alt="" width="60" height="52"><div class="oc-links"><a href="https://lin.ee/FRC9VkG" target="_blank" rel="noopener">LINE</a><span class="oc-none">note（準備中）</span><a href="https://www.instagram.com/ozu_company/" target="_blank" rel="noopener">Instagram</a></div><span>運営：一般社団法人キタ・マネジメント／愛媛県大洲市大洲649-1 2F まちの駅あさもや</span></div></footer>
+<script>
+(function(){
+// 日付は日本時間で判定する（端末の時刻帯に引きずられない）
+var now=new Date();var jst=new Date(now.getTime()+(now.getTimezoneOffset()+540)*60000);
+jst=new Date(jst.getFullYear(),jst.getMonth(),jst.getDate());
+var W='日月火水木金土';
+function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function add(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
+function pd(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function esc(t){var e=document.createElement('div');e.textContent=t||'';return e.innerHTML}
+var today=ymd(jst),limit=ymd(add(jst,14)),M=jst.getMonth()+1;
+var names={1:'朝霧と静かな城下町の季節',2:'雲海の季節',3:'春待ちの季節',4:'大洲城の桜の季節',5:'新緑の季節',6:'鵜飼が開幕する季節',7:'かがり火と川風の季節',8:'いもたきが始まる季節',9:'いもたきと秋の入口',10:'祭りと実りの季節',11:'紅葉と肱川あらしの季節',12:'朝霧の底の年の瀬'};
+document.getElementById('heroSub').textContent=M+'月'+jst.getDate()+'日（'+W[jst.getDay()]+'）　いまは、'+names[M];
+
+var data={events:[]};try{data=JSON.parse(document.getElementById('kyouData').textContent)}catch(x){}
+var nowEv=data.events.filter(function(e){return e.start<=today&&today<=e.end});
+var soonEv=data.events.filter(function(e){return e.start>today&&e.start<=limit});
+
+function card(e,on){
+  var s=pd(e.start),en=pd(e.end),db;
+  if(on&&e.start!==e.end){db='<div class="db on"><small>開催中</small><b>〜'+(en.getMonth()+1)+'/'+en.getDate()+'</b><span>まで</span></div>'}
+  else if(on){db='<div class="db on"><small>きょう</small><b>'+s.getDate()+'日</b><span>（'+W[s.getDay()]+'）</span></div>'}
+  else{db='<div class="db"><small>'+(s.getMonth()+1)+'月</small><b>'+s.getDate()+'</b><span>'+W[s.getDay()]+(e.start!==e.end?'〜'+((en.getMonth()!==s.getMonth())?(en.getMonth()+1)+'/':'')+en.getDate()+'日':'')+'</span></div>'}
+  var meta=[e.time,e.place].filter(Boolean).join('・');
+  var go=e.apply||e.src,lab='';if(e.apply){lab='申し込み・くわしく'}else{try{var hn=new URL(e.src).hostname;lab=(hn.indexOf('visitozu')>=0?'Visit Ozu':hn.indexOf('city.ozu')>=0?'大洲市':(e.by||'主催者'))+'の案内'}catch(x){}}
+  var tg=go?'a':'div',hr=go?' href="'+esc(go)+'" target="_blank" rel="noopener"':'';
+  return '<'+tg+' class="ev" id="ev-'+e.start+'"'+hr+'>'+db+'<div><h3>'+esc(e.title)+(e.kind==='予定'?'<span class="tag prep">日程は予定</span>':'')+'</h3><p class="mt">'+esc(meta)+'</p>'+(e.note?'<p class="nt">'+esc(e.note)+'</p>':'')+(go?'<span class="sr">'+esc(lab)+' ↗</span>':'')+'</div></'+tg+'>';
+}
+// 同じ日に始まる行事が2件あるとき、カレンダーから飛ぶ先は最初の1件にする
+function dedupe(html){var seen={};return html.replace(/id="ev-([0-9-]+)"/g,function(m,d){if(seen[d])return '';seen[d]=1;return m})}
+document.getElementById('tdyNow').innerHTML=nowEv.length?'<div class="nowbox">'+nowEv.map(function(e){return card(e,true)}).join('')+'</div>':'<p class="empty">きょう開かれている行事は、台帳には載っていません。下の「季節の見どころ」で、いまの季節をどうぞ。</p>';
+document.getElementById('tdySoon').innerHTML=soonEv.length?dedupe(soonEv.map(function(e){return card(e,false)}).join('')):'<p class="empty">この先2週間に始まる行事は、まだ載っていません。</p>';
+
+
+// カレンダー：今週の日曜から3週ぶん。点は「この先2週間」に始まる行事の日だけ
+var starts={};soonEv.forEach(function(e){starts[e.start]=1});
+var g=document.getElementById('calGrid'),h='';
+for(var i=0;i<7;i++){h+='<div class="w'+(i===0?' su':i===6?' sa':'')+'">'+W[i]+'</div>'}
+var first=add(jst,-jst.getDay());
+for(var k=0;k<21;k++){
+  var d=add(first,k),key=ymd(d),cls='d',lab='';
+  if(key===today)cls+=' today';
+  if(key<today||key>limit)cls+=' out';
+  if(starts[key])cls+=' has';
+  if(d.getDate()===1||k===0)lab='<small>'+(d.getMonth()+1)+'月</small>';
+  h+='<button type="button" class="'+cls+'"'+(starts[key]?' data-go="ev-'+key+'" aria-label="'+(d.getMonth()+1)+'月'+d.getDate()+'日の行事へ"':' tabindex="-1" aria-hidden="true"')+'>'+lab+'<b>'+d.getDate()+'</b><i></i></button>';
+}
+g.innerHTML=h;
+g.addEventListener('click',function(ev){var b=ev.target.closest('.d.has');if(!b)return;var t=document.getElementById(b.dataset.go);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})});
+
+// 季節の見どころ：いまの月を先頭に並べ替え、「いま」の札を付ける
+var car=document.getElementById('mcar'),cards=[].slice.call(car.children);
+cards.sort(function(a,b){return ((+a.dataset.m-M+12)%12)-((+b.dataset.m-M+12)%12)}).forEach(function(c){car.appendChild(c)});
+var cur=car.querySelector('[data-m="'+M+'"] h3');if(cur)cur.insertAdjacentHTML('beforeend','<span class="tag go now">いま</span>');
+})();
+</script>
+<script>
+(function(){var c=document.getElementById('mcar');if(!c)return;var t=false;['pointerdown','touchstart','wheel','keydown'].forEach(function(n){c.addEventListener(n,function(){t=true},{passive:true})});function z(){if(!t)c.scrollLeft=0}z();window.addEventListener('load',z);setTimeout(z,800);})();
+</script>
+<script>
+(function(){var L=[].slice.call(document.querySelectorAll('.page-index a'));if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting)L.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+x.target.id)})})},{rootMargin:'-45% 0px -50% 0px'});L.forEach(function(a){var t=document.querySelector(a.getAttribute('href'));if(t)io.observe(t)})}try{var D=JSON.parse(document.getElementById('kyouData').textContent),n=new Date(),j=new Date(n.getTime()+(n.getTimezoneOffset()+540)*6e4),k=j.getFullYear()+'-'+('0'+(j.getMonth()+1)).slice(-2)+'-'+('0'+j.getDate()).slice(-2),T=D.events.filter(function(e){return e.start<=k&&k<=e.end});if(T.length){var b=document.getElementById('nowLine'),a=document.createElement('a');a.href='#today';a.textContent='きょう：'+T[0].title+(T.length>1?' ほか'+(T.length-1)+'件':'')+' ↓';b.appendChild(a);b.hidden=false}}catch(x){}})();
+</script>
+<script>
+(function(){
+  var W='日月火水木金土';
+  var today=new Date();today.setHours(0,0,0,0);
+  // 毎月第n○曜の行事：次の日付を出す
+  document.querySelectorAll('.nx[data-nth]').forEach(function(el){
+    var nth=+el.dataset.nth, wd=+el.dataset.wd;
+    for(var k=0;k<3;k++){
+      var f=new Date(today.getFullYear(),today.getMonth()+k,1);
+      var off=(wd-f.getDay()+7)%7, x=new Date(f.getFullYear(),f.getMonth(),1+off+(nth-1)*7);
+      if(x>=today){el.textContent='次は '+(x.getMonth()+1)+'月'+x.getDate()+'日（'+W[x.getDay()]+'）'+(el.dataset.time?' '+el.dataset.time:'');break;}
+    }
+  });
+})();
+</script>
+<script>
+/* 大洲カンパニーのヘッダー（2026-11-16・scripts/build_ozu_company_pages.py）：ヘッダーの高さを --oc-hh に／メニューの開け閉め */
+(function(){var b=document.getElementById('oc-bar'),bg=document.getElementById('oc-burger'),mn=document.getElementById('oc-mnav');if(!b||!bg||!mn)return;
+function hh(){document.documentElement.style.setProperty('--oc-hh',b.offsetHeight+'px');}
+hh();window.addEventListener('resize',hh);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(hh);
+function set(o){mn.hidden=!o;bg.setAttribute('aria-expanded',String(o));bg.setAttribute('aria-label',o?'メニューを閉じる':'メニューを開く');}
+bg.addEventListener('click',function(){set(mn.hidden);});
+mn.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mn.hidden){set(false);bg.focus();}});})();
+</script>
+</body></html>
