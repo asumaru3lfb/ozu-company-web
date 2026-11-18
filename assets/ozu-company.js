@@ -2,6 +2,25 @@
 (function(){
 function ready(f){document.readyState!=='loading'?f():document.addEventListener('DOMContentLoaded',f)}
 ready(function(){
+  /* 右下の「かかわり方を見る」ボタンと、6ページを選ぶポップアップ */
+  var ways=document.querySelector('.oc-ways');
+  if(ways){
+    var fab=document.createElement('button');fab.type='button';fab.className='oc-fab';
+    fab.setAttribute('aria-haspopup','dialog');fab.innerHTML='<span class="oc-fab-i" aria-hidden="true"></span>かかわり方を見る';
+    var dlg=document.createElement('div');dlg.className='oc-wpop';dlg.hidden=true;dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','大洲とのかかわり方を見る');
+    var html='<div class="oc-wpin"><button type="button" class="oc-x" aria-label="とじる">×</button><p class="oc-wh">大洲とのかかわり方を見る</p><div class="oc-wgrid">';
+    ways.querySelectorAll('.oc-way').forEach(function(w){
+      var q=w.querySelector('small'),b=w.querySelector('b'),cur=w.classList.contains('on');
+      html+=(cur?'<div class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(q?q.textContent:'')+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'<i>いま見ているページ</i></div>':'<i>→</i></a>');
+    });
+    var top=ways.querySelector('.oc-totop');
+    html+='</div>'+(top?'<a class="oc-wtop" href="'+top.getAttribute('href')+'">'+top.textContent+'</a>':'')+'</div>';
+    dlg.innerHTML=html;document.body.appendChild(fab);document.body.appendChild(dlg);
+    var shut=function(){dlg.hidden=true;fab.setAttribute('aria-expanded','false');fab.focus()};
+    fab.onclick=function(){dlg.hidden=false;fab.setAttribute('aria-expanded','true');var f=dlg.querySelector('a.oc-wi');if(f)f.focus()};
+    dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.closest('.oc-x'))shut()});
+    addEventListener('keydown',function(e){if(e.key==='Escape'&&!dlg.hidden)shut()});
+  }
   /* 文言：まちびとファイルの「つくる」→「つくりて」 */
   if(/\/machibito\//.test(location.pathname)){
     var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
