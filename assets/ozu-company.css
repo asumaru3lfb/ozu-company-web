@@ -101,3 +101,63 @@ body > .oc-foot{order:9}
   .oc-ways .oc-way b{font-size:15px}
   .oc-ways .oc-grid{flex-wrap:wrap;overflow:visible}
 }
+
+/* ===== ブロックの区切りと余白（三好 2026-11-18）。HTMLは毎晩作り直されるため、すべて共通CSSで行う ===== */
+/* パンくず（TOP ＞ ページ名）は表示しない */
+.oc-crumb{display:none !important}
+.oc-ways{margin-bottom:0 !important}
+.oc-ways .oc-in{padding-top:14px;padding-bottom:16px}
+
+/* ページ全体の余白 */
+body{line-height:1.95}
+.wrap{padding-left:24px !important;padding-right:24px !important;padding-bottom:64px !important}
+.lede,.one{padding-left:24px !important;padding-right:24px !important;margin-bottom:20px !important;line-height:1.95 !important}
+.lede{padding-top:28px !important}
+
+/* ページ内の目次（このページの中）：区切りのはっきりしたボタンにする */
+.page-index,.gnav{display:flex !important;justify-content:flex-start !important;gap:10px !important;padding:12px 24px !important;border-bottom:0 !important;overflow-x:auto}
+.page-index a,.gnav a,.tabs button{flex:none;display:inline-flex !important;align-items:center;gap:6px;padding:9px 18px !important;border-radius:999px !important;background:#fff !important;color:var(--oc-navy) !important;border:2px solid var(--oc-navy) !important;font-weight:700 !important;font-size:14px !important;white-space:nowrap;text-decoration:none;box-shadow:none !important}
+.page-index a i,.gnav a i{font-style:normal;color:var(--oc-blue)}
+.page-index a.on,.gnav a.on,.tabs button.on{background:var(--oc-navy) !important;color:#fff !important;border-color:var(--oc-navy) !important}
+.page-index a.on i,.gnav a.on i{color:var(--oc-yellow) !important}
+.page-index-head{padding:18px 24px 0 !important;letter-spacing:.08em}
+
+/* 見出し：紺の帯で、ブロックの始まりをはっきりさせる */
+.sec:not(:has(+ .tl)):not(:has(.es)),.sh,.rowh{
+  margin:84px 0 20px !important;padding:20px 24px !important;background:var(--oc-navy) !important;color:#fff !important;border-radius:16px;border:0 !important;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px}
+.sec:not(:has(+ .tl)):not(:has(.es)) .hrow{display:flex;flex:1 1 100%;justify-content:space-between;align-items:center;gap:10px}
+.sec:not(:has(+ .tl)):not(:has(.es)) h2,.sh h3,.rowh h3{margin:0 !important;color:#fff !important;font-size:21px !important;line-height:1.5 !important;border:0 !important;padding:0 !important}
+.sec:not(:has(+ .tl)):not(:has(.es)) .s,.sec:not(:has(+ .tl)):not(:has(.es)) .lead,.sec:not(:has(+ .tl)):not(:has(.es)) .k{flex:1 1 100%;margin:0 !important;color:#c9d3ea !important;font-size:13.5px !important}
+.sec:not(:has(+ .tl)):not(:has(.es)) .cnt,.sh small,.rowh span:not(.no){color:var(--oc-yellow) !important;font-weight:700 !important;font-size:13px !important;background:none !important}
+.sec h2 i,.sh h3 i,.rowh h3 .no,.sec h2 .no{background:var(--oc-yellow) !important;color:var(--oc-navy) !important}
+.wrap > .sec:first-child{margin-top:24px !important}
+/* データ・制度などの章見出しは黄色の帯、その下の見出しは帯にしない */
+.chh{margin:96px 0 24px !important;padding:20px 24px !important;background:var(--oc-yellow) !important;color:var(--oc-navy) !important;border-radius:16px;border:0 !important}
+.chh b{font-size:24px !important;color:var(--oc-navy) !important}
+.chh .no{background:var(--oc-navy) !important;color:var(--oc-yellow) !important}
+.sec:has(+ .tl),.sec:has(.es){margin:28px 0 20px !important}
+
+/* ブロックの余白と、横に並ぶカードの間隔 */
+.grp{margin-top:56px}
+.rail{gap:20px !important;padding:6px 24px 22px !important;margin-left:-24px;margin-right:-24px}
+.rc,.card,.op{padding-bottom:20px}
+.rc{border-radius:18px !important}
+.op{margin-bottom:28px !important}
+.note,.nsrc,.srcl{margin-top:12px !important;margin-bottom:20px !important;line-height:1.9 !important}
+.pn{margin-top:88px !important}
+.pn > p,.pn > .lead{margin-top:20px !important}
+.card{margin-bottom:22px !important}
+
+@media (min-width:900px){
+  .wrap{padding-left:36px !important;padding-right:36px !important;padding-bottom:96px !important}
+  .page-index,.gnav{padding:16px 36px !important}
+  .sec:not(:has(+ .tl)):not(:has(.es)),.sh,.rowh{margin-top:112px !important;padding:26px 36px !important}
+  .chh{margin-top:128px !important;padding:26px 36px !important}
+  .sec:not(:has(+ .tl)):not(:has(.es)) h2,.sh h3,.rowh h3{font-size:24px !important}
+  .rail{padding-left:36px !important;padding-right:36px !important;margin-left:-36px;margin-right:-36px;gap:28px !important}
+  .pn{margin-top:120px !important}
+  .grp{margin-top:96px}
+}
+.wrap > .sec:first-child:first-child:not(:has(+ .tl)){margin-top:36px !important}
+@media (min-width:900px){.wrap > .sec:first-child:first-child:not(:has(+ .tl)){margin-top:44px !important}}
