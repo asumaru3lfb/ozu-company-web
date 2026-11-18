@@ -11,7 +11,7 @@ ready(function(){
     var html='<div class="oc-wpin"><button type="button" class="oc-x" aria-label="とじる">×</button><p class="oc-wh">大洲とのかかわり方を見る</p><div class="oc-wgrid">';
     ways.querySelectorAll('.oc-way').forEach(function(w){
       var q=w.querySelector('small'),b=w.querySelector('b'),cur=w.classList.contains('on');
-      html+=(cur?'<div class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(q?q.textContent:'')+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'<i>いま見ているページ</i></div>':'<i>→</i></a>');
+      html+=(cur?'<div class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(q?q.textContent:'')+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'<i>いま見ているページ</i></div>':'<i>＞</i></a>');
     });
     var top=ways.querySelector('.oc-totop');
     html+='</div>'+(top?'<a class="oc-wtop" href="'+top.getAttribute('href')+'">'+top.textContent+'</a>':'')+'</div>';
@@ -21,6 +21,13 @@ ready(function(){
     dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.closest('.oc-x'))shut()});
     addEventListener('keydown',function(e){if(e.key==='Escape'&&!dlg.hidden)shut()});
   }
+  /* リンクの矢印「→」は「＞」に（後から作られる行事カードなども含む） */
+  function arrows(root){
+    var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),t;
+    while((t=tw.nextNode())){if(t.nodeValue.indexOf('→')>=0&&!t.parentNode.closest('script,style'))t.nodeValue=t.nodeValue.replace(/\s*→/g,' ＞')}
+  }
+  arrows(document.body);
+  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)arrows(n);else if(n.nodeType===3&&n.nodeValue.indexOf('→')>=0)n.nodeValue=n.nodeValue.replace(/\s*→/g,' ＞')})})}).observe(document.body,{childList:true,subtree:true});
   /* 文言：まちびとファイルの「つくる」→「つくりて」 */
   if(/\/machibito\//.test(location.pathname)){
     var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
@@ -36,7 +43,7 @@ ready(function(){
   document.querySelectorAll('.rail,.mcar,.car').forEach(function(r){
     var box=document.createElement('div');box.className='oc-car';r.parentNode.insertBefore(box,r);box.appendChild(r);
     function mk(c,t,l){var b=document.createElement('button');b.type='button';b.className='oc-arw '+c;b.textContent=t;b.setAttribute('aria-label',l);box.appendChild(b);return b}
-    var p=mk('prev','←','前のカードへ'),x=mk('next','→','次のカードへ');
+    var p=mk('prev','＜','前のカードへ'),x=mk('next','＞','次のカードへ');
     function step(){return Math.max(240,r.clientWidth*0.8)}
     p.onclick=function(){r.scrollBy({left:-step(),behavior:'smooth'})};
     x.onclick=function(){r.scrollBy({left:step(),behavior:'smooth'})};

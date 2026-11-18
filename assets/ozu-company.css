@@ -339,3 +339,49 @@ a.oc-wi:hover i{color:var(--oc-navy)}
 .oc-foot{padding-bottom:80px !important}
 body > .oc-wpop,body > .oc-pop{zoom:1 !important}
 .db.on,.db.on small,.db.on span,.db.on b{color:#fff !important}
+
+/* ===== 2026-11-18 第4弾：TOPのデザインで組み直し ===== */
+/* 矢印は「＞」 */
+.apply.in-site::after,.btn2::after,.choice a::after,.entry a::after,.jump a::after,.lk a::after,.next a::after,.nexts a::after,.sp .sub-lk::after{content:"＞" !important}
+.btn2.down::after,.lk a.down::after{content:"↓" !important}
+/* まちびとの人の一覧（上部）はなし */
+ul.menu#jump,nav:has(> ul.menu#jump){display:none !important}
+/* 行事カード：白い箱に内側の余白 */
+.ev{background:#fff !important;border:0 !important;border-radius:18px !important;padding:18px 20px !important;margin:0 0 14px !important;box-sizing:border-box}
+.nowbox{background:none !important;padding:0 !important}
+.nowbox .ev{margin:0 !important}
+.ev .db{border-radius:12px}
+
+/* 写真の帯：TOPと同じく斜めに切り、名前は帯の文字 */
+.hero,.page-band{clip-path:polygon(0 0,100% 0,100% 86%,0 100%);height:320px !important;margin-bottom:8px}
+.hero .ov,.page-band::after{background:linear-gradient(180deg,rgba(15,29,61,.15),rgba(15,29,61,.7)) !important}
+.hero .tt,.page-band .tt{bottom:64px !important}
+.hero h1,.page-band h1{display:inline;background:#fff;color:var(--oc-navy) !important;padding:.06em .32em;line-height:1.55 !important;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:900 !important;text-shadow:none !important}
+.hero .sub,.page-band .question{display:table;margin-top:12px !important;background:var(--oc-yellow);color:var(--oc-navy) !important;padding:.2em .7em;font-weight:900 !important;font-size:15px !important;text-shadow:none !important}
+.hero .sub b{color:inherit !important}
+@media (min-width:900px){.hero,.page-band{height:420px !important}.hero .tt,.page-band .tt{bottom:96px !important}.hero .sub,.page-band .question{font-size:18px !important}}
+
+/* 大見出し（番号のない親）：TOPの紺のセクションのように画面幅いっぱいの紺の帯、文字は黄色の帯 */
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)),.rowh:not(:has(.no)){
+  position:relative;background:var(--oc-navy) !important;border:0 !important;border-radius:0 !important;
+  box-shadow:0 0 0 100vmax var(--oc-navy);clip-path:inset(0 -100vmax);
+  padding:56px 0 52px !important;margin-top:140px !important;margin-bottom:64px !important;color:#fff !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) h2,.rowh:not(:has(.no)) h3{display:inline !important;background:var(--oc-yellow);color:var(--oc-navy) !important;padding:.04em .3em !important;line-height:1.7 !important;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-size:30px !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .lead,.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .s{color:#e6ebf7 !important;margin-top:18px !important;max-width:40em}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) .hrow{display:block}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) .cnt{display:block;margin-top:14px;color:var(--oc-yellow) !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) + .sec:has(h2 i, h2 .no){margin-top:72px !important}
+@media (min-width:900px){
+  .sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)),.rowh:not(:has(.no)){padding:80px 0 76px !important;margin-top:180px !important}
+  .sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) h2,.rowh:not(:has(.no)) h3{font-size:40px !important}
+}
+
+/* 番号つきの見出し（子）：青の帯＋黄色の大きな番号（大見出しの紺と区別） */
+.sec:not(:has(+ .tl)):not(:has(.es)):has(h2 i, h2 .no),.sh:has(h3 i),.rowh:has(.no){background:var(--oc-blue) !important}
+.sec h2 i,.sh h3 i,.rowh h3 .no,.sec h2 .no{border-color:var(--oc-cream) !important}
+
+/* 本文の箱：枠線なしの白、角丸18 */
+.op,.sp,.ask,.share,.np,.card,.rc,.mc,.tile,.ghead,.cal{border:0 !important;border-radius:18px !important}
+.ghead{background:#fff !important}
+/* 本文の文字の強弱：太字の見出しと、ふつうの本文 */
+.card h3,.rc h3,.op h3,.mc .n,.ev h3{font-weight:900 !important;color:var(--oc-navy) !important;letter-spacing:.02em}
