@@ -8,13 +8,13 @@ ready(function(){
     while((n=w.nextNode())){if(n.nodeValue.trim()==='つくる')n.nodeValue=n.nodeValue.replace('つくる','つくりて')}
   }
   /* リンクの箱にホバー用の印 */
-  document.querySelectorAll('a[href]').forEach(function(a){
+  document.querySelectorAll('a[href],button.mc').forEach(function(a){
     if(a.closest('.oc-hd,.oc-foot,.oc-ways,.page-index,.gnav'))return;
     var d=getComputedStyle(a).display;
     if(d!=='inline'&&a.offsetWidth>140&&a.offsetHeight>56)a.classList.add('oc-box');
   });
   /* 横に動くカードに左右の矢印（PCだけ表示） */
-  document.querySelectorAll('.rail,.mcar').forEach(function(r){
+  document.querySelectorAll('.rail,.mcar,.car').forEach(function(r){
     var box=document.createElement('div');box.className='oc-car';r.parentNode.insertBefore(box,r);box.appendChild(r);
     function mk(c,t,l){var b=document.createElement('button');b.type='button';b.className='oc-arw '+c;b.textContent=t;b.setAttribute('aria-label',l);box.appendChild(b);return b}
     var p=mk('prev','←','前のカードへ'),x=mk('next','→','次のカードへ');

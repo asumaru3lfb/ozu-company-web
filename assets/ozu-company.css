@@ -189,8 +189,8 @@ ul.entry li{margin:0 0 8px}
 
 /* ===== 2026-11-18 第2弾：TOPのトンマナへ寄せる（内容は変えない） ===== */
 /* 薄い文字をやめる：補足の文字も読める濃さに */
-:root{--sub:#3d465c !important;--oc-muted:#3d465c !important;--gold:#8a5d00 !important}
-.s,.lead,.note,.nsrc,.srcl,.mt,.nt,.cal-l,.card p,.wrap small{color:#3d465c !important;opacity:1 !important}
+:root{--sub:#141a26 !important;--oc-muted:#141a26 !important;--gold:#8a5d00 !important}
+.s,.lead,.note,.nsrc,.srcl,.mt,.nt,.cal-l,.card p,.wrap small{color:#141a26 !important;opacity:1 !important}
 /* 写真の帯の下の説明文を大きく */
 body > .lede,.wrap > .one,.wrap > .lede,body > .lead{font-size:17px !important;line-height:1.95 !important;font-weight:500;color:var(--oc-ink) !important}
 @media (min-width:900px){body > .lede,.wrap > .one,.wrap > .lede,body > .lead{font-size:19px !important}}
@@ -247,3 +247,61 @@ a .go,a .sr,a .nx:not(:empty){display:inline-flex !important;align-items:center;
 .sheet img{border-radius:14px}
 .db small,.db span,.db b,.on small,.lb small{color:inherit !important}
 .gnav + .wrap > .ghead:first-child,.gnav + .wrap > :first-child{margin-top:28px !important}
+
+/* ===== 2026-11-18 第3弾 ===== */
+/* フォント：疑似要素・ボタンも含めて Zen Kaku Gothic Antique に */
+html body *::before,html body *::after,html body button,html body input,html body select,html body textarea{font-family:var(--oc-font) !important}
+/* 補足の文字：グレーを使わず、本文と同じ色で少し小さく */
+.s,.lead,.note,.nsrc,.srcl,.mt,.nt,.cal-l,.card p,.wrap small,.rc p{color:var(--oc-ink) !important;font-weight:500}
+/* 各ページの目次はなし。「大洲とのかかわり方を見る」をヘッダーの下に貼りつける */
+.page-index,.gnav,.page-index-head{display:none !important}
+body > .oc-ways{position:sticky !important;top:var(--oc-hh,60px);z-index:25}
+[id]{scroll-margin-top:calc(var(--oc-hh,60px) + 76px) !important}
+/* 入れ子の見出し：番号のない親の見出しは「大見出し」、番号つきの子は紺の帯 */
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)){background:none !important;color:var(--oc-navy) !important;padding:0 0 0 22px !important;border-radius:0;border-left:10px solid var(--oc-yellow) !important;margin-top:120px !important;margin-bottom:8px !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) h2{color:var(--oc-navy) !important;font-size:30px !important;line-height:1.35 !important;font-weight:900 !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) .cnt{color:var(--oc-yellow-d) !important}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) + .sec:has(h2 i, h2 .no){margin-top:56px !important}
+@media (min-width:900px){
+  .sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)){margin-top:150px !important}
+  .sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) h2{font-size:38px !important}
+  .sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) + .sec:has(h2 i, h2 .no){margin-top:72px !important}
+}
+.rowh:not(:has(.no)){background:none !important;color:var(--oc-navy) !important;padding:0 0 0 22px !important;border-left:10px solid var(--oc-yellow) !important;border-radius:0}
+.rowh:not(:has(.no)) h3{color:var(--oc-navy) !important;font-size:30px !important}
+/* 横に動くカード：白い箱にして、中に余白 */
+.rc{background:#fff !important;border-radius:18px !important;overflow:hidden;padding:0 0 22px !important;display:flex !important;flex-direction:column}
+.rc > .ph,.rc > img,.rc > a > .ph{border-radius:0 !important;margin:0 0 16px !important}
+.rc > :not(.ph):not(img){padding-left:20px !important;padding-right:20px !important;box-sizing:border-box}
+.rc:not(:has(> .ph)):not(:has(> img)){padding-top:22px !important}
+.rc .go,.rc .main,.rc a.apply{margin-left:20px !important;margin-right:20px !important;width:auto !important}
+.rc > .go,.rc > .main,.rc > a.apply{margin-top:auto !important}
+.card{overflow:hidden}
+.card .bd{padding:16px 20px 20px !important}
+.tile > :not(img):not(.ph){padding-left:16px !important;padding-right:16px !important}
+.tile{padding-bottom:14px !important}
+.op,.sp,.ghead,.ask,.share,.np{padding-left:24px !important;padding-right:24px !important}
+/* 矢印はカードにかぶせない：広い画面ではカードの外、狭いPCではカードの上の右端 */
+@media (min-width:900px){
+  .oc-car{padding-top:64px}
+  .oc-arw{top:0 !important;margin-top:0 !important}
+  .oc-arw.prev{left:auto !important;right:64px !important}
+  .oc-arw.next{right:0 !important}
+}
+@media (min-width:1360px){
+  .oc-car{padding-top:0}
+  .oc-arw{top:50% !important;margin-top:-26px !important}
+  .oc-arw.prev{right:auto !important;left:-84px !important}
+  .oc-arw.next{right:-84px !important}
+}
+/* まちびと・季節のカード（ボタン型）も白い箱＋内側の余白 */
+.mc{background:#fff !important;border-radius:18px !important;overflow:hidden;padding:0 0 20px !important;text-align:left;border:0 !important;display:flex !important;flex-direction:column}
+.mc > .ph{border-radius:0 !important;margin:0 0 14px !important}
+.mc > :not(.ph){margin-left:18px !important;margin-right:18px !important}
+.mc > .tag{align-self:flex-start}
+.mc .o{margin-top:auto !important;align-self:flex-start;padding:5px 14px !important;border-radius:999px;background:var(--oc-navy);color:#fff !important;font-size:13px !important;font-weight:700}
+/* 親見出しの説明文は残す */
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .lead,.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .s{display:block !important;margin-top:10px !important;font-size:15px !important}
+@media (min-width:1360px){.oc-arw.prev{left:-110px !important}.oc-arw.next{right:-110px !important}}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .lead,.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)) > .s{color:var(--oc-ink) !important}
+.mc .o:empty{display:none !important}
