@@ -64,3 +64,17 @@ html body,html body *{font-family:var(--oc-font)!important}
 @media (min-width:700px){.oc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width:760px){.oc-nav{display:flex}.oc-burger,.oc-mnav{display:none!important}
   .oc-hd .oc-in{padding-top:14px;padding-bottom:14px}.oc-brand{font-size:24px;gap:10px}.oc-brand img{width:54px}.oc-pill{font-size:15px;padding:11px 24px}}
+
+/* ===== PC表示の調整（三好 2026-11-18）。スマホ（900px未満）には影響しない ===== */
+@media (min-width:900px){
+  body > :is(nav,p,div,section,ul):not(.oc-hd):not(.oc-foot):not(.hero):not(.sheet):not(.oc-ways){
+    max-width:860px;margin-left:auto !important;margin-right:auto !important;zoom:1.18}
+  body > .oc-ways{zoom:1.1}
+  body > .hero,body > .page-band{height:300px !important;min-height:300px}
+  body > .hero .tt{max-width:1015px;margin-left:auto;margin-right:auto}
+  body > .page-band .tt{left:max(20px,calc((100% - 1015px)/2)) !important;right:max(20px,calc((100% - 1015px)/2)) !important;bottom:30px !important}
+  body > .hero .tt{padding:0 20px 30px !important}
+  body > .hero h1,body > .page-band h1{font-size:46px !important}
+  body > .hero .sub,body > .hero .ask,body > .page-band p{font-size:17px !important}
+  body > .oc-crumb{max-width:1015px}
+}
