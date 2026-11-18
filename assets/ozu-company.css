@@ -186,3 +186,64 @@ ul.entry li{margin:0 0 8px}
 .ph,.card .th{border-radius:14px !important}
 .ghead{margin-left:0 !important;margin-right:0 !important}
 .wrap:has(> .one:only-child){padding-bottom:0 !important}
+
+/* ===== 2026-11-18 第2弾：TOPのトンマナへ寄せる（内容は変えない） ===== */
+/* 薄い文字をやめる：補足の文字も読める濃さに */
+:root{--sub:#3d465c !important;--oc-muted:#3d465c !important;--gold:#8a5d00 !important}
+.s,.lead,.note,.nsrc,.srcl,.mt,.nt,.cal-l,.card p,.wrap small{color:#3d465c !important;opacity:1 !important}
+/* 写真の帯の下の説明文を大きく */
+body > .lede,.wrap > .one,.wrap > .lede,body > .lead{font-size:17px !important;line-height:1.95 !important;font-weight:500;color:var(--oc-ink) !important}
+@media (min-width:900px){body > .lede,.wrap > .one,.wrap > .lede,body > .lead{font-size:19px !important}}
+/* 紺の帯の中の説明文はなし */
+.sec:not(:has(+ .tl)):not(:has(.es)) > .s,.sec:not(:has(+ .tl)):not(:has(.es)) > .lead,.sec:not(:has(+ .tl)):not(:has(.es)) > .k{display:none !important}
+/* 番号の黄色い丸：大きく、帯の左上にはみ出す */
+.sec:not(:has(+ .tl)):not(:has(.es)),.sh,.rowh{position:relative;overflow:visible !important;padding-left:76px !important}
+.sec h2 i,.sh h3 i,.rowh h3 .no,.sec h2 .no{position:absolute !important;left:-14px;top:-18px;width:62px !important;height:62px !important;border-radius:50% !important;display:flex !important;align-items:center;justify-content:center;font-size:26px !important;font-weight:900 !important;font-style:normal;line-height:1 !important;margin:0 !important;border:4px solid var(--oc-cream) !important;box-sizing:border-box}
+.sec:not(:has(+ .tl)):not(:has(.es)):not(:has(h2 i, h2 .no)),.sh:not(:has(h3 i)),.rowh:not(:has(.no)){padding-left:24px !important}
+@media (min-width:900px){
+  .sec:not(:has(+ .tl)):not(:has(.es)),.sh,.rowh{padding-left:92px !important}
+  .sec h2 i,.sh h3 i,.rowh h3 .no,.sec h2 .no{width:72px !important;height:72px !important;font-size:30px !important;left:-20px;top:-22px}
+}
+/* 不要なもの */
+#nowLine,.now1,#seasons .cnt,nav.next,.page-index-head{display:none !important}
+/* 目次：出てきたら白くぼかした箱に。あとから出る目次（ワーク＆スタディ・データ）も同じ形に */
+.page-index,.gnav{position:sticky !important;transform:none !important;visibility:visible !important;opacity:1 !important;height:auto !important;left:auto !important;right:auto !important;z-index:20 !important;
+  background:rgba(255,255,255,.72) !important;-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2)}
+.page-index a:hover,.gnav a:hover{background:var(--oc-cream2) !important}
+/* 押せるもの／押せないものの区別 */
+.wrap p a[href],.wrap li a[href]:not(.oc-box),.wrap dd a[href],.wrap td a[href]{color:var(--oc-blue) !important;text-decoration:underline !important;text-underline-offset:3px;text-decoration-thickness:1.5px;font-weight:700}
+a .go,a .sr,a .nx:not(:empty){display:inline-flex !important;align-items:center;gap:4px;margin-top:10px;padding:5px 14px !important;border-radius:999px !important;background:var(--oc-navy) !important;color:#fff !important;font-size:13px !important;font-weight:700 !important;text-decoration:none !important;width:auto !important;border:0 !important}
+.cnt{cursor:default}
+/* リンクの箱はホバーで持ち上がる */
+.oc-box{transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}
+@media (hover:hover){.oc-box:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(15,29,61,.13)}
+  .oc-box:hover .go,.oc-box:hover .sr{background:var(--oc-blue) !important}}
+/* 横に動くカード：PCは左右の矢印ボタン */
+.oc-car{position:relative}
+.oc-arw{display:none}
+@media (min-width:900px){
+  .oc-arw{display:flex;position:absolute;top:50%;z-index:3;width:52px;height:52px;margin-top:-26px;border-radius:50%;border:0;background:var(--oc-navy);color:#fff;font-size:22px;font-weight:900;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
+  .oc-arw:hover{background:var(--oc-blue)}
+  .oc-arw[disabled]{opacity:0;pointer-events:none}
+  .oc-arw.prev{left:-20px}.oc-arw.next{right:-20px}
+}
+/* ディスカバー：カレンダーと行事をPCで横並び */
+@media (min-width:900px){
+  .oc-calrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:start}
+  .oc-calrow .cal{position:sticky;top:calc(var(--oc-hh,60px) + 90px);margin:0 !important}
+  .oc-calrow #tdySoon{margin:0 !important}
+}
+.cal{border:0 !important;border-radius:18px !important;padding:18px 16px 14px !important}
+.cal .d.has{cursor:pointer}
+/* 行事のポップアップ */
+.oc-pop{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(10,20,48,.55)}
+.oc-pop[hidden]{display:none}
+.oc-pop .oc-pin{position:relative;width:min(560px,100%);max-height:84vh;overflow:auto;background:#fff;border-radius:22px;padding:30px 26px 24px;box-sizing:border-box}
+.oc-pop .oc-pin h4{margin:0 0 10px;font-size:15px;color:var(--oc-navy);font-weight:900}
+.oc-pop .ev{border:0 !important;padding:14px 0 !important}
+.oc-pop .oc-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--oc-cream2);color:var(--oc-navy);font-size:20px;font-weight:900;cursor:pointer}
+/* まちびと：人のポップアップを画面いっぱいにしない */
+.sheet{inset:auto !important;left:50% !important;top:50% !important;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 32px));max-height:min(86vh,900px);border-radius:22px;box-shadow:0 0 0 100vmax rgba(10,20,48,.55)}
+.sheet img{border-radius:14px}
+.db small,.db span,.db b,.on small,.lb small{color:inherit !important}
+.gnav + .wrap > .ghead:first-child,.gnav + .wrap > :first-child{margin-top:28px !important}
