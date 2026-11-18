@@ -385,3 +385,79 @@ ul.menu#jump,nav:has(> ul.menu#jump){display:none !important}
 .ghead{background:#fff !important}
 /* 本文の文字の強弱：太字の見出しと、ふつうの本文 */
 .card h3,.rc h3,.op h3,.mc .n,.ev h3{font-weight:900 !important;color:var(--oc-navy) !important;letter-spacing:.02em}
+
+/* ===== 2026-11-18 第5弾：セクションで区切る・余白・不要な文字 ===== */
+html,body{overflow-x:clip}
+/* 不要：カレンダーの説明、件数・組数、まちびとの最初の一文 */
+.cal-l,.cnt,.sh small,.rowh > span:not(.no),.rowh span:not(.no):not(:empty){display:none !important}
+.wrap:has(#meikan) > p.one{display:none !important}
+
+/* セクション：大見出しから次の大見出しまでを1つの面に。生成りと薄い青を交互に、画面幅いっぱい */
+.oc-band{position:relative;padding:88px 0 96px;isolation:isolate}
+.oc-band::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;background:var(--oc-cream)}
+.oc-band.alt::before{background:#e9eef8}
+.oc-band + .oc-band{margin-top:0}
+.wrap > .oc-band:first-of-type{margin-top:24px}
+@media (min-width:900px){.oc-band{padding:120px 0 128px}}
+/* 次の面との境目を斜めに（TOPの斜めの帯と同じ考え方） */
+.oc-band.alt::before{clip-path:polygon(0 0,100% 40px,100% 100%,0 calc(100% - 40px))}
+
+/* 大見出し：紺の帯をやめ、黄色の帯の大きな文字。面の頭に置く */
+.oc-band:not(#oc) > .sec:first-child,.oc-band:not(#oc) > .rowh:first-child,.oc-band:not(#oc) > #todayw > .rowh:first-child{
+  background:none !important;box-shadow:none !important;clip-path:none !important;border:0 !important;border-radius:0 !important;
+  padding:0 !important;margin:0 0 40px !important;color:var(--oc-navy) !important;display:block !important}
+.oc-band:not(#oc) > .sec:first-child h2,.oc-band:not(#oc) > .rowh:first-child h3,.oc-band:not(#oc) > #todayw > .rowh:first-child h3{
+  display:inline !important;background:var(--oc-yellow) !important;color:var(--oc-navy) !important;padding:.04em .3em !important;
+  font-size:32px !important;line-height:1.75 !important;font-weight:900 !important;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.oc-band:not(#oc) > .sec:first-child > .lead,.oc-band:not(#oc) > .sec:first-child > .s,.oc-band:not(#oc) > .sec:first-child .hrow + .s{display:block !important;color:var(--oc-ink) !important;font-size:16px !important;margin-top:20px !important;max-width:40em;font-weight:500}
+.oc-band:not(#oc) > .sec:first-child .hrow{display:block !important}
+@media (min-width:900px){
+  .oc-band:not(#oc) > .sec:first-child h2,.oc-band:not(#oc) > .rowh:first-child h3,.oc-band:not(#oc) > #todayw > .rowh:first-child h3{font-size:44px !important}
+  .oc-band:not(#oc) > .sec:first-child{margin-bottom:56px !important}
+}
+/* 面の中の最初の番号見出しは上を詰める */
+.oc-band:not(#oc) > .sec:first-child + .sec,.oc-band:not(#oc) > .sec:first-child + .rowh,.oc-band:not(#oc) > .rowh:first-child + *{margin-top:40px !important}
+
+/* 番号つきの見出し（面の中の小見出し）：青の帯＋黄色の番号 */
+.oc-band:not(#oc) .rowh:has(.no),.oc-band:not(#oc) .sec:not(:first-child):has(h2 i, h2 .no){margin-top:72px !important;margin-bottom:24px !important}
+.rowh + .rowl,.sec + .rowl{margin-top:0 !important}
+.rowl{margin:0 0 20px !important;line-height:1.9 !important}
+
+/* カード・箱の内側の余白をそろえる */
+.mc{padding-bottom:26px !important}
+.mc > :not(.ph){margin-left:24px !important;margin-right:24px !important}
+.mc .n{margin-top:8px !important}
+.mc .ln{margin-top:6px !important;margin-bottom:18px !important;line-height:1.7}
+.rc > :not(.ph):not(img){padding-left:24px !important;padding-right:24px !important}
+.rc .go,.rc .main,.rc a.apply{margin-left:24px !important;margin-right:24px !important}
+.rc p{margin-bottom:12px !important}
+.card .bd{padding:20px 24px 24px !important}
+.op,.sp,.ask,.share,.np,.ghead,.biz,.uc-box,.award,.nowbox .ev,.ev{padding:24px 26px !important}
+.biz,.award{background:#fff !important;border:0 !important;border-radius:18px !important;margin:28px 0 !important}
+.biz .bh{font-size:18px !important;font-weight:900 !important;color:var(--oc-navy) !important;margin:0 0 6px !important}
+.biz .bl{margin:0 0 12px !important}
+.biz li{padding:16px 0 !important;gap:16px !important}
+.biz li img{border-radius:10px}
+@media (min-width:900px){.op,.sp,.ask,.share,.np,.ghead,.biz,.ev{padding:30px 34px !important}}
+
+/* ワーク＆スタディの入口：ほかのページと同じ形（黄色の番号丸、白いカード、余白） */
+.grp{font-size:22px !important;font-weight:900 !important;color:var(--oc-navy) !important;margin:56px 0 18px !important;padding:0 !important;border:0 !important}
+.grp::after{display:none !important}
+.wrap > .one + #entry .grp:first-child{margin-top:16px !important}
+.tiles{gap:20px !important}
+.tile{position:relative;overflow:visible !important;padding:0 0 20px !important}
+.tile img{border-radius:18px 18px 0 0 !important;display:block}
+.tile > i{position:absolute !important;left:-12px !important;top:-14px !important;width:48px !important;height:48px !important;border-radius:50% !important;background:var(--oc-yellow) !important;color:var(--oc-navy) !important;border:4px solid var(--oc-cream) !important;display:flex !important;align-items:center;justify-content:center;font-style:normal;font-weight:900 !important;font-size:20px !important;z-index:2;box-sizing:border-box}
+.tile .lb{display:block;padding:16px 20px 0 !important;background:none !important;color:var(--oc-navy) !important}
+.tile .lb b{font-size:17px !important;font-weight:900 !important;display:block}
+.tile .lb small{color:var(--oc-ink) !important;font-size:13px !important}
+
+/* 写真の帯の下の説明文と、最初の面のあいだ */
+.wrap > p.one{margin:36px 0 8px !important}
+/* 番号見出しで区切った面では、見出しは面の頭に（上の余白は面の余白で取る） */
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no),.oc-band:not(#oc) > .sh:first-child,.oc-band:not(#oc) > .rowh:first-child:has(.no){margin-top:0 !important}
+/* 番号つきで区切った面の見出し：番号の丸は文字の前に並べる、説明文はなし */
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2 i,.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2 .no{position:static !important;display:inline-flex !important;vertical-align:middle;margin:0 14px 0 0 !important;border:0 !important;width:56px !important;height:56px !important;font-size:26px !important;background:var(--oc-navy) !important;color:var(--oc-yellow) !important}
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2{background:none !important;padding:0 !important}
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2{background:linear-gradient(transparent 58%,var(--oc-yellow) 58%) !important}
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) > .s,.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) .hrow + .s{display:none !important}

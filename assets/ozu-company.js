@@ -2,6 +2,20 @@
 (function(){
 function ready(f){document.readyState!=='loading'?f():document.addEventListener('DOMContentLoaded',f)}
 ready(function(){
+  /* 大見出しごとに、その下の中身をひとつのセクションにまとめる（背景を交互に変えて区切りを見せる） */
+  var PARENT='.sec:not(:has(h2 i)):not(:has(h2 .no)):not(:has(+ .tl)):not(:has(.es)),.rowh:not(:has(.no)),.ghead,.chh,#todayw';
+  document.querySelectorAll('.wrap').forEach(function(wrap){
+    var kids=[].slice.call(wrap.children),cur=null,n=0,sel=PARENT;
+    if(!kids.some(function(el){try{return el.matches(PARENT)}catch(e){return false}}))sel='.sec:has(h2 i),.sec:has(h2 .no),.sh,.rowh';
+    kids.forEach(function(el){
+      var isP=false;try{isP=el.matches(sel)}catch(e){}
+      if(isP){cur=document.createElement('section');cur.className='oc-band'+((n++%2)?' alt':'');wrap.insertBefore(cur,el)}
+      if(cur)cur.appendChild(el);
+    });
+  });
+  /* 「まで」の字はなし */
+  function nomade(root){(root.querySelectorAll?root:document).querySelectorAll('.db span').forEach(function(s){if(s.textContent.trim()==='まで')s.style.display='none'})}
+  nomade(document);
   /* 右下の「かかわり方を見る」ボタンと、6ページを選ぶポップアップ */
   var ways=document.querySelector('.oc-ways');
   if(ways){
