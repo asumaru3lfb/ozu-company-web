@@ -179,7 +179,7 @@ body > ul.entry{width:100% !important;max-width:1015px !important;margin:20px au
 ul.entry li a{background:#fff;border-radius:14px;padding:12px 16px !important;border:0 !important}
 ul.entry li{margin:0 0 8px}
 @media (min-width:900px){
-  body > ul.entry{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:0 !important;width:100% !important;max-width:1015px !important}
+  body > ul.entry{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:0 !important;width:100% !important;max-width:860px !important}
   ul.entry li{margin:0}
 }
 /* 6. 写真の角をそろえる */
