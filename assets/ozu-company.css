@@ -461,3 +461,34 @@ html,body{overflow-x:clip}
 .oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2{background:none !important;padding:0 !important}
 .oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2{background:linear-gradient(transparent 58%,var(--oc-yellow) 58%) !important}
 .oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) > .s,.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) .hrow + .s{display:none !important}
+
+/* ===== ヘッダーの「かかわり方」（TOPと同じ形）。右下のボタンはなし ===== */
+.oc-fab,.oc-wpop{display:none !important}
+.oc-nav{align-items:center}
+.oc-wdd{position:relative}
+.oc-wbtn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:900;font-size:15px;color:#fff;background:var(--oc-blue);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;transition:background .2s}
+.oc-wbtn i{width:8px;height:8px;border-right:2.5px solid var(--oc-yellow);border-bottom:2.5px solid var(--oc-yellow);rotate:45deg;translate:0 -2px;transition:rotate .2s}
+.oc-wbtn[aria-expanded="true"] i{rotate:225deg;translate:0 2px}
+.oc-wbtn:hover,.oc-wbtn[aria-expanded="true"]{background:#2a62c9}
+.oc-wbtn:focus-visible{outline:3px solid var(--oc-yellow);outline-offset:3px}
+.oc-wmenu{position:absolute;top:calc(100% + 14px);left:50%;translate:-50% 0;width:min(640px,90vw);background:var(--oc-cream);border-radius:20px;padding:22px;box-shadow:0 18px 40px rgba(10,20,48,.28);z-index:40}
+.oc-wmenu[hidden]{display:none}
+.oc-wlab{margin:0 0 14px;font-size:13px;font-weight:700;color:var(--oc-navy)}
+.oc-wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.oc-wi{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border-radius:14px;background:#fff;color:var(--oc-navy) !important;text-decoration:none !important;white-space:normal;transition:background .2s,translate .2s}
+.oc-wi small{font-size:12px;font-weight:500;color:var(--oc-ink)}
+.oc-wi b{font-size:16px;font-weight:900}
+a.oc-wi b::after{content:" ＞";color:var(--oc-blue)}
+a.oc-wi:hover{background:var(--oc-yellow);translate:0 -2px}
+.oc-wi.on{background:var(--oc-navy);color:#fff !important}
+.oc-wi.on small{color:var(--oc-yellow)}
+/* スマホのメニュー：かかわり方の6ページは青い面にまとめる */
+.oc-mnav .oc-mlab{margin:10px -20px 0;padding:14px 20px 4px;background:var(--oc-blue);color:var(--oc-yellow) !important;border-top:0 !important;font-weight:700}
+.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a),.oc-mnav .oc-mlab ~ .oc-mcur{margin:0 -20px;padding:11px 20px;background:var(--oc-blue)}
+.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a)::after{content:" ＞";color:var(--oc-yellow)}
+.oc-mnav .oc-mlab ~ a small,.oc-mnav .oc-mlab ~ .oc-mcur small{color:#dbe4f3 !important}
+.oc-mnav .oc-msep{margin-top:4px}
+.oc-nav .oc-wi{color:var(--oc-navy) !important}
+.oc-nav .oc-wi.on{color:#fff !important}
+.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a){position:relative;padding-right:44px}
+.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a)::after{position:absolute;right:20px;top:50%;translate:0 -50%}

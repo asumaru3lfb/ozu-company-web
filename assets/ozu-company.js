@@ -16,24 +16,23 @@ ready(function(){
   /* 「まで」の字はなし */
   function nomade(root){(root.querySelectorAll?root:document).querySelectorAll('.db span').forEach(function(s){if(s.textContent.trim()==='まで')s.style.display='none'})}
   nomade(document);
-  /* 右下の「かかわり方を見る」ボタンと、6ページを選ぶポップアップ */
-  var ways=document.querySelector('.oc-ways');
-  if(ways){
-    var fab=document.createElement('button');fab.type='button';fab.className='oc-fab';
-    fab.setAttribute('aria-haspopup','dialog');fab.innerHTML='<span class="oc-fab-i" aria-hidden="true"></span>かかわり方を見る';
-    var dlg=document.createElement('div');dlg.className='oc-wpop';dlg.hidden=true;dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','大洲とのかかわり方を見る');
-    var html='<div class="oc-wpin"><button type="button" class="oc-x" aria-label="とじる">×</button><p class="oc-wh">大洲とのかかわり方を見る</p><div class="oc-wgrid">';
+  /* ヘッダーの「OZU 555 PROJECT」は、TOPのOZU 555のブロックへ */
+  document.querySelectorAll('.oc-hd a[href*="ozu555.html"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href').replace('ozu555.html','#p555'))});
+  /* ヘッダーに「かかわり方」（押すと6ページが開く）。TOPと同じ形 */
+  var ways=document.querySelector('.oc-ways'),nav=document.querySelector('.oc-nav');
+  if(ways&&nav){
+    var html='<button type="button" class="oc-wbtn" aria-expanded="false" aria-controls="oc-wmenu">かかわり方<i aria-hidden="true"></i></button><div class="oc-wmenu" id="oc-wmenu" hidden><p class="oc-wlab">大洲とのかかわり方（別のページが開きます）</p><div class="oc-wgrid">';
     ways.querySelectorAll('.oc-way').forEach(function(w){
       var q=w.querySelector('small'),b=w.querySelector('b'),cur=w.classList.contains('on');
-      html+=(cur?'<div class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(q?q.textContent:'')+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'<i>いま見ているページ</i></div>':'<i>＞</i></a>');
+      html+=(cur?'<span class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(cur?'いま見ているページ':(q?q.textContent:''))+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'</span>':'</a>');
     });
-    var top=ways.querySelector('.oc-totop');
-    html+='</div>'+(top?'<a class="oc-wtop" href="'+top.getAttribute('href')+'">'+top.textContent+'</a>':'')+'</div>';
-    dlg.innerHTML=html;document.body.appendChild(fab);document.body.appendChild(dlg);
-    var shut=function(){dlg.hidden=true;fab.setAttribute('aria-expanded','false');fab.focus()};
-    fab.onclick=function(){dlg.hidden=false;fab.setAttribute('aria-expanded','true');var f=dlg.querySelector('a.oc-wi');if(f)f.focus()};
-    dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.closest('.oc-x'))shut()});
-    addEventListener('keydown',function(e){if(e.key==='Escape'&&!dlg.hidden)shut()});
+    html+='</div></div>';
+    var dd=document.createElement('div');dd.className='oc-wdd';dd.innerHTML=html;nav.appendChild(dd);
+    var wb=dd.querySelector('.oc-wbtn'),wm=dd.querySelector('.oc-wmenu');
+    var setW=function(o){wm.hidden=!o;wb.setAttribute('aria-expanded',String(o))};
+    wb.addEventListener('click',function(e){e.stopPropagation();setW(wm.hidden)});
+    document.addEventListener('click',function(e){if(!e.target.closest('.oc-wdd'))setW(false)});
+    addEventListener('keydown',function(e){if(e.key==='Escape')setW(false)});
   }
   /* リンクの矢印「→」は「＞」に（後から作られる行事カードなども含む） */
   function arrows(root){
