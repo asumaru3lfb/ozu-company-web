@@ -2,6 +2,7 @@
 (function(){
 function ready(f){document.readyState!=='loading'?f():document.addEventListener('DOMContentLoaded',f)}
 ready(function(){
+  if(!document.querySelector('link[href*="family=Barlow"]')){var lf=document.createElement('link');lf.rel='stylesheet';lf.href='https://fonts.googleapis.com/css2?family=Barlow:wght@700;800&display=swap';document.head.appendChild(lf)}
   /* 大見出しごとに、その下の中身をひとつのセクションにまとめる（背景を交互に変えて区切りを見せる） */
   var PARENT='.sec:not(:has(h2 i)):not(:has(h2 .no)):not(:has(+ .tl)):not(:has(.es)),.rowh:not(:has(.no)),.ghead,.chh,#todayw';
   document.querySelectorAll('.wrap').forEach(function(wrap){
@@ -18,22 +19,15 @@ ready(function(){
   nomade(document);
   /* ヘッダーの「OZU 555 PROJECT」は、TOPのOZU 555のブロックへ */
   document.querySelectorAll('.oc-hd a[href*="ozu555.html"]').forEach(function(a){a.setAttribute('href',a.getAttribute('href').replace('ozu555.html','#p555'))});
-  /* ヘッダーに「かかわり方」（押すと6ページが開く）。TOPと同じ形 */
-  var ways=document.querySelector('.oc-ways'),nav=document.querySelector('.oc-nav');
-  if(ways&&nav){
-    var html='<button type="button" class="oc-wbtn" aria-expanded="false" aria-controls="oc-wmenu">かかわり方<i aria-hidden="true"></i></button><div class="oc-wmenu" id="oc-wmenu" hidden><p class="oc-wlab">大洲とのかかわり方（別のページが開きます）</p><div class="oc-wgrid">';
-    ways.querySelectorAll('.oc-way').forEach(function(w){
-      var q=w.querySelector('small'),b=w.querySelector('b'),cur=w.classList.contains('on');
-      html+=(cur?'<span class="oc-wi on" aria-current="page">':'<a class="oc-wi" href="'+w.getAttribute('href')+'">')+'<small>'+(cur?'いま見ているページ':(q?q.textContent:''))+'</small><b>'+(b?b.textContent:'')+'</b>'+(cur?'</span>':'</a>');
-    });
-    html+='</div></div>';
-    var dd=document.createElement('div');dd.className='oc-wdd';dd.innerHTML=html;nav.appendChild(dd);
-    var wb=dd.querySelector('.oc-wbtn'),wm=dd.querySelector('.oc-wmenu');
-    var setW=function(o){wm.hidden=!o;wb.setAttribute('aria-expanded',String(o))};
-    wb.addEventListener('click',function(e){e.stopPropagation();setW(wm.hidden)});
-    document.addEventListener('click',function(e){if(!e.target.closest('.oc-wdd'))setW(false)});
-    addEventListener('keydown',function(e){if(e.key==='Escape')setW(false)});
+  /* ヘッダーをTOPと同じ形に：英字ロゴ、イラスト付きの3メニュー、右端に黄色のLINE登録と小さな「お問い合わせ」 */
+  var brand=document.querySelector('.oc-brand'),nav=document.querySelector('.oc-nav'),ocr=document.querySelector('.oc-r');
+  var TOPURL=brand?brand.getAttribute('href'):'../';
+  if(brand){brand.lastChild.nodeValue='OZU COMPANY';brand.setAttribute('aria-label','大洲カンパニー（OZU COMPANY）')}
+  if(nav){
+    nav.innerHTML='<a href="'+TOPURL+'#about"><img src="../assets/hd-about.png" alt="">大洲カンパニーとは</a><a href="'+TOPURL+'#can"><img src="../assets/hd-can.png" alt="">できること</a><a href="'+TOPURL+'#p555"><img src="../assets/hd-project.png" alt="">プロジェクト</a>';
   }
+  if(ocr&&!ocr.querySelector('.oc-ct')){var ct=document.createElement('a');ct.className='oc-ct';ct.href=TOPURL+'#contact';ct.textContent='お問い合わせ';ocr.insertBefore(ct,ocr.firstChild)}
+  document.querySelectorAll('.oc-mnav a').forEach(function(a){if(a.textContent.trim()==='OZU 555 PROJECT')a.textContent='プロジェクト'});
   /* リンクの矢印「→」は「＞」に（後から作られる行事カードなども含む） */
   function arrows(root){
     var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),t;

@@ -492,3 +492,84 @@ a.oc-wi:hover{background:var(--oc-yellow);translate:0 -2px}
 .oc-nav .oc-wi.on{color:#fff !important}
 .oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a){position:relative;padding-right:44px}
 .oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a)::after{position:absolute;right:20px;top:50%;translate:0 -50%}
+
+/* ===== 2026-11-22 デザインディレクション02：TOPと同じ白ベース・#004896 ===== */
+:root{--oc-navy:#004896 !important;--oc-navy2:#004896 !important;--oc-blue:#004896 !important;--oc-yellow:#ffc91f !important;--oc-yellow-d:#e0a800 !important;
+  --oc-cream:#ffffff !important;--oc-cream2:#eef4fb !important;--oc-ink:#111827 !important;--oc-foot:#004896 !important;--oc-line:#e5e7eb !important;
+  --blue:#004896 !important;--blue-soft:#eef4fb !important;--paper:#eef4fb !important;--bg:#ffffff !important;--line:#e5e7eb !important;
+  --oc-en:"Barlow","Zen Kaku Gothic Antique",sans-serif}
+html body{background:#fff !important}
+:where(h2,h3){color:var(--oc-ink)}
+
+/* ヘッダー：白、英字ロゴ、イラスト付きメニュー、右端に黄色の四角いLINE登録 */
+.oc-hd{background:#fff !important;color:var(--oc-ink) !important;box-shadow:0 1px 0 #e5e7eb}
+.oc-hd .oc-in{max-width:none !important;padding:0 0 0 20px !important;gap:20px;align-items:stretch !important;min-height:64px}
+.oc-brand{font-family:var(--oc-en) !important;font-weight:800 !important;font-size:clamp(22px,2.6vw,34px) !important;letter-spacing:.04em !important;color:var(--oc-ink) !important;align-self:center;gap:0 !important}
+.oc-brand img{display:none !important}
+.oc-nav{gap:0 !important;align-items:stretch !important;margin-left:auto;font-size:13px !important}
+.oc-nav a{display:flex !important;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:clamp(120px,11vw,160px);border-left:1px solid #d1d5db;font-weight:500 !important;color:var(--oc-ink) !important;padding:10px 8px;transition:background .2s}
+.oc-nav a img{height:40px;width:auto;display:block}
+.oc-nav a:hover{background:#f3f6fb}
+.oc-r{flex-direction:column !important;align-items:stretch !important;gap:0 !important}
+.oc-ct{display:none;font-size:11.5px;font-weight:500;text-align:center;padding:6px 10px 4px;color:var(--oc-ink) !important;text-decoration:none}
+.oc-pill{border-radius:0 !important;display:flex !important;align-items:center;justify-content:center;flex:1;padding:0 22px !important;min-width:110px;font-weight:900 !important;color:var(--oc-ink) !important;background:var(--oc-yellow) !important;font-size:15px !important}
+.oc-burger{margin:0 18px 0 4px;align-self:center}
+.oc-burger i{background:var(--oc-ink) !important}
+.oc-mnav{background:#fff !important;border-top:1px solid #e5e7eb}
+.oc-mnav a,.oc-mcur,.oc-mlab{color:var(--oc-ink) !important;border-top-color:#eef0f3 !important}
+.oc-mnav a small,.oc-mcur small,.oc-mlab{color:#4b5563 !important}
+.oc-mnav .oc-mlab,.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a),.oc-mnav .oc-mlab ~ .oc-mcur{background:#eef4fb !important}
+.oc-mnav .oc-mlab{color:var(--oc-navy) !important}
+.oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a)::after{color:var(--oc-navy) !important}
+.oc-mcur{color:var(--oc-navy) !important;font-weight:900 !important}
+@media (max-width:759px){.oc-r{flex-direction:row !important;align-items:center !important}.oc-pill{flex:none;padding:10px 16px !important;min-width:0;font-size:13px !important}}
+@media (min-width:760px){.oc-ct{display:block}.oc-hd .oc-in{min-height:92px}}
+.oc-wdd,.oc-wmenu{display:none !important}
+
+/* 写真の帯：ページ名は白い帯、問いは黄色 */
+.hero .ov,.page-band::after{background:linear-gradient(180deg,rgba(0,40,90,.1),rgba(0,40,90,.55)) !important}
+.hero .sub,.page-band .question,.hero .ask{background:var(--oc-yellow) !important;color:var(--oc-ink) !important}
+.hero h1,.page-band h1{color:var(--oc-ink) !important}
+
+/* 面の区切り：白と薄い青を交互 */
+.oc-band::before{background:#fff !important}
+.oc-band.alt::before{background:#eef4fb !important}
+/* 大見出し：色の帯をやめ、黒の大きな文字（ベタにベタを重ねない） */
+.oc-band:not(#oc) > .sec:first-child h2,.oc-band:not(#oc) > .rowh:first-child h3,.oc-band:not(#oc) > #todayw > .rowh:first-child h3{background:none !important;padding:0 !important;color:var(--oc-ink) !important}
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2{background:none !important}
+.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2 i,.oc-band:not(#oc) > .sec:first-child:has(h2 i, h2 .no) h2 .no{background:var(--oc-navy) !important;color:#fff !important}
+/* 番号つきの小見出し：#004896の帯、白い文字、黄色の番号 */
+.sec:not(:has(+ .tl)):not(:has(.es)):has(h2 i, h2 .no),.sh:has(h3 i),.rowh:has(.no),.sh{background:var(--oc-navy) !important}
+.sec h2 i,.sh h3 i,.rowh h3 .no,.sec h2 .no{background:var(--oc-yellow) !important;color:var(--oc-ink) !important;border-color:#fff !important}
+.chh{background:#eef4fb !important;color:var(--oc-ink) !important}
+.chh b{color:var(--oc-ink) !important}
+.chh .no{background:var(--oc-navy) !important;color:#fff !important}
+/* 箱・カード：白地の面では薄い青、薄い青の面では白 */
+.oc-band:not(.alt) :is(.op,.sp,.ask,.share,.np,.card,.rc,.mc,.tile,.ghead,.cal,.ev,.biz,.award){background:#f3f6fb !important}
+.oc-band.alt :is(.op,.sp,.ask,.share,.np,.card,.rc,.mc,.tile,.ghead,.cal,.ev,.biz,.award){background:#fff !important}
+.main,.apply,.go:not(span){background:var(--oc-navy) !important;color:#fff !important}
+.main small{color:#fff !important}
+a .go,a .sr,a .nx:not(:empty),.mc .o{background:var(--oc-navy) !important;color:#fff !important}
+.tag:not(.go):not(.on){border-color:var(--oc-navy) !important;color:var(--oc-navy) !important}
+
+/* ページの下に「ほかのかかわり方」（6ページのカード）を置く。ヘッダーはTOPと同じなので、ここから行き来する */
+body > .oc-ways{display:block !important;order:8 !important;position:static !important;background:var(--oc-navy) !important;padding:64px 0 72px !important;margin:0 !important}
+.oc-ways .oc-in{max-width:1100px !important;margin:0 auto;padding:0 24px !important;display:grid !important;gap:24px !important}
+.oc-ways .oc-h{color:#fff !important;font-size:20px !important;font-weight:700 !important;margin:0 !important}
+.oc-ways .oc-h::before{content:"OTHER";display:block;font-family:var(--oc-en);font-weight:700;letter-spacing:.06em;font-size:16px;color:#c7d6ea}
+.oc-ways .oc-grid{display:grid !important;grid-template-columns:repeat(2,1fr) !important;gap:14px !important;overflow:visible !important;padding:0 !important}
+@media (min-width:860px){.oc-ways .oc-grid{grid-template-columns:repeat(3,1fr) !important}}
+.oc-ways .oc-way{display:grid !important;gap:4px;padding:18px 20px !important;border-radius:12px !important;background:#fff !important;color:var(--oc-ink) !important;border:0 !important;text-decoration:none !important;transition:transform .2s}
+.oc-ways .oc-way:hover{transform:translateY(-3px)}
+.oc-ways .oc-way small{display:block !important;font-size:12.5px !important;color:#6b7280 !important;font-weight:700}
+.oc-ways .oc-way b{font-size:19px !important;font-weight:900 !important;color:var(--oc-navy) !important}
+.oc-ways .oc-way i{display:block !important;font-style:normal;font-size:12px !important;font-weight:700;color:var(--oc-navy) !important}
+.oc-ways .oc-way.on{background:#cfe0f3 !important}
+.oc-ways .oc-totop{display:inline-block !important;justify-self:start;color:#fff !important;font-weight:700;border-bottom:2px solid #fff;text-decoration:none}
+
+/* フッター：#004896、英字ロゴ */
+.oc-foot{background:var(--oc-navy) !important;color:#e5edf7 !important}
+.oc-foot img{display:none !important}
+.oc-foot .oc-in::before{content:"OZU COMPANY";font-family:var(--oc-en);font-weight:800;font-size:24px;letter-spacing:.04em;color:#fff}
+.oc-foot a{color:#fff !important}
+.hero .ask{display:table !important;width:auto !important;margin-top:12px !important;padding:.2em .7em !important;font-weight:900 !important}
