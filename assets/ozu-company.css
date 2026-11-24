@@ -752,3 +752,97 @@ p.src,p.credit,.wrap > .src{margin-bottom:72px !important}
 p.grp{padding:0 !important;margin:48px 0 16px !important;font-size:22px !important;font-weight:900 !important;color:#111827 !important;isolation:auto}
 p.grp::before{display:none !important}
 #entry p.grp:first-child{margin-top:24px !important}
+
+/* ===== 2026-11-24 スマホ監修 ===== */
+/* 矢印の記号は使わない（＞ ↗ ↓ → など） */
+.main::after,.apply::after,.btn2::after,a.more::after,a.read::after,a.sl::after,a.sub-lk::after,.lk a::after,a.ext::after,a.tel::after,a.tolink::after,a.down::after,
+.oc-ways .oc-totop::after,a.oc-wi b::after,.entry a::after,.jump a::after,.choice a::after,.next a::after,.nexts a::after,.apply.in-site::after,.btn2.down::after,.lk a.down::after,
+.cnt::after,.card .go::after,.rc .go::after,.mc .o::after{content:none !important;display:none !important}
+.oc-mnav .oc-mlab ~ a::after{content:none !important}
+/* ボタンの説明（下の小さい字）はすべて消す */
+:is(.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tel,a.down,a.tolink,.cbtn a,.oc-ways .oc-way) small,
+:is(.main,.apply,.btn2,.lk a,a.ext,a.tel,.cbtn a) span > small{display:none !important}
+:is(.main,.apply,.btn2,.lk a,a.ext,a.tel,.cbtn a) > span{display:block}
+.oc-ways .oc-way i{display:none !important}
+/* ボタンは必ず1行。文字は中央 */
+.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tel,a.down,a.tolink,details > summary,.cbtn a,.oc-ways .oc-totop{white-space:nowrap !important;justify-content:center !important;text-align:center !important;overflow:hidden}
+
+@media (max-width:699px){
+  /* 左右の余白：画面の端に文字や写真をつけない */
+  .wrap,.grp .in,.grp > .ghead,.pn,.oc-ways .oc-in{padding-left:20px !important;padding-right:20px !important}
+  .grp{padding-left:0 !important;padding-right:0 !important}
+  .band,.ph-wide{margin-left:0 !important;margin-right:0 !important;border-radius:14px !important;overflow:hidden}
+  .ghead{padding-left:20px !important;padding-right:20px !important}
+  /* ボタンは横幅いっぱい・中央そろえ */
+  .main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tel,a.down,a.tolink,.cbtn a,details > summary{display:flex !important;width:100% !important;margin:8px 0 !important;padding:13px 18px !important;font-size:14.5px !important}
+  .lk,.btns,.cbtn{display:flex !important;flex-direction:column !important;gap:0 !important;align-items:stretch !important}
+  .lk li{list-style:none;width:100%}
+  details > summary{justify-content:center !important}
+  /* 横に動くカード：幅を広く */
+  .rc,.rc.sm{flex:0 0 80% !important;max-width:none !important}
+  .car > .mc,.mc{flex:0 0 62% !important;width:62% !important}
+  .pn .sl,.pn .card,.sl{flex-basis:84% !important}
+}
+/* 人の名前が変なところで折り返さない */
+.mc .n{word-break:keep-all;overflow-wrap:anywhere;line-height:1.45}
+.mc .n small{white-space:nowrap}
+.mc .r,.mc .ln{word-break:auto-phrase}
+
+/* 募集カードの「いつ・どこで・費用・募集元」：項目名を札に、内容を下に */
+ul.meta{list-style:none;margin:16px 0 !important;padding:0 !important;display:grid;gap:10px;border-top:1px solid #dbe3ee;padding-top:14px !important}
+ul.meta li{display:grid !important;grid-template-columns:84px 1fr;gap:10px;align-items:start;padding:0 !important;border:0 !important;font-size:14px !important;line-height:1.7}
+ul.meta li b{display:inline-flex;justify-content:center;align-items:center;background:var(--oc-navy);color:#fff !important;border-radius:999px;font-size:12px !important;font-weight:700;padding:3px 0;line-height:1.4}
+ul.meta li span{color:#111827 !important}
+@media (max-width:699px){ul.meta li{grid-template-columns:1fr;gap:4px}ul.meta li b{justify-self:start;padding:3px 14px}}
+/* 視察・研修などの dl も同じ形に */
+.part dl{display:grid;grid-template-columns:84px 1fr;gap:10px 12px;margin:14px 0 !important}
+.part dt{background:var(--oc-navy);color:#fff !important;border-radius:999px;font-size:12px !important;font-weight:700;text-align:center;padding:3px 0;height:fit-content}
+.part dd{margin:0 !important;font-size:14px !important}
+
+/* ワーク＆スタディの「仕事」「学び」：見出しの札をはっきり */
+p.grp{display:inline-flex !important;align-items:center;gap:10px;background:var(--oc-navy) !important;color:#fff !important;border-radius:999px;padding:8px 22px !important;font-size:17px !important;margin:48px 0 28px !important}
+#entry p.grp:first-child{margin-top:28px !important}
+/* これまでの例（横に動くカード）：本文とボタンの間を広く */
+.pn .sl,.pn .card{padding-bottom:20px !important}
+.pn :is(.sl,.card) p{margin-bottom:16px !important}
+.pn :is(.sl,.card) a{margin-top:8px !important}
+/* 研修の案内などの白いボタンも中央に */
+.main.ghost{justify-content:center !important}
+
+/* つながる制度の目次：目次らしく */
+ul.entry{background:#eef4fb !important;border-radius:20px;padding:20px 22px !important;margin:32px auto 8px !important;display:block !important;box-sizing:border-box}
+ul.entry::before{content:"このページの目次";display:block;font-weight:900;font-size:16px;color:#111827;margin:0 0 10px}
+ul.entry li{margin:0 !important;border-top:1px solid #d5deea !important}
+ul.entry li:first-child{border-top:0 !important}
+ul.entry li a{display:grid !important;grid-template-columns:34px 1fr;gap:12px;align-items:center;background:none !important;border-radius:0 !important;padding:14px 4px !important;color:#111827 !important;text-decoration:none !important}
+ul.entry li a i{width:30px;height:30px;line-height:30px;border-radius:50%;background:var(--oc-navy);color:#fff;font-style:normal;font-weight:900;text-align:center;font-size:14px}
+ul.entry li a b{font-size:16px;font-weight:900}
+ul.entry li a small{display:block;font-size:13px !important;color:#111827 !important;font-weight:400}
+@media (min-width:900px){ul.entry{display:block !important;max-width:860px !important}}
+
+/* 登録は2種類：カードを縦に並べる */
+.plan{display:grid !important;grid-template-columns:1fr !important;gap:14px !important;margin:8px 0 18px}
+@media (min-width:700px){.plan{grid-template-columns:1fr 1fr !important}}
+.plan > div{background:#fff !important;border-radius:18px !important;padding:22px 24px !important;border:2px solid #d5deea !important;display:grid;gap:6px}
+.plan > div b{font-size:19px !important;font-weight:900 !important;color:var(--oc-navy) !important}
+.plan > div small{display:inline-block;justify-self:start;background:var(--oc-yellow);color:#111827 !important;border-radius:999px;padding:2px 12px;font-size:12.5px !important;font-weight:700}
+.plan > div p{font-size:14.5px !important;margin:4px 0 0 !important}
+/* まちびと：ページ下と重なる「あわせて見る」はなし */
+div.next{display:none !important}
+/* カレンダー：月の表示が日付に重ならないように */
+.cal .d{position:relative;padding-top:14px !important;overflow:visible}
+.cal .d small{top:0 !important;font-size:9.5px !important;line-height:1 !important;color:var(--oc-navy) !important;font-weight:700}
+.cal-g{row-gap:8px !important}
+/* ページ下の6ページ：スマホで画面からはみ出さない */
+.oc-ways .oc-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;width:100%}
+@media (min-width:860px){.oc-ways .oc-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}}
+.oc-ways .oc-way{min-width:0 !important;width:auto !important}
+.oc-ways .oc-way b{font-size:clamp(15px,4vw,19px) !important;word-break:keep-all;overflow-wrap:anywhere}
+/* 横幅いっぱいのはみ出し防止 */
+html body{overflow-x:hidden}
+body > *{max-width:100vw}
+p.grp{width:fit-content !important;line-height:1.4 !important;border-radius:999px !important;min-height:0 !important;height:auto !important}
+@media (max-width:699px){.nums b{font-size:26px !important;white-space:nowrap}.nums b small{font-size:.5em !important}.nums span{font-size:12px !important}.nums > *{padding:16px 8px !important}}
+@media (max-width:899px){body > ul.entry{width:auto !important;margin:32px 20px 8px !important}}
+.grp :is(dl,table) :is(dd,td,span),.grp .tbl *,.grp .def *{color:#111827 !important}
+.grp :is(dt,th){color:var(--oc-navy) !important}

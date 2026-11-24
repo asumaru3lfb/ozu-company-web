@@ -53,18 +53,23 @@ ready(function(){
   }
   /* 見出しを失った面（中身が出典だけ等）は面をやめる */
   qa('.oc-band').forEach(function(b){if(!b.querySelector('.sec,.rowh,.sh,.chh,.ghead')){while(b.firstChild)b.parentNode.insertBefore(b.firstChild,b);b.remove()}});
-  /* ボタンの文字の最後の矢印は消す（右の「＞」と重なるため） */
-  qa('.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tolink,.oc-ways .oc-totop').forEach(function(a){
-    var tw=document.createTreeWalker(a,NodeFilter.SHOW_TEXT),t,last=null;while((t=tw.nextNode())){if(t.nodeValue.trim())last=t}
-    if(last)last.nodeValue=last.nodeValue.replace(/\s*[→＞↓]\s*$/,'');
-  });
-  /* リンクの矢印「→」は「＞」に（後から作られる行事カードなども含む） */
+  /* リンク・ボタンの中の矢印の記号（→ ＞ ↗ ↓ など）はすべて消す。後から作られる行事カードなども含む */
+  var ARW=/\s*[→＞>↗↓›»▶➡⇒]\s*/g;
   function arrows(root){
     var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),t;
-    while((t=tw.nextNode())){if(t.nodeValue.indexOf('→')>=0&&!t.parentNode.closest('script,style'))t.nodeValue=t.nodeValue.replace(/\s*→/g,' ＞')}
+    while((t=tw.nextNode())){
+      var el=t.parentNode;if(!el||el.closest('script,style'))continue;
+      if(el.closest('a,button,summary,.go,.sr,.nx,.o,.cnt')){var v=t.nodeValue.replace(ARW,function(m){return /^\s/.test(m)&&/\s$/.test(m)?' ':''});if(v!==t.nodeValue)t.nodeValue=v}
+    }
   }
   arrows(document.body);
-  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)arrows(n);else if(n.nodeType===3&&n.nodeValue.indexOf('→')>=0)n.nodeValue=n.nodeValue.replace(/\s*→/g,' ＞')})})}).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)arrows(n);else if(n.nodeType===3&&n.parentNode)arrows(n.parentNode)})})}).observe(document.body,{childList:true,subtree:true});
+  /* ボタンは必ず1行に収める（入りきらないときは文字を小さく） */
+  function fit(){qa('.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tel,a.down,a.tolink,.cbtn a,details > summary,.oc-ways .oc-totop').forEach(function(b){
+    b.style.fontSize='';var fs=parseFloat(getComputedStyle(b).fontSize),n=0;
+    while(b.scrollWidth>b.clientWidth+1&&fs>10.5&&n<14){fs-=.5;b.style.setProperty('font-size',fs+'px','important');n++}
+  })}
+  fit();addEventListener('resize',fit);if(document.fonts)document.fonts.ready.then(fit);
   /* 文言：まちびとファイルの「つくる」→「つくりて」 */
   if(/\/machibito\//.test(location.pathname)){
     var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
