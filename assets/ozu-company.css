@@ -643,3 +643,112 @@ details[open] > summary::after{content:"－"}
 .oc-band:has(> .chh:first-child){padding-top:64px !important}
 .wrap :is(p,li,dd,td,div) :is(a.tolink,a.more,a.read,a.sl,a.sub-lk,a.ext,a.down,a.tel,a.main,a.apply,a.btn2),.lk a{color:#fff !important;text-decoration:none !important}
 .wrap :is(p,li,dd,td,div) a.main.ghost{color:var(--oc-navy) !important}
+
+/* ===== 2026-11-24 デザイン監修：ガイド・ワーク・データ・制度 ===== */
+/* 本文は細く（太字の多用をやめる）。強調は b・見出しだけ */
+.wrap :is(p,li,dd,td,figcaption),.grp :is(p,li,dd,td,figcaption),.pn :is(p,li),.in :is(p,li,dd,td){font-weight:400 !important}
+:is(.wrap,.grp,.in) :is(dd,td){color:#111827 !important}
+:is(.wrap,.grp,.in) :is(b,strong,h3,h4){font-weight:700}
+.wrap small,.grp small,.in small{font-size:max(12.5px,.85em) !important}
+
+/* 章（関わり方ガイド・つながる制度の 1 2 3…）：画面幅いっぱいの面で区切り、白と薄い青を交互に */
+.grp{position:relative;isolation:isolate;padding:96px 0 104px !important;margin:0 !important}
+.grp::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;background:#fff}
+.grp:nth-of-type(even)::before{background:#eef4fb}
+/* 章の見出し：大きく、番号は紺の丸。色の箱にはしない */
+.ghead{background:none !important;border:0 !important;box-shadow:none !important;padding:0 !important;margin:0 0 48px !important;border-radius:0 !important}
+.ghead h2{display:flex !important;align-items:center;gap:16px;font-size:clamp(28px,3.6vw,40px) !important;font-weight:900 !important;color:#111827 !important;line-height:1.3 !important;margin:6px 0 14px !important}
+.ghead h2 i,.ghead h2 .no{position:static !important;flex:none;width:52px !important;height:52px !important;border-radius:50% !important;background:var(--oc-navy) !important;color:#fff !important;border:0 !important;display:flex !important;align-items:center;justify-content:center;font-size:24px !important;font-style:normal;font-weight:900 !important}
+.ghead p,.ghead .story p,.ghead .glead{font-size:16px !important;line-height:1.95 !important;color:#111827 !important;font-weight:400 !important;max-width:42em}
+.ghead p.who,.ghead > p:first-child{font-size:14px !important;font-weight:700 !important}
+.ghead .catch{font-size:clamp(20px,2.2vw,24px) !important;font-weight:900 !important;margin:0 0 10px !important}
+.ghead .chk,.ghead small{font-size:12.5px !important;color:#111827 !important}
+/* 章の中の小見出し：塗りの帯をやめ、黄色の縦線＋黒の太字（章の見出しより弱く） */
+.grp .sh{background:none !important;color:#111827 !important;border:0 !important;border-left:8px solid var(--oc-yellow) !important;border-radius:0 !important;padding:2px 0 2px 16px !important;margin:72px 0 20px !important;display:block !important}
+.grp .sh h3{color:#111827 !important;font-size:clamp(20px,2.2vw,24px) !important;font-weight:900 !important}
+.grp .sh small{display:none !important}
+.grp .in > .sh:first-child{margin-top:8px !important}
+/* 箱・カード：白い面では薄い青、薄い青の面では白 */
+.grp :is(.op,.rc,.price,.np,.sp,.ask,.share,.num,.biz,.award,.uc,.q,.steps > li,.aid li,.duo > a){background:#f3f6fb !important;border:0 !important;border-radius:16px !important}
+.grp:nth-of-type(even) :is(.op,.rc,.price,.np,.sp,.ask,.share,.num,.biz,.award,.uc,.q,.steps > li,.aid li,.duo > a){background:#fff !important}
+.grp :is(.op,.price,.np,.sp,.ask,.share,.uc,.q){padding:24px 26px !important;margin:0 0 16px !important}
+/* 数字：何もない背景に浮かせず、箱に入れて大きく */
+.nums{display:grid !important;gap:12px !important;margin:20px 0 !important}
+.num,.nums > a,.nums > div{border-radius:16px !important;padding:20px 16px !important;text-align:center;background:#f3f6fb}
+.grp:nth-of-type(even) .nums > *{background:#fff !important}
+.num b,.nums b{display:block;font-size:clamp(30px,3.4vw,40px) !important;font-weight:900 !important;color:var(--oc-navy) !important;line-height:1.2 !important}
+.num b small,.nums b small{font-size:.45em !important;margin-left:2px;color:var(--oc-navy) !important}
+.num span,.nums span{display:block;font-size:13.5px !important;line-height:1.6 !important;color:#111827 !important;margin-top:6px}
+.bigone{display:grid !important;grid-template-columns:auto 1fr;align-items:center;gap:6px 24px;background:#fff;border-radius:18px;padding:26px 30px !important;margin:24px 0 !important;text-align:left !important}
+.bigone b{grid-row:span 2;font-size:clamp(52px,6vw,72px) !important;font-weight:900 !important;color:var(--oc-navy) !important;line-height:1 !important}
+.bigone b small{font-size:.35em !important}
+.bigone span{font-size:18px !important;font-weight:700 !important;color:#111827 !important}
+.bigone .bs{font-size:14px !important;font-weight:400 !important}
+.five > div{border-radius:16px !important;padding:20px 12px !important}
+.five b{font-size:clamp(30px,3.4vw,40px) !important}
+.five span,.five i{font-size:13.5px !important;color:#111827 !important}
+/* 写真・図と文の間の余白 */
+.ph-wide,figure{margin:24px 0 !important}
+figcaption{font-size:13px !important;margin-top:8px !important}
+.band + .lead,.band + p{margin-top:20px !important}
+.band{margin-bottom:0 !important}
+/* お知らせの一文（少額で応援できる…）：箱に入れて左をそろえる */
+.soon{background:#fff8dc !important;border-radius:14px;padding:16px 20px !important;margin:16px 0 0 !important;font-size:14.5px !important;color:#111827 !important}
+/* 出典・出どころ：小さめの黒。次のブロックとの間を広く */
+.nsrc,.src,.srcl,.credit{font-size:12.5px !important;line-height:1.85 !important;color:#111827 !important}
+.wrap > .src:last-child,.grp:last-of-type,.srcs,.wrap:has(> .credit){margin-bottom:0 !important;padding-bottom:88px !important}
+.srcs{padding-top:24px !important}
+.srcs .sh{background:none !important;color:#111827 !important;padding:0 !important;margin:0 0 10px !important;font-size:16px !important;font-weight:900 !important;border:0 !important;display:block !important}
+.srcs li{font-size:12.5px !important}
+body > .oc-ways{margin-top:0 !important}
+/* 出典のリンクはボタンにせず、文中の下線リンク */
+p.lk{display:block !important}
+p.lk a,.nsrc a,.src a,.srcs a{display:inline !important;background:none !important;color:var(--oc-navy) !important;padding:0 !important;margin:0 !important;border-radius:0 !important;text-decoration:underline !important;font-weight:700 !important;min-height:0 !important}
+p.lk a::after,.nsrc a::after,.src a::after{content:none !important}
+/* 問い合わせの電話・メールもボタンのルールに */
+.cbtn{display:flex !important;flex-wrap:wrap;gap:10px}
+.cbtn a{display:inline-flex !important;flex-direction:column;background:var(--oc-navy) !important;color:#fff !important;border:0 !important;border-radius:999px !important;padding:11px 26px !important;font-weight:700 !important;text-decoration:none !important;transition:transform .2s}
+.cbtn a small{color:#fff !important;opacity:.9}
+.cbtn a:hover{transform:translateY(-3px)}
+/* ワーク＆スタディ：最初の一文を本文の左にそろえる */
+.wrap > p.one{padding-left:0 !important;padding-right:0 !important}
+/* 横に動くカードの中：札と文が詰まらないように */
+.rc .when,.rc .chip,.rc .tag{display:inline-block;margin:0 6px 6px 0 !important}
+.rc p{line-height:1.8 !important}
+
+/* タブレット（700〜1099px）：2列・余白を整える */
+@media (min-width:700px) and (max-width:1099px){
+  .grp{padding:80px 0 88px !important}
+  .nums.n3{grid-template-columns:repeat(3,1fr) !important}
+  .five{grid-template-columns:repeat(3,1fr) !important}
+}
+/* スマホ：数字は2列以下に、章の上下は少し詰める */
+@media (max-width:699px){
+  .grp{padding:64px 0 72px !important}
+  .nums.n3{grid-template-columns:1fr !important}
+  .bigone{grid-template-columns:1fr;text-align:center !important}
+  .bigone b{grid-row:auto}
+  .ghead h2 i,.ghead h2 .no{width:44px !important;height:44px !important;font-size:20px !important}
+}
+.grp .op :is(p,dd),.grp .op .ds,.grp .price p,.aid .ds,.dl dd{color:#111827 !important}
+p.src,p.credit,.wrap > .src{margin-bottom:72px !important}
+.grp:has(+ p.src){padding-bottom:64px !important}
+.aid li{padding:16px 18px !important;margin:0 0 10px !important;border-radius:14px !important;list-style:none}
+.grp:not(:nth-of-type(even)) .aid li{background:#f3f6fb !important}
+.grp:nth-of-type(even) .aid li{background:#fff !important}
+/* データ：章の見出しをガイド・制度と同じ大きさに */
+.chh{background:none !important;border:0 !important;padding:0 !important;margin:0 0 40px !important;display:flex !important;align-items:center;gap:16px}
+.chh b{font-size:clamp(28px,3.6vw,40px) !important;font-weight:900 !important;color:#111827 !important}
+.chh .no{width:52px !important;height:52px !important;font-size:24px !important;background:var(--oc-navy) !important;color:#fff !important;flex:none}
+.subh b{font-size:clamp(18px,2vw,22px) !important;font-weight:900 !important;color:#111827 !important;border-left:8px solid var(--oc-yellow);padding-left:14px;display:block;margin:48px 0 16px}
+/* いま、まちにあるもの：数字を箱に */
+.have{display:grid !important;grid-template-columns:repeat(2,1fr);gap:12px !important}
+.have > div{background:#fff;border-radius:16px;padding:20px !important}
+.have b{font-size:clamp(28px,3vw,36px) !important;color:var(--oc-navy) !important;font-weight:900 !important;display:block;line-height:1.2}
+.have span{display:block;font-size:14px !important;color:#111827 !important;margin-top:6px}
+.have i{display:block;font-style:normal;font-size:12.5px !important;color:#111827 !important;margin-top:4px}
+@media (max-width:699px){.have{grid-template-columns:1fr}}
+/* ワーク＆スタディの「仕事」「学び」の札（p.grp）は章の面にしない */
+p.grp{padding:0 !important;margin:48px 0 16px !important;font-size:22px !important;font-weight:900 !important;color:#111827 !important;isolation:auto}
+p.grp::before{display:none !important}
+#entry p.grp:first-child{margin-top:24px !important}

@@ -28,6 +28,36 @@ ready(function(){
   }
   if(ocr&&!ocr.querySelector('.oc-ct')){var ct=document.createElement('a');ct.className='oc-ct';ct.href=TOPURL+'#contact';ct.textContent='お問い合わせ';ocr.insertBefore(ct,ocr.firstChild)}
   document.querySelectorAll('.oc-mnav a').forEach(function(a){if(a.textContent.trim()==='OZU 555 PROJECT')a.textContent='プロジェクト'});
+  /* 重なっているページ内リンクを減らす（削除したものは「6ページ_削除したリンク.md」に記録） */
+  var page=(location.pathname.match(/\/(discover|machibito|guide|work|data|seido)\//)||[])[1];
+  function drop(el){if(!el)return;var li=el.closest('li');var t=li||el;var ul=t.parentElement;t.remove();if(ul&&ul.matches('ul,ol')&&!ul.querySelector('li'))ul.remove()}
+  function q(s){return document.querySelector(s)}
+  function qa(s){return [].slice.call(document.querySelectorAll(s))}
+  if(page==='guide'){
+    var come=q('#come');if(come){var n=come.nextElementSibling;while(n&&!n.matches('.sh,.ghead,section')){var nx=n.nextElementSibling;n.remove();n=nx}come.remove()}
+    qa('.duo').forEach(function(e){e.remove()});
+    qa('a[href="../work/#shisatsu"]').forEach(drop);
+    qa('a[href="../data/#past"],a[href="../data/#done"]').forEach(drop);
+  }
+  if(page==='work'){
+    qa('a.btn2[href="../data/#past"]').forEach(drop);
+    qa('.sec').forEach(function(s){if(/来る前に、あわせて見る/.test(s.textContent)){qa('a.read').forEach(function(a){a.remove()});s.remove()}});
+  }
+  if(page==='data'){qa('.nexts').forEach(function(e){e.remove()})}
+  if(page==='seido'){
+    qa('a[href="../discover/#stay"]').forEach(drop);
+    qa('a[href="../guide/#now"]').slice(1).forEach(drop);
+    qa('a[href="../discover/"]').slice(1).forEach(drop);
+    qa('a.uc.solo').forEach(function(e){e.remove()});
+    qa('a[href="../data/#done"],a[href="../machibito/#g-shop"]').forEach(drop);
+  }
+  /* 見出しを失った面（中身が出典だけ等）は面をやめる */
+  qa('.oc-band').forEach(function(b){if(!b.querySelector('.sec,.rowh,.sh,.chh,.ghead')){while(b.firstChild)b.parentNode.insertBefore(b.firstChild,b);b.remove()}});
+  /* ボタンの文字の最後の矢印は消す（右の「＞」と重なるため） */
+  qa('.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.tolink,.oc-ways .oc-totop').forEach(function(a){
+    var tw=document.createTreeWalker(a,NodeFilter.SHOW_TEXT),t,last=null;while((t=tw.nextNode())){if(t.nodeValue.trim())last=t}
+    if(last)last.nodeValue=last.nodeValue.replace(/\s*[→＞↓]\s*$/,'');
+  });
   /* リンクの矢印「→」は「＞」に（後から作られる行事カードなども含む） */
   function arrows(root){
     var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),t;
