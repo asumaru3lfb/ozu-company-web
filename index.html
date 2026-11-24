@@ -299,6 +299,32 @@ body::before{background:#fff}
 .foot .brandw{font-family:var(--en);font-weight:800;font-size:24px;letter-spacing:.04em;color:#fff}
 .foot img{display:none}
 .foot .links a{color:#fff}
+
+/* ===== 2026-11-24 修正 ===== */
+/* 灰色・薄い青の文字をやめ、黒の小さめの文字に */
+.lab .en{color:var(--ink)}
+.act .lab .en,.act .lab .ja{color:#fff}
+.card2 .q{color:var(--ink)}
+.card2 em,.pj .desc,.sub,.ct2 .sub{color:var(--ink)}
+.pj .nums span{color:#fff}
+/* プロジェクトの幅を、参加したらできることと同じに */
+.sec.p555 .pj{max-width:1200px;margin:0 auto;padding:76px max(20px,env(safe-area-inset-right,0px)) 88px max(20px,env(safe-area-inset-left,0px))}
+.pj .txt{padding:0 0 32px}
+.pj .band{margin:6px 0;padding:10px 20px}
+@media (min-width:900px){.pj{column-gap:0}.pj .txt{padding:0 40px 0 0}.pj .band{margin:6px -160px 6px -20px;padding:10px 20px}}
+.pj .vis{border-radius:0;overflow:hidden}
+.sec.p555{border-bottom:0}
+/* 詳しくはこちら：黄色の横長の丸 */
+.pj .more{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:999px;background:var(--yellow);color:var(--ink);border:0;font-weight:900;font-size:15px}
+/* お問い合わせの文字を大きく */
+.ct2 .lab .ja{font-size:clamp(24px,2.6vw,32px);font-weight:900}
+.ct2 .lab .en{font-size:18px}
+.ct2 .sub{font-size:17px;line-height:2}
+.ct2 .cta{font-size:17px;padding:16px 32px}
+/* リンクはすべて、カーソルで少し上に */
+.cta,.pill,.pj .more,.nav a,.hd .ct,.foot .links a,.lineband .cta,.mnav a{transition:transform .2s,background .2s}
+.foot .links a,.hd .ct{display:inline-block}
+.cta:hover,.pill:hover,.pj .more:hover,.nav a:hover,.hd .ct:hover,.foot .links a:hover{transform:translateY(-3px)}
 </style>
 
 <header class="hd"><div class="in">

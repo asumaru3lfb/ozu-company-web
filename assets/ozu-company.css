@@ -573,3 +573,73 @@ body > .oc-ways{display:block !important;order:8 !important;position:static !imp
 .oc-foot .oc-in::before{content:"OZU COMPANY";font-family:var(--oc-en);font-weight:800;font-size:24px;letter-spacing:.04em;color:#fff}
 .oc-foot a{color:#fff !important}
 .hero .ask{display:table !important;width:auto !important;margin-top:12px !important;padding:.2em .7em !important;font-weight:900 !important}
+
+/* ===== 2026-11-24 修正：文字・余白・ボタンの統一 ===== */
+/* 灰色・薄い文字をやめ、黒の文字に */
+.s,.lead,.note,.nsrc,.srcl,.mt,.nt,.cal-l,.card p,.wrap small,.rc p,.k,.cap,.pn .cap,.rowl,.biz .bl,.mc .r,.mc .ln,.tile small,.oc-mnav small{color:#111827 !important;opacity:1 !important}
+.wrap p,.wrap li,.wrap dd,.wrap td{font-size:max(14px,1em)}
+/* 写真の帯：PCで縦を広く */
+@media (min-width:900px){.hero,.page-band{height:560px !important}.hero .tt,.page-band .tt{bottom:120px !important}}
+
+/* ボタンのルールを統一：#004896の横長の丸、白い太字、右に＞。カーソルで少し上に */
+.main,.apply,.btn2,a.more,a.read,a.sl,a.sub-lk,.lk a,a.ext,a.down,a.tel,a.tolink,details > summary,.oc-ways .oc-totop{
+  display:inline-flex !important;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--oc-navy) !important;color:#fff !important;border:0 !important;border-radius:999px !important;
+  padding:11px 22px !important;font-weight:700 !important;font-size:14.5px !important;line-height:1.4 !important;text-decoration:none !important;
+  min-height:0 !important;width:auto;max-width:100%;cursor:pointer;transition:transform .2s,background .2s;box-sizing:border-box;margin:6px 6px 6px 0}
+.main small,.apply small,.btn2 small,.lk a small,a.ext small{color:#fff !important;opacity:.9}
+.main::after,.apply::after,.btn2::after,a.more::after,a.read::after,a.sl::after,a.sub-lk::after,.lk a::after,a.ext::after,a.tel::after,a.tolink::after{content:"＞" !important;color:var(--oc-yellow) !important;margin-left:4px;font-weight:900;position:static !important}
+a.down::after{content:"↓" !important;color:var(--oc-yellow) !important}
+.main svg,.apply svg,.btn2 svg,a.ext svg{display:none !important}
+.main.ghost{background:#fff !important;color:var(--oc-navy) !important;box-shadow:inset 0 0 0 2px var(--oc-navy)}
+.main.ghost::after{color:var(--oc-navy) !important}
+details > summary{list-style:none}
+details > summary::-webkit-details-marker{display:none}
+details > summary::after{content:"＋";color:var(--oc-yellow);font-weight:900;margin-left:6px}
+details[open] > summary::after{content:"－"}
+.main:hover,.apply:hover,.btn2:hover,a.more:hover,a.read:hover,a.sl:hover,a.sub-lk:hover,.lk a:hover,a.ext:hover,a.down:hover,a.tel:hover,a.tolink:hover,details > summary:hover,.oc-ways .oc-totop:hover,
+.oc-pill:hover,.oc-nav a:hover,.oc-ways .oc-way:hover,a .go:hover{transform:translateY(-3px)}
+.oc-pill,.oc-nav a,a.go,.oc-ct{transition:transform .2s}
+.lk{display:flex;flex-wrap:wrap;gap:4px}
+.oc-ways .oc-totop{background:var(--oc-yellow) !important;color:#111827 !important}
+.oc-ways .oc-totop::after{content:"＞";margin-left:4px}
+
+/* スマホのメニュー：上にTOP・プロジェクト・お問い合わせ、その下に6ページを丸いボタンで */
+@media (max-width:759px){
+  .oc-mnav{display:flex !important;flex-wrap:wrap;gap:0 8px;padding:6px 16px 18px !important}
+  .oc-mnav[hidden]{display:none !important}
+  .oc-mnav > *{order:5;flex:1 1 100%}
+  .oc-mnav > a:first-child{order:1}
+  .oc-mnav .oc-msep{order:2}
+  .oc-mnav .oc-msep ~ a{order:3}
+  .oc-mnav .oc-mlab{order:4;margin:14px 0 6px !important;padding:0 !important;background:none !important;color:#111827 !important;font-size:13px !important;border:0 !important}
+  .oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a),.oc-mnav .oc-mlab ~ .oc-mcur{
+    order:5;flex:1 1 calc(50% - 4px) !important;margin:0 0 8px !important;padding:10px 14px !important;border:0 !important;border-radius:999px !important;
+    background:var(--oc-navy) !important;color:#fff !important;font-size:13.5px !important;line-height:1.35 !important;text-align:center;display:flex !important;flex-direction:column;justify-content:center;position:relative}
+  .oc-mnav .oc-mlab ~ a:not(.oc-msep):not(.oc-msep ~ a)::after{display:none !important}
+  .oc-mnav .oc-mlab ~ a small,.oc-mnav .oc-mlab ~ .oc-mcur small{display:none !important}
+  .oc-mnav .oc-mlab ~ .oc-mcur{background:var(--oc-yellow) !important;color:#111827 !important}
+}
+
+/* まちびとファイル */
+.mc .o{white-space:nowrap !important;display:inline-flex !important;align-items:center;gap:4px}
+.car{align-items:stretch !important}
+.car > .mc{height:auto !important;align-self:stretch}
+.sheet img{width:calc(100% - 40px) !important;margin:16px 20px 0 !important;border-radius:16px;display:block}
+
+/* ワーク＆スタディ */
+.band{height:220px !important}
+@media (min-width:900px){.band{height:300px !important}}
+@media (max-width:699px){.tiles{grid-template-columns:1fr !important;gap:22px !important}.tile img{aspect-ratio:16/9 !important}}
+
+/* まちづくりデータ */
+.jumpc{background:var(--oc-yellow) !important;border-radius:18px;padding:22px 22px 16px !important;margin:28px 0 8px !important;display:grid;gap:8px}
+.jumpc::before{content:"このページの概要";display:block;font-weight:900;font-size:15px;color:#111827;margin-bottom:2px}
+.jumpc a{background:#fff !important;border:0 !important;border-radius:12px !important;color:#111827 !important;padding:12px 16px !important;transition:transform .2s}
+.jumpc a:hover{transform:translateY(-3px)}
+.jumpc a small{color:#111827 !important}
+.jumpc svg,.chh svg{display:none !important}
+.oc-band:not(#oc) > .chh:first-child{margin-top:0 !important}
+.oc-band:has(> .chh:first-child){padding-top:64px !important}
+.wrap :is(p,li,dd,td,div) :is(a.tolink,a.more,a.read,a.sl,a.sub-lk,a.ext,a.down,a.tel,a.main,a.apply,a.btn2),.lk a{color:#fff !important;text-decoration:none !important}
+.wrap :is(p,li,dd,td,div) a.main.ghost{color:var(--oc-navy) !important}
