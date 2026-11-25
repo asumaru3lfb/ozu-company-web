@@ -1,7 +1,40 @@
 /* 大洲カンパニー 6ページの共通の動き（矢印スライド・カレンダーのポップアップ・ホバー・文言） */
 (function(){
 function ready(f){document.readyState!=='loading'?f():document.addEventListener('DOMContentLoaded',f)}
+/* 台帳の「関わり方ガイドへの掲載」にチェックが入った行を、関わり方ガイドに自動で載せる。
+   tools/guide-feed.gs をウェブアプリとして公開し、そのURLを下に入れる（空のあいだは何もしない） */
+var GUIDE_FEED_URL='';
+function guideFeed(){
+  if(!GUIDE_FEED_URL||!/\/guide\//.test(location.pathname))return;
+  var esc=function(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML};
+  var today=new Date();today.setHours(0,0,0,0);
+  var chipCls={'受付中':'go','日程待ち':'ol','募集は終了':'done'};
+  fetch(GUIDE_FEED_URL,{cache:'no-store'}).then(function(r){return r.json()}).then(function(data){
+    (data.items||[]).forEach(function(it){
+      var closed=it.until&&new Date(it.until+'T23:59:59')<today;
+      var place=it.place;if(place==='いま参加できること'&&closed)place='これまでにあった手伝い';
+      var chips='<span class="chip '+(chipCls[closed?'募集は終了':it.status]||'ol')+'">'+esc(closed?'募集は終了':it.status)+'</span>'+(it.tags||[]).map(function(t){return '<span class="chip ol">'+esc(t)+'</span>'}).join('');
+      if(place==='いま参加できること'){
+        var meta=[['いつ',it.when],['どこで',it.where],['費用',it.fee],['募集元',it.by]].filter(function(m){return m[1]}).map(function(m){return '<li><b>'+m[0]+'</b><span>'+esc(m[1])+'</span></li>'}).join('');
+        var art=document.createElement('article');art.className='op oc-fed';art.dataset.id=it.id||'';
+        art.innerHTML='<div>'+chips+'</div><h4>'+esc(it.title)+'</h4>'+(it.desc?'<p>'+esc(it.desc)+'</p>':'')+(meta?'<ul class="meta">'+meta+'</ul>':'')+(it.url?'<a class="apply" href="'+esc(it.url)+'" target="_blank" rel="noopener"><span>申し込む</span></a>':'');
+        var sh=document.getElementById('now');if(!sh)return;
+        var last=sh,n=sh.nextElementSibling;while(n&&n.matches('article.op,p.note')){last=n;n=n.nextElementSibling}
+        last.after(art);
+      }else{
+        var id=place==='毎年この時期にあること'?'season':'past';
+        var sh2=document.getElementById(id);if(!sh2)return;
+        var rail=sh2.parentElement.querySelector('#'+id+' ~ .oc-car .rail, #'+id+' ~ .rail');if(!rail)return;
+        var a=document.createElement(it.url?'a':'div');a.className='rc'+(it.photo?'':' np')+' oc-fed';
+        if(it.url){a.href=it.url;a.target='_blank';a.rel='noopener'}
+        a.innerHTML=(it.photo?'<div class="ph"><img src="'+esc(it.photo)+'" alt="'+esc(it.title)+'" loading="lazy"></div>':'')+(it.when?'<p class="when">'+esc(it.when)+'</p>':'')+'<h4>'+esc(it.title)+'</h4>'+(it.desc?'<p>'+esc(it.desc)+'</p>':'')+(it.where||it.fee?'<p>'+esc([it.where,it.fee].filter(Boolean).join('・'))+'</p>':'')+'<div>'+chips+'</div>'+(it.url?'<span class="go">くわしい案内</span>':'');
+        if(id==='past')rail.insertBefore(a,rail.firstChild);else rail.appendChild(a);
+      }
+    });
+  }).catch(function(){});
+}
 ready(function(){
+  guideFeed();
   if(!document.querySelector('link[href*="family=Barlow"]')){var lf=document.createElement('link');lf.rel='stylesheet';lf.href='https://fonts.googleapis.com/css2?family=Barlow:wght@700;800&display=swap';document.head.appendChild(lf)}
   /* 大見出しごとに、その下の中身をひとつのセクションにまとめる（背景を交互に変えて区切りを見せる） */
   var PARENT='.sec:not(:has(h2 i)):not(:has(h2 .no)):not(:has(+ .tl)):not(:has(.es)),.rowh:not(:has(.no)),.ghead,.chh,#todayw';
