@@ -1,25 +1,27 @@
 /**
- * 関わり方ガイドへの自動掲載（Google Apps Script）
+ * 関わり方ガイドへの自動掲載（台帳の Code.gs に足す部分）
  *
- * 台帳「大洲城下町 イベント発信台帳」の「イベント」シートで、
- * 「関わり方ガイドへの掲載」にチェックが入った行だけを、JSONで返します。
- * WEBサイト（/guide/）がこのJSONを読み、関わり方ガイドに自動で表示します。
+ * 台帳「大洲城下町 イベント発信台帳」にはすでに Code.gs があり、
+ *   doGet（公開用データ）と doPost（LINEの受信口）が同じウェブアプリで動いています。
+ * Apps Script は1つのプロジェクトに doGet を1つしか持てないので、
+ * 新しいファイルやデプロイは作らず、既存の doGet に「?view=guide」の分かれ道を足します。
  *
- * 設置のしかた（一度だけ）
- *  1. 台帳を開き、拡張機能 → Apps Script を開く
- *  2. 新しいファイルを作り、このコードを貼りつけて保存
- *  3. デプロイ → 新しいデプロイ → 種類「ウェブアプリ」
- *     実行するユーザー：自分　／　アクセスできるユーザー：全員
- *  4. 表示された「ウェブアプリのURL」を、
- *     ozu-company-web/assets/ozu-company.js の GUIDE_FEED_URL に入れる
+ * 足し方
+ *  1. Code.gs の一番下に、この下の guideFeed_ 関数をそのまま貼る
+ *  2. 既存の doGet(e) の最初の行に、次の1行を足す
+ *       if (e && e.parameter && e.parameter.view === 'guide') return guideFeed_();
+ *  3. 保存 → デプロイ → デプロイを管理 → 鉛筆 → バージョン：新バージョン → デプロイ
+ *     （URLは変わりません。LINEの受信口もそのまま動きます）
+ *  4. ウェブアプリのURL（…/exec）の末尾に ?view=guide を付けたものが、ガイド用のURLです
  *
- * 外に出るのは、チェックの入った行の「ガイド：」の列と、
- * 空欄のときに代わりに使う列（イベント名・日時・場所・料金・主催・元URL）だけです。
+ * 決めごと（台帳の仕組みに合わせています）
+ *  - 載るのは「関わり方ガイドへの掲載」にチェックがある行だけ（人がチェックしたものだけ。自動では載せない）
+ *  - 「掲載しない」にチェックがある行、裏取りが「対象外」「保留」の行は載せない
+ *  - 主催・問い合わせの列は外に出さない（既存の doGet と同じ）。募集元は「ガイド：募集元」に書いたものだけ
+ *  - 行の削除・書き込みはしない（読むだけ）
  */
-var SHEET_NAME = 'イベント';
-
-function doGet() {
-  var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+function guideFeed_() {
+  var sh = SpreadsheetApp.getActive().getSheetByName('イベント');
   var rows = sh.getDataRange().getValues();
   var head = rows.shift();
   var col = function (name) { return head.indexOf(name); };
@@ -29,27 +31,26 @@ function doGet() {
     fee: col('ガイド：費用'), by: col('ガイド：募集元'), url: col('ガイド：申し込みURL'), until: col('ガイド：締切日'),
     photo: col('ガイド：写真URL'), tags: col('ガイド：札'),
     id: col('ID'), name: col('イベント名'), start: col('開始日時'), end: col('終了日時'), loc: col('場所'),
-    price: col('料金'), org: col('主催・問い合わせ'), src: col('元URL'), hide: col('掲載しない')
+    price: col('料金'), src: col('元URL'), check: col('裏取り'), hide: col('掲載しない')
   };
   var tz = 'Asia/Tokyo';
   var fmt = function (v) {
     if (v instanceof Date) return Utilities.formatDate(v, tz, 'yyyy-MM-dd');
     return String(v == null ? '' : v).trim();
   };
-  var jp = function (v) {
-    if (!(v instanceof Date)) return fmt(v);
-    return Utilities.formatDate(v, tz, 'M月d日');
-  };
-  var pick = function (r, a, b) { var x = fmt(r[a]); return x || (b != null && b >= 0 ? fmt(r[b]) : ''); };
+  var jp = function (v) { return v instanceof Date ? Utilities.formatDate(v, tz, 'M月d日') : fmt(v); };
+  var pick = function (r, a, b) { var x = fmt(r[a]); return x || (b >= 0 ? fmt(r[b]) : ''); };
   var items = [];
   rows.forEach(function (r) {
-    if (r[C.flag] !== true) return;
+    if (C.flag < 0 || r[C.flag] !== true) return;
     if (C.hide >= 0 && r[C.hide] === true) return;
+    if (C.check >= 0 && /対象外|保留/.test(fmt(r[C.check]))) return;
     var when = fmt(r[C.when]);
     if (!when && r[C.start]) {
       when = jp(r[C.start]);
       if (r[C.end] && fmt(r[C.end]) !== fmt(r[C.start])) when += '〜' + jp(r[C.end]);
     }
+    // 元URLは「受信箱#番号」などが混ざるので、http で始まるものだけ使う
     var srcUrl = fmt(r[C.src]).split(/\s+/).filter(function (s) { return /^https?:\/\//.test(s); })[0] || '';
     items.push({
       id: fmt(r[C.id]),
@@ -60,7 +61,7 @@ function doGet() {
       when: when,
       where: pick(r, C.where, C.loc),
       fee: pick(r, C.fee, C.price),
-      by: pick(r, C.by, C.org),
+      by: fmt(r[C.by]),
       url: fmt(r[C.url]) || srcUrl,
       until: fmt(r[C.until]) || fmt(r[C.end]),
       photo: fmt(r[C.photo]),
